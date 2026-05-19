@@ -22,3 +22,6 @@ ai-service/app/data/ingested_files.json
 .idea/venv/
 __pycache__/
 *.pyc
+ai-service/venv/
+__pycache__/
+*.pyc
