@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual environment
+venv/
+.env
+
+# Vector DB
+chroma_db/
+
+# Data artifacts
+ai-service/app/data/vector_store.pkl
+ai-service/app/data/ingested_files.json
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
