@@ -25,3 +25,4 @@ __pycache__/
 ai-service/venv/
 __pycache__/
 *.pyc
+ai_service/app/data/chroma/
