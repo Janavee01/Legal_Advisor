@@ -23,6 +23,7 @@ from embedder import get_embedding
 from vectordb import get_collection
 from chunker import chunk_sections
 from rank_bm25 import BM25Okapi
+from parser import ACT_METADATA
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -71,7 +72,7 @@ def save_pickle(documents: list):
     log.info("Saved pickle store: %d total documents", len(documents))
 
 
-def ingest_file(json_path: Path, category: str, collection, existing_docs: list, doc_id_start: int) -> tuple[list, int]:
+def ingest_file(json_path: Path, category: str, act_metadata: dict, collection, existing_docs: list, doc_id_start: int) -> tuple[list, int]:
     """
     Ingest a single parsed JSON file.
     Returns (new_documents, next_doc_id).
@@ -83,6 +84,10 @@ def ingest_file(json_path: Path, category: str, collection, existing_docs: list,
     for s in sections:
         s["category"] = category
         s["source"] = json_path.name
+        s["short_name"] = act_metadata.get("short_name", "")
+        s["act_name"] = act_metadata.get("act_name", "")
+        s["year"] = act_metadata.get("year", 0)
+        s.setdefault("topics", act_metadata.get("relevance", []))
 
     chunks = chunk_sections(sections)
     log.info("  %s → %d sections → %d chunks", json_path.name, len(sections), len(chunks))
@@ -98,6 +103,8 @@ def ingest_file(json_path: Path, category: str, collection, existing_docs: list,
         # Chroma metadata values must be str/int/float — no lists
         
         
+        
+
         collection.add(
             ids=[str(doc_id)],
             documents=[chunk["text"]],
@@ -162,7 +169,17 @@ def run(reset: bool = False):
 
     for json_path in sorted(json_files):
         category = json_path.parent.name
-        key = f"{category}/{json_path.name}"
+        stem = json_path.stem
+
+        # ---- FIX: build metadata per file ----
+        act_metadata = ACT_METADATA.get(stem, {
+            "act_name": stem.replace("_", " ").title(),
+            "short_name": stem[:10],
+            "year": 0,
+            "relevance": []
+        })
+
+        key = f"{category}/{json_path.name}:v1"
 
         if key in ingested_log:
             log.info("Skipping (already ingested): %s", key)
@@ -170,10 +187,19 @@ def run(reset: bool = False):
             continue
 
         log.info("\nIngesting: %s [%s]", json_path.name, category)
+
         try:
-            new_docs, doc_id = ingest_file(json_path, category, collection, existing_docs, doc_id)
+            new_docs, doc_id = ingest_file(
+                json_path,
+                category,
+                act_metadata,
+                collection,
+                existing_docs,
+                doc_id
+            )
             total_new_docs.extend(new_docs)
             ingested_log.add(key)
+
         except Exception as e:
             log.error("Failed to ingest %s: %s", json_path.name, e)
             raise
@@ -185,9 +211,7 @@ def run(reset: bool = False):
     bm25_store = {
         "tokenized_corpus": tokens,
         "documents": [
-            {
-                "doc_id": d["id"],
-            }
+            {"doc_id": d["id"]}
             for d in all_docs
         ]
     }

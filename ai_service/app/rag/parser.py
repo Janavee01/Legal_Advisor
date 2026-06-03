@@ -87,7 +87,7 @@ ACT_METADATA = {
 #   "35. Jurisdiction of District Commission.—"
 
 SECTION_PATTERN = re.compile(
-    r"^(?:Section\s+)?(\d+[A-Z]?)\.\s+([^\n—–-]{3,80}?)(?:\.—|—|\.—|–)",
+    r"^(?:Section\s+)?(\d+[A-Z]?)\.\s+(.+?)\.[—–―-]",
     re.MULTILINE,
 )
 
@@ -188,16 +188,18 @@ def parse_sections(full_text: str, act_metadata: dict) -> list[dict]:
         citation = f"{act_metadata['act_name']} › Section {section_number} › {section_title}"
 
         sections.append({
+            "category": act_metadata.get("category", "unknown"),
+            "act_name": act_metadata["act_name"],
+            "year": act_metadata["year"],
+            "chapter": chapter,
+        
             "section_number": section_number,
             "section_title": section_title,
-            "chapter": chapter,
+        
+            "topics": act_metadata.get("relevance", []),
+        
             "text": section_text,
             "citation": citation,
-            "act_name": act_metadata["act_name"],
-            "short_name": act_metadata["short_name"],
-            "year": act_metadata["year"],
-            "ministry": act_metadata["ministry"],
-            "relevance_tags": act_metadata["relevance"],
             "char_count": len(section_text),
         })
 
@@ -223,7 +225,7 @@ def _paragraph_fallback(text: str, act_metadata: dict) -> list[dict]:
             "short_name": act_metadata["short_name"],
             "year": act_metadata["year"],
             "ministry": act_metadata["ministry"],
-            "relevance_tags": act_metadata["relevance"],
+            "topics": act_metadata.get("relevance", []),
             "char_count": len(para),
         }
         for i, para in enumerate(paragraphs)
@@ -244,6 +246,7 @@ def parse_act(pdf_path: Path, category: str) -> Optional[Path]:
             "ministry": "Unknown",
             "relevance": [],
         }
+    act_metadata["category"] = category
 
     try:
         full_text = extract_text_from_pdf(pdf_path)
