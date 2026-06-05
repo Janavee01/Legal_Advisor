@@ -15,7 +15,7 @@ from typing import Optional
 
 # Maximum characters per chunk sent to the embedder.
 # all-MiniLM-L6-v2 has a 256 token limit ≈ ~1000 chars safe upper bound.
-MAX_CHUNK_CHARS = 900
+MAX_CHUNK_CHARS = 500
 MIN_CHUNK_CHARS = 80  # discard stubs shorter than this
 
 

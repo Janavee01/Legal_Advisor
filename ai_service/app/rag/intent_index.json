@@ -1,0 +1,26 @@
+[
+  {
+    "intent": "constitutional_equality",
+    "anchors": [
+      "Constitution of India Article 14",
+      "Constitution of India Article 15",
+      "Constitution of India Article 17"
+    ],
+    "examples": [
+      "rights against caste discrimination",
+      "equality before law discrimination india",
+      "untouchability rights india"
+    ]
+  },
+  {
+    "intent": "sexual_harassment_workplace",
+    "anchors": [
+      "Sexual Harassment of Women at Workplace Act 2013 Section 9",
+      "Section 19 Reporting of offences"
+    ],
+    "examples": [
+      "sexual harassment complaint procedure",
+      "workplace harassment complaint india"
+    ]
+  }
+]
