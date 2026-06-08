@@ -1,3 +1,33 @@
+LEGAL_CONCEPTS = {
+    "domestic violence": ["domestic violence"],
+    "workplace harassment": [
+        "workplace harassment",
+        "sexual harassment",
+        "harassment at workplace",
+    ],
+    "minimum wages": [
+        "minimum wage",
+        "minimum wages",
+    ],
+    "working hours": [
+        "working hours",
+        "daily hours",
+        "weekly hours",
+        "overtime",
+    ],
+    "consumer defect": [
+        "defective product",
+        "defective",
+        "refund",
+        "replacement",
+    ],
+    "drunk driving": [
+        "drunk driving",
+        "drunken driving",
+        "driving under influence",
+    ],
+}
+
 import re
 
 CATEGORY_KEYWORDS = {
@@ -177,9 +207,13 @@ def detect_intents(query: str) -> dict:
 
                 break
 
-    # -------------------------------------------------
-    # deduplicate intents
-    # -------------------------------------------------
+    for concept, phrases in LEGAL_CONCEPTS.items():
+
+        for phrase in phrases:
+        
+            if phrase in query_lower:
+                result["active_intents"].append(concept)
+                break
 
     result["active_intents"] = list(
         set(result["active_intents"])

@@ -5,19 +5,18 @@ import torch
 _model = None
 
 
+from sentence_transformers import CrossEncoder
+
+_reranker = None
+
 def get_reranker():
-    global _model
-
-    if _model is None:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-
-        _model = CrossEncoder(
+    global _reranker
+    if _reranker is None:
+        _reranker = CrossEncoder(
             "cross-encoder/ms-marco-MiniLM-L-6-v2",
-            device=device
+            device="cpu"
         )
-
-    return _model
-
+    return _reranker
 
 def rerank(query: str, results: list[dict]) -> list[dict]:
     if not results:
@@ -26,10 +25,13 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
     model = get_reranker()
 
     pairs = []
-    valid_results = []
+    indices = []
 
-    for r in results:
-        text = r.get("text", "")
+    for i, r in enumerate(results):
+        text = r.get("text")
+
+        if not isinstance(r, dict):
+            continue
 
         if not text:
             continue
@@ -43,35 +45,37 @@ Section Title: {r.get('section_title', '')}
 """
 
         pairs.append((query, doc))
-        valid_results.append(r)
+        indices.append(i)
 
     if not pairs:
         return results
 
-    scores = model.predict(pairs)
+    BATCH_SIZE = 8
+    scores = []
 
+    for i in range(0, len(pairs), BATCH_SIZE):
+        batch = pairs[i:i+BATCH_SIZE]
+        scores.extend(model.predict(batch))
     scores = np.array(scores, dtype=float)
 
     if len(scores) > 1:
-        scores = (
-            (scores - scores.min())
-            / (scores.max() - scores.min() + 1e-8)
-        )
+        scores = (scores - scores.min()) / (scores.max() - scores.min() + 1e-8)
     else:
         scores = np.array([1.0])
 
-    for r, score in zip(valid_results, scores):
+    for idx, score in zip(indices, scores):
+        r = results[idx]
+
+        if not isinstance(r, dict):
+            continue
+
         r["rerank_score"] = float(score)
 
         retrieval_score = float(r.get("score", 0.0))
-
-        r["final_score"] = (
-            0.70 * float(score)
-            + 0.30 * retrieval_score
-        )
+        r["final_score"] = 0.70 * float(score) + 0.30 * retrieval_score
 
     return sorted(
-        valid_results,
-        key=lambda x: x["final_score"],
+        [r for r in results if isinstance(r, dict)],
+        key=lambda x: x.get("final_score", 0),
         reverse=True
     )

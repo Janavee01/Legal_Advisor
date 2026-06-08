@@ -104,13 +104,13 @@ def ingest_file(json_path, category, act_metadata, collection, doc_id_start):
         return [], doc_id_start
 
     texts = [
-        f"Act: {c['act_name']}\n"
+        f"{DOC_PREFIX} Act: {c['act_name']}\n"
         f"Chapter: {c.get('chapter', '')}\n"
         f"Section: {c['section_title']}\n\n"
         f"{c['text']}"
         for c in filtered_chunks
     ]
-
+    
     embeddings = model.encode(
         texts,
         batch_size=32,

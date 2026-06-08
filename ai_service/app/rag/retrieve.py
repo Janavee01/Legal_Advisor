@@ -5,9 +5,9 @@ import pickle
 import numpy as np
 from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer
-
-from reranker import rerank
-from vectordb import get_collection
+from ai_service.app.rag.query_context_builder import QueryContextBuilder
+from ai_service.app.rag.reranker import rerank
+from ai_service.app.rag.vectordb import get_collection
 from ai_service.app.retrieval.query_router import detect_intents
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 _model = None
 _bm25 = None
 _bm25_docs = None
-
+QUERY_PREFIX = "Represent this sentence for retrieval: "
 BASE_DIR = Path(__file__).resolve().parents[3]
 BM25_PATH = BASE_DIR / "ai_service" / "app" / "data" / "bm25.pkl"
 
@@ -27,8 +27,8 @@ def _get_model():
     return _model
 
 
-def _embed(text: str, model):
-    return model.encode("query: " + text, normalize_embeddings=True).tolist()
+def _embed(text, model):
+    return model.encode(text).tolist()
 
 
 def _load_bm25():
@@ -53,9 +53,12 @@ def _tokenize(text: str):
 
 
 def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min_score: float = 0.0):
-    routing = detect_intents(query)
-    predicted_category = routing.get("category")
-    confidence = routing.get("confidence", 0.0)
+    
+    context = QueryContextBuilder().build(query)
+
+    query_to_embed = context.expanded_query
+    predicted_category = getattr(context, "category", None)
+    confidence = getattr(context, "confidence", 0.0)
 
     if category_filter:
         final_category = category_filter
@@ -71,8 +74,8 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
 
     
     query_embedding = (
-    0.8 * np.array(_embed(query, model))
-    + 0.2 * np.array(_embed("legal provisions: " + query, model))
+    0.8 * np.array(_embed(query_to_embed, model))
+    + 0.2 * np.array(_embed("legal provisions: " + query_to_embed, model))
 ).tolist()
 
     bm25_scores = bm25.get_scores(_tokenize(query))
@@ -82,11 +85,12 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         for i, doc in enumerate(bm25_docs)
     }
 
-    where = {"category": final_category} if final_category else None
+    where = None
+    
 
     chroma_results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=100,
+        n_results=200,
         where=where,
         include=["documents", "metadatas", "distances"],
     )   
@@ -113,30 +117,23 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         section_tokens = set(_tokenize(meta.get("section_title", "")))
         citation_tokens = set(_tokenize(meta.get("citation", "")))
         text_tokens = set(_tokenize(doc_text[:500]))  # limit noise
-        token_overlap_score = 0.0
-
-        if query_tokens:
-            token_overlap_score = (
-                len(query_tokens & section_tokens) * 0.6 +
-                len(query_tokens & citation_tokens) * 0.3 +
-                len(query_tokens & text_tokens) * 0.1
-            ) / len(query_tokens)
         
-        if semantic_score < 0.35:
-            continue
-
+        category_bonus = 0.05 if meta.get("category") == context.category else 0.0
+       
         doc_id = int(meta.get("doc_id", -1))
         if doc_id == -1:
             continue
 
         bm25_score = bm25_lookup.get(doc_id, 0.0)
-        bm25_norm = bm25_score / (max_bm25 + 1e-6)
+        bm25_mean = np.mean(bm25_scores)
+        bm25_std = np.std(bm25_scores) + 1e-6
+
+        bm25_norm = (bm25_score - bm25_mean) / bm25_std
+        bm25_norm = 1 / (1 + np.exp(-bm25_norm))
 
         title_overlap = len(
             query_tokens & section_tokens
         )
-
-        title_bonus = min(0.15, title_overlap * 0.05)
         
         results.append({
             "text": doc_text,
@@ -153,30 +150,35 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
             "semantic_score": round(semantic_score, 4),
             "bm25_score": round(bm25_score, 4),
             "score": (
-                0.55 * semantic_score +
-                0.25 * bm25_norm +
-                0.10 * token_overlap_score +
-                0.10 * title_bonus
+                0.70 * semantic_score +
+                0.30 * bm25_norm +
+                category_bonus
             ),
         })
 
     results.sort(key=lambda x: x["score"], reverse=True)
-    results = results[:50]
+    results = results[:15]
     print("BEFORE RERANK:", len(results))
     
-    if len(results) >= 3:
-        results = rerank(query, results)
+    results = rerank(context.expanded_query, results)
     
     print("AFTER RERANK:", len(results))
-
-    return results[:top_k]
+    print([type(r) for r in results])
+  
+    #return results[:top_k]
+    return {
+    "context": context,
+    "results": results[:top_k]
+    }
 
 if __name__ == "__main__":
     import sys
 
     query = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "test query"
 
-    results = retrieve(query, top_k=5)
+    output = retrieve(query, top_k=5)
+
+    results = output["results"]
 
     if not results:
         print("No results found")
