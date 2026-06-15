@@ -36,13 +36,12 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
         if not text:
             continue
 
-        doc = f"""
-Act: {r.get('act_name', '')}
-Citation: {r.get('citation', '')}
-Section Title: {r.get('section_title', '')}
-
-{text}
-"""
+        doc = (
+    f"ACT: {r.get('act_name','')}\n"
+    f"SECTION: {r.get('section_title','')}\n"
+    f"CITATION: {r.get('citation','')}\n"
+    f"CONTENT: {text}"
+)
 
         pairs.append((query, doc))
         indices.append(i)
@@ -72,9 +71,13 @@ Section Title: {r.get('section_title', '')}
         r["rerank_score"] = float(score)
 
         retrieval_score = float(r.get("score", 0.0))
-        r["final_score"] = 0.70 * float(score) + 0.30 * retrieval_score
 
-    return sorted(
+        r["final_score"] = (
+            0.8 * r["rerank_score"] +
+            0.2 * retrieval_score
+        )
+
+        return sorted(
         [r for r in results if isinstance(r, dict)],
         key=lambda x: x.get("final_score", 0),
         reverse=True

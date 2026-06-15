@@ -11,6 +11,20 @@ from ai_service.app.rag.vectordb import get_collection
 from ai_service.app.retrieval.query_router import detect_intents
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
+import os
+import logging
+
+os.environ["TQDM_DISABLE"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
+os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
+logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
+logging.getLogger("transformers").setLevel(logging.ERROR)
 
 _model = None
 _bm25 = None
@@ -23,7 +37,7 @@ BM25_PATH = BASE_DIR / "ai_service" / "app" / "data" / "bm25.pkl"
 def _get_model():
     global _model
     if _model is None:
-        _model = SentenceTransformer("BAAI/bge-base-en-v1.5")
+        _model = SentenceTransformer("BAAI/bge-large-en-v1.5")
     return _model
 
 
@@ -56,16 +70,18 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
     
     context = QueryContextBuilder().build(query)
 
-    query_to_embed = context.expanded_query
+    intent_text = " ".join(context.intents)
+
+    query_to_embed = " ".join([
+    context.expanded_query,
+    context.category or "",
+    " ".join(context.intents)
+]).strip()
+
     predicted_category = getattr(context, "category", None)
     confidence = getattr(context, "confidence", 0.0)
 
-    if category_filter:
-        final_category = category_filter
-    elif confidence >= 0.65:
-        final_category = predicted_category
-    else:
-        final_category = None
+  
 
     model = _get_model()
     collection = get_collection()
@@ -78,19 +94,23 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
     + 0.2 * np.array(_embed("legal provisions: " + query_to_embed, model))
 ).tolist()
 
-    bm25_scores = bm25.get_scores(_tokenize(query))
+    bm25_scores = bm25.get_scores(_tokenize(query_to_embed))
 
     bm25_lookup = {
         doc["doc_id"]: bm25_scores[i]
         for i, doc in enumerate(bm25_docs)
     }
 
+
     where = None
+
+    if context.category:
+        where = {"category": context.category}
     
 
     chroma_results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=200,
+        n_results=50,
         where=where,
         include=["documents", "metadatas", "distances"],
     )   
@@ -111,14 +131,22 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         if not doc_text:
             continue
 
-        semantic_score = max(0.0, 1.0 - distance / 2.0)
+        semantic_score = np.exp(-distance)
         query_tokens = set(_tokenize(query))
+        section_hint = meta.get("section_title", "").lower()
+        section_tokens = set(_tokenize(section_hint))
+
+        section_overlap = len(query_tokens & section_tokens)
+
+        section_penalty = -0.05 if section_overlap == 0 else 0.02
 
         section_tokens = set(_tokenize(meta.get("section_title", "")))
         citation_tokens = set(_tokenize(meta.get("citation", "")))
         text_tokens = set(_tokenize(doc_text[:500]))  # limit noise
         
-        category_bonus = 0.05 if meta.get("category") == context.category else 0.0
+        category_match = meta.get("category") == context.category
+
+        category_bonus = 0.2 if category_match else -0.1 if context.category else 0.0
        
         doc_id = int(meta.get("doc_id", -1))
         if doc_id == -1:
@@ -134,7 +162,18 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         title_overlap = len(
             query_tokens & section_tokens
         )
-        
+
+        intent_match = len(set(context.intents) & set(meta.get("topics", "").split(",")))
+        intent_boost = 0.08 * intent_match
+            
+        base_score = (
+        0.68 * semantic_score +
+        0.32 * bm25_norm +
+        category_bonus +
+        intent_boost +
+        section_penalty
+    )
+
         results.append({
             "text": doc_text,
             "citation": meta.get("citation", "Unknown"),
@@ -149,11 +188,7 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
             "topics": meta.get("topics", ""),
             "semantic_score": round(semantic_score, 4),
             "bm25_score": round(bm25_score, 4),
-            "score": (
-                0.70 * semantic_score +
-                0.30 * bm25_norm +
-                category_bonus
-            ),
+            "score": base_score,
         })
 
     results.sort(key=lambda x: x["score"], reverse=True)

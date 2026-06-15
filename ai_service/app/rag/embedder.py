@@ -2,8 +2,7 @@ from sentence_transformers import SentenceTransformer
 import torch
 
 model = SentenceTransformer(
-    "BAAI/bge-base-en-v1.5",
-    device="cpu"   # or "cuda" only if you have >8GB GPU
+    "BAAI/bge-large-en-v1.5"
 )
 
 def get_model():

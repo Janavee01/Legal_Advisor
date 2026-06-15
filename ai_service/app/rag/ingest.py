@@ -21,7 +21,7 @@ VECTOR_STORE_PATH = DATA_DIR / "vector_store.pkl"
 INGESTED_LOG_PATH = DATA_DIR / "ingested_files.json"
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
-
+DOC_PREFIX = "[LEGAL_DOC]"
 
 # ───────────────────────────────
 # Helpers
@@ -104,7 +104,7 @@ def ingest_file(json_path, category, act_metadata, collection, doc_id_start):
         return [], doc_id_start
 
     texts = [
-        f"{DOC_PREFIX} Act: {c['act_name']}\n"
+        f"Act: {c['act_name']}\n"
         f"Chapter: {c.get('chapter', '')}\n"
         f"Section: {c['section_title']}\n\n"
         f"{c['text']}"
