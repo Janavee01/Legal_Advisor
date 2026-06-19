@@ -1,11 +1,10 @@
-from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
-
+from dataclasses import dataclass, field
 
 @dataclass
 class RetrievalContext:
     original_query: str
     expanded_query: str
-    intents: List[str]
-    category: Optional[str]
+    intents: list[str]
+    category: str | None
     confidence: float
+    anchors: list[str] = field(default_factory=list)

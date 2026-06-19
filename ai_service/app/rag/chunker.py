@@ -1,23 +1,18 @@
 """
 chunker.py — Section-aware chunker for parsed Indian legal Act JSON.
-
-Old approach: split on character count → breaks mid-sentence, loses citations.
-New approach: each section from parser.py is already a natural chunk.
-              Long sections are split on sentence boundaries, never mid-word.
-
-Exports:
-    chunk_sections(sections: list[dict]) -> list[dict]
-    chunk_text(text: str) -> list[str]   # kept for backward compatibility
 """
 
 import re
 from typing import Optional
-
+import hashlib
 # Maximum characters per chunk sent to the embedder.
 # all-MiniLM-L6-v2 has a 256 token limit ≈ ~1000 chars safe upper bound.
-MAX_CHUNK_CHARS = 500
+MAX_CHUNK_CHARS = 1200
 MIN_CHUNK_CHARS = 80  # discard stubs shorter than this
 
+def make_chunk_id(act_name, section_number, chunk_index, text):
+    raw = f"{act_name}|{section_number}|{chunk_index}|{text}"
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
 def _split_into_sentences(text: str) -> list[str]:
     """
@@ -92,16 +87,33 @@ def chunk_sections(sections: list[dict]) -> list[dict]:
             sentences = _split_into_sentences(text)
             sub_chunks = _merge_into_chunks(sentences, MAX_CHUNK_CHARS)
 
+        print(
+    f"{section['act_name']} | "
+    f"S.{section['section_number']} | "
+    f"{section['section_title']} | "
+    f"chunks={len(sub_chunks)}"
+)
+    
         total = len(sub_chunks)
 
         for i, chunk_text in enumerate(sub_chunks):
+            chunk_id = make_chunk_id(
+            section["act_name"],
+            section["section_number"],
+            i,
+            chunk_text
+        )
             # For multi-chunk sections, append part indicator to citation
             citation = section["citation"]
             if total > 1:
                 citation = f"{citation} (part {i+1}/{total})"
 
             all_chunks.append({
-                "text": chunk_text,
+                "text": (
+                    f"Section {section['section_number']} "
+                    f"{section['section_title']}\n\n"
+                    f"{chunk_text}"
+                ),
                 "citation": citation,
                 "section_number": section["section_number"],
                 "section_title": section["section_title"],
@@ -112,6 +124,7 @@ def chunk_sections(sections: list[dict]) -> list[dict]:
                 "category": section.get("category", "general"),
                 "source": section.get("source", ""),
                 "chunk_index": i,
+                "chunk_id": chunk_id,
                 "total_chunks": total,
             })
 

@@ -1,7 +1,9 @@
+#ingest.py
 import json
 import pickle
 import logging
 import argparse
+import os
 from pathlib import Path
 from rank_bm25 import BM25Okapi
 from .tagger import extract_topics
@@ -9,7 +11,6 @@ from .chunker import chunk_sections
 from .vectordb import get_collection
 from .parser import ACT_METADATA
 from .embedder import get_model
-
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
@@ -22,11 +23,22 @@ INGESTED_LOG_PATH = DATA_DIR / "ingested_files.json"
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 DOC_PREFIX = "[LEGAL_DOC]"
+EMBED_CACHE_PATH = DATA_DIR / "embedding_cache.pkl"
 
 # ───────────────────────────────
 # Helpers
 # ───────────────────────────────
+def load_embedding_cache():
+    if EMBED_CACHE_PATH.exists():
+        with open(EMBED_CACHE_PATH, "rb") as f:
+            return pickle.load(f)
+    return {}
 
+
+def save_embedding_cache(cache):
+    with open(EMBED_CACHE_PATH, "wb") as f:
+        pickle.dump(cache, f)
+        
 def load_ingested_log() -> set:
     if INGESTED_LOG_PATH.exists():
         with open(INGESTED_LOG_PATH) as f:
@@ -63,8 +75,7 @@ def tokenize(text: str):
 
 model = get_model()
 
-
-def ingest_file(json_path, category, act_metadata, collection, doc_id_start):
+def ingest_file(json_path, category, act_metadata, collection, doc_id_start,cache):
 
     with open(json_path, encoding="utf-8") as f:
         sections = json.load(f)
@@ -111,26 +122,56 @@ def ingest_file(json_path, category, act_metadata, collection, doc_id_start):
         for c in filtered_chunks
     ]
     
-    embeddings = model.encode(
-        texts,
-        batch_size=32,
-        normalize_embeddings=True,
-        convert_to_numpy=True,
-        show_progress_bar=True
-    ).tolist()
+   
+
+    new_texts = []
+    new_chunks = []
+    
+
+    for i, chunk in enumerate(filtered_chunks):
+        cid = chunk["chunk_id"]
+
+        if cid not in cache:
+            new_texts.append(texts[i])
+            new_chunks.append(chunk)
+
+    if new_texts:
+        new_embeddings = model.encode(
+            new_texts,
+            batch_size=8,
+            normalize_embeddings=True,
+            convert_to_numpy=True,
+            show_progress_bar=True
+        ).tolist()
+    else:
+        new_embeddings = []
+
+    # store new embeddings into cache
+    for chunk, emb in zip(new_chunks, new_embeddings):
+        cache[chunk["chunk_id"]] = emb
+
+    save_embedding_cache(cache)
 
     ids = []
     documents = []
     metadatas = []
     new_docs = []
-
+    embeddings = []
     doc_id = doc_id_start
 
-    for chunk, embedding in zip(filtered_chunks, embeddings):
+    for chunk in filtered_chunks:
 
+        cid = chunk["chunk_id"]
+
+        # skip if not newly embedded
+        if cid not in cache:
+            continue
+
+        embedding = cache[cid]
+        embeddings.append(embedding)
         topics = extract_topics(chunk["text"]) or ["general"]
 
-        ids.append(str(doc_id))
+        ids.append(cid)
         documents.append(chunk["text"])
 
         metadatas.append({
@@ -147,12 +188,14 @@ def ingest_file(json_path, category, act_metadata, collection, doc_id_start):
             "source": chunk["source"],
             "chunk_index": chunk["chunk_index"],
             "total_chunks": chunk["total_chunks"],
+            "chunk_id": cid,
         })
 
         new_docs.append({
             "id": doc_id,
             "text": chunk["text"],
             "citation": chunk["citation"],
+            "chunk_id": cid,
             "topics": topics,
             "section_number": chunk["section_number"],
             "section_title": chunk["section_title"],
@@ -166,6 +209,7 @@ def ingest_file(json_path, category, act_metadata, collection, doc_id_start):
 
         doc_id += 1
 
+        
     collection.add(
         ids=ids,
         documents=documents,
@@ -193,6 +237,7 @@ def run(reset: bool = False):
 
     doc_id = max((d["id"] for d in existing_docs), default=-1) + 1
 
+    cache = load_embedding_cache()
     total_new_docs = []
     skipped = []
 
@@ -201,12 +246,14 @@ def run(reset: bool = False):
         category = json_path.parent.name
         stem = json_path.stem
 
-        act_metadata = ACT_METADATA.get(stem, {
-            "act_name": stem.replace("_", " ").title(),
-            "short_name": stem[:10],
-            "year": 0,
-            "relevance": []
-        })
+        act_metadata = ACT_METADATA.get(stem)
+        if act_metadata is None:
+            act_metadata = {
+                "act_name": stem.replace("_", " ").title(),
+                "short_name": stem[:10],
+                "year": 0,
+                "relevance": []
+            }
 
         key = f"{category}/{json_path.name}:v1"
 
@@ -223,7 +270,8 @@ def run(reset: bool = False):
                 category,
                 act_metadata,
                 collection,
-                doc_id
+                doc_id,
+                cache
             )
 
             total_new_docs.extend(new_docs)

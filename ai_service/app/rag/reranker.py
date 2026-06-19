@@ -1,3 +1,4 @@
+#reranker.py
 from sentence_transformers import CrossEncoder
 import numpy as np
 import torch
@@ -77,7 +78,7 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
             0.2 * retrieval_score
         )
 
-        return sorted(
+    return sorted(
         [r for r in results if isinstance(r, dict)],
         key=lambda x: x.get("final_score", 0),
         reverse=True

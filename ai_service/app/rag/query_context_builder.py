@@ -12,12 +12,18 @@ class QueryContextBuilder:
         routing = detect_intents(query)
         expanded = self.expander.expand(query)
 
-        expanded_query = " ".join([
-    query,
-    expanded.get("intent", "").replace("_", " ")
-])
+        parts = [query]
 
-        confidence = 1.0 if routing.get("active_intents") else 0.4
+        parts.extend(
+            expanded.get("expanded_queries", [])
+        )
+
+        expanded_query = " ".join(parts)
+
+        confidence = (
+            1.0 if routing.get("active_intents")
+            else 0.4
+        )
 
         return RetrievalContext(
             original_query=query,
@@ -25,4 +31,5 @@ class QueryContextBuilder:
             intents=list(set(routing.get("active_intents", []))),
             category=routing.get("category"),
             confidence=confidence,
+            anchors=expanded.get("anchors", [])
         )

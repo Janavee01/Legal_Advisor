@@ -14,15 +14,15 @@ logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
 logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
 logging.getLogger("transformers").setLevel(logging.ERROR)
 TEST_QUERIES = [
-    "Can employer make worker work more than 9 hours?",
-    "maximum working hours factory worker",
     "sexual harassment at workplace remedy",
-    "defective product compensation injury",
-    "refund for faulty appliance",
     "domestic violence protection orders",
     "wife harassed by husband legal remedy",
     "punishment for murder section 302",
     "bail conditions theft case",
+    "defective product compensation injury",
+    "refund for faulty appliance",
+    "Can employer make worker work more than 9 hours?",
+    "maximum working hours factory worker",
 ]
 
 
@@ -47,3 +47,4 @@ def run_debug_tests():
 
 if __name__ == "__main__":
     run_debug_tests()
+

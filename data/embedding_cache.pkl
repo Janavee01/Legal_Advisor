@@ -1,0 +1,13 @@
+embedding_cache = {
+    chunk_id: embedding_vector
+}
+
+def load_cache(path):
+    if path.exists():
+        with open(path, "rb") as f:
+            return pickle.load(f)
+    return {}
+
+def save_cache(cache, path):
+    with open(path, "wb") as f:
+        pickle.dump(cache, f)

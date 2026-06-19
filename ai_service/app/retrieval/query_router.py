@@ -1,3 +1,5 @@
+from ai_service.app.retrieval.semantic_router import semantic_route
+
 LEGAL_CONCEPTS = {
     "domestic violence": ["domestic violence"],
     "workplace harassment": [
@@ -30,45 +32,6 @@ LEGAL_CONCEPTS = {
 
 import re
 
-CATEGORY_KEYWORDS = {
-    "criminal": [
-        "murder",
-        "theft",
-        "assault",
-        "kidnap",
-        "punishment",
-        "bail",
-        "fir",
-        "police",
-        "crime",
-        "homicide",
-        "attempt",
-    ],
-
-    "consumer": [
-        "refund",
-        "defective",
-        "consumer",
-        "service",
-        "amazon",
-        "flipkart",
-        "warranty",
-        "replacement",
-        "product",
-        "seller",
-    ],
-
-    "family": [
-        "divorce",
-        "custody",
-        "marriage",
-        "maintenance",
-        "alimony",
-        "child support",
-    ],
-}
-
-
 def detect_intents(query: str) -> dict:
 
     query_lower = query.lower()
@@ -85,17 +48,10 @@ def detect_intents(query: str) -> dict:
     # category detection
     # -------------------------------------------------
 
-    for category, keywords in CATEGORY_KEYWORDS.items():
-
-        for word in keywords:
-
-            if word in query_lower:
-                result["category"] = category
-                break
-
-        if result["category"]:
-            break
-
+    route = semantic_route(query)
+    
+    if route["confidence"] >= 0.45:
+        result["category"] = route["category"]
     # -------------------------------------------------
     # section extraction
     # -------------------------------------------------

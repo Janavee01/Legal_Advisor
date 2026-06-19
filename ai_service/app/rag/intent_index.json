@@ -22,5 +22,75 @@
       "sexual harassment complaint procedure",
       "workplace harassment complaint india"
     ]
-  }
+  },
+  {
+  "intent": "domestic_violence",
+    "anchors": [
+    "Protection Of Women From Domestic Violence Act 2005 Section 18",
+    "Protection Of Women From Domestic Violence Act 2005 Section 19"
+  ],
+  "examples": [
+    "wife beaten by husband",
+    "domestic abuse",
+    "violence in marriage",
+    "protection order against husband"
+  ]
+},
+{
+  "intent": "working_hours",
+  "anchors": [
+    "Factories Act 1948 Section 54",
+    "Factories Act 1948 Section 51",
+    "Occupational Safety Health And Working Conditions Code 2020 Section 25"
+  ],
+  "examples": [
+    "maximum working hours",
+    "worker forced overtime",
+    "factory employee working 12 hours",
+    "daily work limit"
+  ]
+},
+{
+  "intent": "consumer_refund",
+   "anchors": [
+    "Consumer Protection Act 2019 Section 39",
+    "Consumer Protection Act 2019 Section 38"
+  ],
+  "examples": [
+    "refund for defective product",
+    "faulty appliance replacement",
+    "seller refused refund",
+    "consumer complaint"
+  ]
+},
+{
+  "intent": "bail",
+  "anchors": [
+    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 478",
+    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 480",
+    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 483",
+    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 488"
+  ],
+  "examples": [
+    "regular bail",
+    "anticipatory bail",
+    "bail conditions",
+    "how to get bail"
+  ]
+},
+{
+  "intent": "murder_punishment",
+  "anchors": [
+    "Bharatiya Nyaya Sanhita 2023 Section 101",
+    "Bharatiya Nyaya Sanhita 2023 Section 103",
+    "Bharatiya Nyaya Sanhita 2023 Section 104",
+    "Bharatiya Nyaya Sanhita 2023 Section 105"
+  ],
+  "examples": [
+    "punishment for murder",
+    "section 302 punishment",
+    "homicide sentence",
+    "life imprisonment for murder"
+  ]
+}
 ]

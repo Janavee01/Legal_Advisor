@@ -1,12 +1,13 @@
+#retrieve.py
 import logging
 from pathlib import Path
 import re
 import pickle
 import numpy as np
 from rank_bm25 import BM25Okapi
-from sentence_transformers import SentenceTransformer
 from ai_service.app.rag.query_context_builder import QueryContextBuilder
 from ai_service.app.rag.reranker import rerank
+from ai_service.app.rag.embedder import get_model
 from ai_service.app.rag.vectordb import get_collection
 from ai_service.app.retrieval.query_router import detect_intents
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -26,7 +27,6 @@ logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
 logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
-_model = None
 _bm25 = None
 _bm25_docs = None
 QUERY_PREFIX = "Represent this sentence for retrieval: "
@@ -35,11 +35,7 @@ BM25_PATH = BASE_DIR / "ai_service" / "app" / "data" / "bm25.pkl"
 
 
 def _get_model():
-    global _model
-    if _model is None:
-        _model = SentenceTransformer("BAAI/bge-large-en-v1.5")
-    return _model
-
+    return get_model()
 
 def _embed(text, model):
     return model.encode(text).tolist()
@@ -69,32 +65,53 @@ def _tokenize(text: str):
 def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min_score: float = 0.0):
     
     context = QueryContextBuilder().build(query)
+    print("\nINTENTS:", context.intents)
+    print("ANCHORS:", context.anchors)
+    print("EXPANDED:", context.expanded_query)
+    print()
 
     intent_text = " ".join(context.intents)
+    anchor_text = " ".join(context.anchors)
 
     query_to_embed = " ".join([
-    context.expanded_query,
-    context.category or "",
-    " ".join(context.intents)
-]).strip()
+        context.expanded_query,
+        anchor_text,
+        context.category or "",
+        " ".join(context.intents)
+    ]).strip()
 
     predicted_category = getattr(context, "category", None)
     confidence = getattr(context, "confidence", 0.0)
-
-  
 
     model = _get_model()
     collection = get_collection()
 
     bm25, bm25_docs = _load_bm25()
 
-    
-    query_embedding = (
-    0.8 * np.array(_embed(query_to_embed, model))
-    + 0.2 * np.array(_embed("legal provisions: " + query_to_embed, model))
-).tolist()
+    anchor_text = " ".join(context.anchors)
 
-    bm25_scores = bm25.get_scores(_tokenize(query_to_embed))
+    main_embedding = np.array(
+        _embed(query_to_embed, model)
+    )
+
+    anchor_embedding = np.array(
+        _embed(anchor_text, model)
+    ) if anchor_text else np.zeros_like(main_embedding)
+
+    query_embedding = (
+        0.7 * main_embedding +
+        0.3 * anchor_embedding
+    ).tolist()
+    
+    bm25_query = (
+    query_to_embed +
+    " " +
+    " ".join(context.anchors)
+)
+
+    bm25_scores = bm25.get_scores(
+        _tokenize(bm25_query)
+    )
 
     bm25_lookup = {
         doc["doc_id"]: bm25_scores[i]
@@ -105,7 +122,7 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
     where = None
 
     if context.category:
-        where = {"category": context.category}
+        where = None
     
 
     chroma_results = collection.query(
@@ -114,7 +131,26 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         where=where,
         include=["documents", "metadatas", "distances"],
     )   
-    
+
+    print("\nTOP CHROMA CANDIDATES")
+
+    for meta in chroma_results["metadatas"][0][:20]:
+        print(
+            meta.get("act_name"),
+            meta.get("section_number"),
+            meta.get("section_title")
+        )
+
+    print("\nCATEGORY:", context.category)
+    print("WHERE:", where)
+
+    print("\nTOP CHROMA CANDIDATES")
+    for meta in chroma_results["metadatas"][0][:20]:
+        print(
+            meta.get("act_name"),
+            meta.get("section_number"),
+            meta.get("section_title")
+        )
 
     results = []
     
@@ -146,7 +182,13 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         
         category_match = meta.get("category") == context.category
 
-        category_bonus = 0.2 if category_match else -0.1 if context.category else 0.0
+        category_bonus = 0.0
+
+        if context.category and meta.get("category"):
+            if meta["category"] == context.category:
+                category_bonus = 0.10
+            elif context.category in meta.get("topics", ""):
+                category_bonus = 0.03
        
         doc_id = int(meta.get("doc_id", -1))
         if doc_id == -1:
@@ -193,17 +235,61 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
 
     results.sort(key=lambda x: x["score"], reverse=True)
     results = results[:15]
+
+    for r in results:
+        if "Sexual Harassment" in r["act_name"]:
+            print("FOUND POSH:", r["score"], r["citation"])
+
+        if "Domestic Violence" in r["act_name"]:
+            print("FOUND DV:", r["score"], r["citation"])
+
     print("BEFORE RERANK:", len(results))
     
     results = rerank(context.expanded_query, results)
+
+    seen = set()
+    deduped = []
+
+    for r in results:
+        key = (
+            r["act_name"],
+            r["section_number"]
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        deduped.append(r)
+
+    results = deduped
+
+    for r in results[:10]:
+        print(
+            f"{r['final_score']:.4f}",
+            f"rr={r['rerank_score']:.4f}",
+            f"ret={r['score']:.4f}",
+            r["act_name"],
+            r["section_number"]
+        )
     
     print("AFTER RERANK:", len(results))
+
+    for r in results[:20]:
+        print(
+            round(r["final_score"], 4),
+            r["act_name"],
+            r["section_number"],
+            r["section_title"]
+        )
+   
+
     print([type(r) for r in results])
   
     #return results[:top_k]
     return {
-    "context": context,
-    "results": results[:top_k]
+        "context": context,
+        "results": results[:top_k]
     }
 
 if __name__ == "__main__":

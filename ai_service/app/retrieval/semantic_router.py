@@ -1,4 +1,4 @@
-from sentence_transformers import SentenceTransformer
+from ai_service.app.rag.embedder import get_model
 import numpy as np
 
 _model = None
@@ -6,6 +6,7 @@ _category_embeddings = None
 
 
 CATEGORY_DESCRIPTIONS = {
+
     "criminal": """
     Criminal law involving murder, homicide,
     assault, theft, kidnapping, punishment,
@@ -26,18 +27,40 @@ CATEGORY_DESCRIPTIONS = {
     domestic violence, inheritance,
     matrimonial disputes.
     """,
+
+    "labour": """
+    Employment law, labour law,
+    working hours, overtime,
+    wages, minimum wages,
+    employee rights, factory workers,
+    industrial disputes,
+    workplace conditions.
+    """,
+
+    "constitutional": """
+    Fundamental rights,
+    equality before law,
+    constitutional remedies,
+    freedom of speech,
+    article 14,
+    article 19,
+    article 21,
+    constitution of india.
+    """,
+
+    "cyber": """
+    Cyber crime,
+    hacking,
+    phishing,
+    identity theft,
+    online fraud,
+    cyber security offences,
+    digital evidence.
+    """
 }
 
-
 def _get_model():
-    global _model
-
-    if _model is None:
-        _model = SentenceTransformer(
-            "BAAI/bge-base-en-v1.5"
-        )
-
-    return _model
+    return get_model()
 
 
 def _cosine_similarity(a, b):
