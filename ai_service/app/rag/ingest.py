@@ -174,6 +174,7 @@ def ingest_file(json_path, category, act_metadata, collection, doc_id_start,cach
         ids.append(cid)
         documents.append(chunk["text"])
 
+    
         metadatas.append({
             "doc_id": doc_id,
             "citation": chunk["citation"],
@@ -255,7 +256,7 @@ def run(reset: bool = False):
                 "relevance": []
             }
 
-        key = f"{category}/{json_path.name}:v1"
+        key = f"{category}/{json_path.name}:v2"
 
         if key in ingested_log:
             log.info("Skipping: %s", key)

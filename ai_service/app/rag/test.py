@@ -1,4 +1,5 @@
 from ai_service.app.rag.retrieve import retrieve
+from ai_service.app.rag.query_context_builder import QueryContextBuilder
 import os
 import logging
 
@@ -27,23 +28,32 @@ TEST_QUERIES = [
 
 
 def run_debug_tests():
+    builder = QueryContextBuilder()
     for query in TEST_QUERIES:
         print("\n" + "=" * 80)
         print("\nQUERY:", query)
+        ctx = builder.build(query)
 
-        output = retrieve(query)
+        print("\nCONTEXT")
+        print("INTENTS:", ctx.intents)
+        print("CONFIDENCE:", round(ctx.confidence, 4))
+        print("ANCHORS:", ctx.anchors[:5])
 
-        results = output["results"]
+        print("\nEXPANDED QUERY:")
+        print(ctx.expanded_query[:300])
 
-        print("\nTOP RESULTS:")
+        #output = retrieve(query)
 
-        for r in results[:5]:
-            print(
-                r.get("score"),
-                r.get("citation"),
-                r.get("section_title")
-            )
+        #results = output["results"]
 
+        #print("\nTOP RESULTS:")
+
+        #for r in results[:5]:
+         #   print(
+          #      round(r.get("final_score", r["score"]), 4),
+           #     r.get("citation"),
+            #    r.get("section_title")
+            #)
 
 if __name__ == "__main__":
     run_debug_tests()

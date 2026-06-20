@@ -61,7 +61,6 @@ def _load_bm25():
 def _tokenize(text: str):
     return re.findall(r"[a-zA-Z0-9]+", text.lower())
 
-
 def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min_score: float = 0.0):
     
     context = QueryContextBuilder().build(query)
@@ -70,7 +69,6 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
     print("EXPANDED:", context.expanded_query)
     print()
 
-    intent_text = " ".join(context.intents)
     anchor_text = " ".join(context.anchors)
 
     query_to_embed = " ".join([
@@ -79,9 +77,6 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         context.category or "",
         " ".join(context.intents)
     ]).strip()
-
-    predicted_category = getattr(context, "category", None)
-    confidence = getattr(context, "confidence", 0.0)
 
     model = _get_model()
     collection = get_collection()
@@ -157,7 +152,6 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
     
     bm25_scores = np.array(bm25_scores)
 
-    max_bm25 = float(np.max(bm25_scores)) if bm25_scores.size > 0 else 1.0
     for doc_text, meta, distance in zip(
         chroma_results["documents"][0],
         chroma_results["metadatas"][0],
@@ -166,6 +160,7 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         
         if not doc_text:
             continue
+
 
         semantic_score = np.exp(-distance)
         query_tokens = set(_tokenize(query))
@@ -177,11 +172,7 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         section_penalty = -0.05 if section_overlap == 0 else 0.02
 
         section_tokens = set(_tokenize(meta.get("section_title", "")))
-        citation_tokens = set(_tokenize(meta.get("citation", "")))
-        text_tokens = set(_tokenize(doc_text[:500]))  # limit noise
-        
-        category_match = meta.get("category") == context.category
-
+      
         category_bonus = 0.0
 
         if context.category and meta.get("category"):
@@ -200,10 +191,6 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
 
         bm25_norm = (bm25_score - bm25_mean) / bm25_std
         bm25_norm = 1 / (1 + np.exp(-bm25_norm))
-
-        title_overlap = len(
-            query_tokens & section_tokens
-        )
 
         intent_match = len(set(context.intents) & set(meta.get("topics", "").split(",")))
         intent_boost = 0.08 * intent_match
@@ -244,6 +231,16 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
             print("FOUND DV:", r["score"], r["citation"])
 
     print("BEFORE RERANK:", len(results))
+
+    print("\nTOP RETRIEVAL RESULTS")
+
+    for r in results[:10]:
+        print(
+            round(r["score"], 4),
+            r["act_name"],
+            r["section_number"],
+            r["section_title"]
+        )
     
     results = rerank(context.expanded_query, results)
 

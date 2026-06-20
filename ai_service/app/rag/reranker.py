@@ -39,7 +39,10 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
 
         doc = (
     f"ACT: {r.get('act_name','')}\n"
-    f"SECTION: {r.get('section_title','')}\n"
+    f"CHAPTER: {r.get('chapter','')}\n"
+    f"SECTION NUMBER: {r.get('section_number','')}\n"
+    f"SECTION TITLE: {r.get('section_title','')}\n"
+    f"TOPICS: {r.get('topics','')}\n"
     f"CITATION: {r.get('citation','')}\n"
     f"CONTENT: {text}"
 )

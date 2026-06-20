@@ -46,26 +46,31 @@ class LegalIntentExpander:
 
         scores = self.intent_embeddings @ query_vec
 
-        best_idx = int(np.argmax(scores))
-        best_score = float(scores[best_idx])
-        
-        if best_score < 0.45:
-            return {
-                "intent": "",
-                "anchors": [],
-                "confidence": best_score,
-                "expanded_queries": [query]
-            }
-        
-        best_intent = self.intents[best_idx]
+        top_k = 3
 
+        top_indices = np.argsort(scores)[::-1][:top_k]
+
+        best_score = float(scores[top_indices[0]])
+        matched_intents = []
+
+        for idx in top_indices:
+            score = float(scores[idx])
+        
+            if len(matched_intents) > 1:
+                matched_intents = sorted(matched_intents, key=lambda x: x["score"], reverse=True)
+                matched_intents = matched_intents[:2]
+            
+            if score < best_score * 0.85:
+                continue
+            
+            matched_intents.append({
+                "intent": self.intents[idx]["intent"],
+                "score": score,
+                "anchors": self.intents[idx].get("anchors", []),
+                "examples": self.intents[idx].get("examples", [])
+            })
+        
+        
         return {
-            "intent": best_intent.get("intent", ""),
-            "anchors": best_intent.get("anchors", []),
-            "confidence": float(scores[best_idx]),
-            "expanded_queries": [
-                query,
-                *best_intent.get("examples", []),
-                best_intent.get("intent", "").replace("_", " ")
-            ]
+            "matched_intents": matched_intents
         }
