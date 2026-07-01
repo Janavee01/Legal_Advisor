@@ -38,13 +38,10 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
             continue
 
         doc = (
-    f"ACT: {r.get('act_name','')}\n"
-    f"CHAPTER: {r.get('chapter','')}\n"
-    f"SECTION NUMBER: {r.get('section_number','')}\n"
-    f"SECTION TITLE: {r.get('section_title','')}\n"
-    f"TOPICS: {r.get('topics','')}\n"
-    f"CITATION: {r.get('citation','')}\n"
-    f"CONTENT: {text}"
+    f"{r['act_name']} "
+    f"Section {r['section_number']} "
+    f"{r['section_title']}. "
+    f"{text}"
 )
 
         pairs.append((query, doc))
@@ -61,10 +58,10 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
         scores.extend(model.predict(batch))
     scores = np.array(scores, dtype=float)
 
-    if len(scores) > 1:
-        scores = (scores - scores.min()) / (scores.max() - scores.min() + 1e-8)
-    else:
-        scores = np.array([1.0])
+    #if len(scores) > 1:
+    #    scores = (scores - scores.min()) / (scores.max() - scores.min() + 1e-8)
+    #else:
+    #scores = np.array([1.0])
 
     for idx, score in zip(indices, scores):
         r = results[idx]
@@ -77,8 +74,8 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
         retrieval_score = float(r.get("score", 0.0))
 
         r["final_score"] = (
-            0.8 * r["rerank_score"] +
-            0.2 * retrieval_score
+            0.4 * r["rerank_score"] +
+            0.6 * retrieval_score
         )
 
     return sorted(

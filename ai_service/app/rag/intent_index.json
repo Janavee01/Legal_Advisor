@@ -1,96 +1,652 @@
 [
   {
     "intent": "constitutional_equality",
+    "category": "constitution",
     "anchors": [
       "Constitution of India Article 14",
       "Constitution of India Article 15",
       "Constitution of India Article 17"
     ],
+    "prototype": "Violation of constitutional equality rights including discrimination based on caste, religion, race, sex, place of birth, caste discrimination, untouchability, denial of equality before law, or infringement of fundamental rights relating to equality.",
     "examples": [
       "rights against caste discrimination",
       "equality before law discrimination india",
-      "untouchability rights india"
+      "untouchability rights india",
+      "fundamental rights violation"
+    ]
+  },
+  {
+    "intent": "free_speech_rights",
+    "category": "constitution",
+    "anchors": [
+      "Constitution of India Article 19",
+      "Constitution of India Article 21"
+    ],
+    "prototype": "Violation of freedom of speech and expression, personal liberty, constitutional rights, censorship, unlawful restrictions on expression, or denial of rights guaranteed under Articles 19 and 21.",
+    "examples": [
+      "right to free speech india",
+      "freedom of expression india",
+      "freedom of speech constitution",
+      "right to life personal liberty"
     ]
   },
   {
     "intent": "sexual_harassment_workplace",
+    "category": "women_child",
     "anchors": [
       "Sexual Harassment of Women at Workplace Act 2013 Section 9",
-      "Section 19 Reporting of offences"
+      "Sexual Harassment of Women at Workplace Act 2013 Section 19"
     ],
+    "prototype": "Sexual harassment at workplace by employer, manager or colleague. POSH Act, Internal Complaints Committee, workplace complaint, office harassment, employer responsibility.",
     "examples": [
       "sexual harassment complaint procedure",
-      "workplace harassment complaint india"
+      "workplace harassment complaint india",
+      "POSH act complaint",
+      "harassment by colleague at office",
+      "office harassment",
+      "inappropriate touching at workplace",
+      "office molestation",
+      "workplace sexual harassment"
     ]
   },
   {
-  "intent": "domestic_violence",
+    "intent": "domestic_violence",
+    "category": "women_child",
     "anchors": [
-    "Protection Of Women From Domestic Violence Act 2005 Section 18",
-    "Protection Of Women From Domestic Violence Act 2005 Section 19"
-  ],
-  "examples": [
-    "wife beaten by husband",
-    "domestic abuse",
-    "violence in marriage",
-    "protection order against husband"
-  ]
-},
-{
-  "intent": "working_hours",
-  "anchors": [
-    "Factories Act 1948 Section 54",
-    "Factories Act 1948 Section 51",
-    "Occupational Safety Health And Working Conditions Code 2020 Section 25"
-  ],
-  "examples": [
-    "maximum working hours",
-    "worker forced overtime",
-    "factory employee working 12 hours",
-    "daily work limit"
-  ]
-},
-{
-  "intent": "consumer_refund",
-   "anchors": [
-    "Consumer Protection Act 2019 Section 39",
-    "Consumer Protection Act 2019 Section 38"
-  ],
-  "examples": [
-    "refund for defective product",
-    "faulty appliance replacement",
-    "seller refused refund",
-    "consumer complaint"
-  ]
-},
-{
-  "intent": "bail",
-  "anchors": [
-    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 478",
-    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 480",
-    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 483",
-    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 488"
-  ],
-  "examples": [
-    "regular bail",
-    "anticipatory bail",
-    "bail conditions",
-    "how to get bail"
-  ]
-},
-{
-  "intent": "murder_punishment",
-  "anchors": [
-    "Bharatiya Nyaya Sanhita 2023 Section 101",
-    "Bharatiya Nyaya Sanhita 2023 Section 103",
-    "Bharatiya Nyaya Sanhita 2023 Section 104",
-    "Bharatiya Nyaya Sanhita 2023 Section 105"
-  ],
-  "examples": [
-    "punishment for murder",
-    "section 302 punishment",
-    "homicide sentence",
-    "life imprisonment for murder"
-  ]
-}
+      "Protection Of Women From Domestic Violence Act 2005 Section 18",
+      "Protection Of Women From Domestic Violence Act 2005 Section 19"
+    ],
+    "prototype": "Domestic violence committed by husband or partner. Physical abuse, emotional abuse, verbal abuse, economic abuse, threats, cruelty, protection orders, residence orders, wife beaten by husband, domestic abuse in marriage.",
+    "examples": [
+      "wife beaten by husband",
+      "domestic abuse",
+      "violence in marriage",
+      "protection order against husband",
+      "husband harassing wife at home"
+    ]
+  },
+  {
+    "intent": "dowry_harassment",
+    "category": "women_child",
+    "anchors": [
+      "Dowry Prohibition Act 1961 Section 3",
+      "Dowry Prohibition Act 1961 Section 4",
+      "Bharatiya Nyaya Sanhita 2023 Section 84"
+    ],
+    "prototype": "Demand for dowry, dowry harassment by husband or in-laws, cruelty for money or valuables, dowry death, coercion for gifts or property, complaints relating to dowry offences.",
+    "examples": [
+      "demanding dowry from bride family",
+      "dowry harassment by in-laws",
+      "dowry death",
+      "bride harassment for money",
+      "dowry case complaint"
+    ]
+  },
+  {
+    "intent": "child_protection",
+    "category": "women_child",
+    "anchors": [
+      "Protection Of Children From Sexual Offences Act 2012 Section 4",
+      "Juvenile Justice Act 2015 Section 75"
+    ],
+    "prototype": "Child sexual abuse, child cruelty, child labour, neglect, exploitation, abuse of minors, POCSO offences, harm or mistreatment of children requiring legal protection.",
+    "examples": [
+      "child abuse complaint",
+      "child labour complaint",
+      "POCSO case",
+      "sexual abuse of minor",
+      "child cruelty report"
+    ]
+  },
+  {
+    "intent": "working_hours",
+    "category": "labour",
+    "anchors": [
+      "Labour Factories Act 1948 Section 54",
+      "Labour Factories Act 1948 Section 51",
+      "Occupational Safety Health And Working Conditions Code 2020 Section 25"
+    ],
+    "prototype": "Violation of legal working hour limits, excessive work hours, compulsory overtime, denial of weekly rest, employer requiring work beyond statutory limits.",
+    "examples": [
+      "maximum working hours",
+      "worker forced overtime",
+      "factory employee working 12 hours",
+      "daily work limit",
+      "employer making me work more than 9 hours"
+    ]
+  },
+  {
+    "intent": "overtime_wages",
+    "category": "labour",
+    "anchors": [
+      "Code on Wages 2019 Section 14",
+      "Labour Factories Act 1948 Section 59"
+    ],
+    "prototype": "Failure to pay overtime wages, denial of overtime compensation, unpaid extra work, incorrect overtime calculation, wage disputes relating to overtime.",
+    "examples": [
+      "employer not paying overtime",
+      "overtime compensation",
+      "extra wages for overtime work",
+      "not getting paid for extra hours"
+    ]
+  },
+  {
+    "intent": "maternity_leave",
+    "category": "labour",
+    "anchors": [
+      "The Maternity Benefit Act 1961 Section 4",
+      "The Maternity Benefit Act 1961 Section 5"
+    ],
+    "prototype": "Rights relating to maternity leave, paid maternity benefit, pregnancy protection, employer refusing maternity leave, dismissal during pregnancy or denial of maternity benefits.",
+    "examples": [
+      "maternity leave entitlement",
+      "maternity benefit from employer",
+      "paid leave during pregnancy",
+      "employer refusing maternity leave",
+      "how many weeks maternity leave india"
+    ]
+  },
+  {
+    "intent": "salary_deduction",
+    "category": "labour",
+    "anchors": [
+      "Code on Wages 2019 Section 18",
+      "Payment Of Wages Act 1936 Section 7"
+    ],
+    "prototype": "Illegal salary deduction, delayed wages, unpaid salary, unauthorized deductions, employer withholding wages or violating wage payment laws.",
+    "examples": [
+      "employer deducted salary without reason",
+      "illegal salary deduction",
+      "employer withheld wages",
+      "salary not paid on time",
+      "unlawful deduction from wages"
+    ]
+  },
+  {
+    "intent": "workplace_injury",
+    "category": "labour",
+    "anchors": [
+      "The Employees Compensation Act 1923 Section 3",
+      "The Code On Security 2020 Section 74"
+    ],
+    "prototype": "Workplace accidents, employment injuries, occupational hazards, employer liability, compensation for injuries sustained during the course of employment.",
+    "examples": [
+      "injured at workplace compensation",
+      "accident at factory who pays",
+      "employer liability for injury",
+      "worker hurt on the job",
+      "compensation for workplace accident"
+    ]
+  },
+
+  {
+    "intent": "consumer_refund",
+    "category": "consumer",
+    "anchors": [
+      "Consumer Protection Act 2019 Section 39",
+      "Consumer Protection Act 2019 Section 38"
+    ],
+    "prototype": "Consumer disputes involving defective products, deficient services, refund refusal, replacement claims, warranty issues, cancellation requests, or seller refusing to compensate the consumer.",
+    "examples": [
+      "refund for defective product",
+      "faulty appliance replacement",
+      "seller refused refund",
+      "consumer complaint",
+      "shop not giving refund"
+    ]
+  },
+  {
+    "intent": "product_liability",
+    "category": "consumer",
+    "anchors": [
+      "Consumer Protection Act 2019 Section 83",
+      "Consumer Protection Act 2019 Section 86"
+    ],
+    "prototype": "Defective or unsafe products causing injury, death, property damage or loss. Manufacturer, seller or service provider liability, compensation for harm caused by defective goods.",
+    "examples": [
+      "defective product caused injury",
+      "product harmed me compensation",
+      "manufacturer liability for defect",
+      "faulty product injured customer"
+    ]
+  },
+  {
+    "intent": "mrp_overcharging",
+    "category": "consumer",
+    "anchors": [
+      "Legal Metrology Act 2009 Section 18",
+      "Consumer Protection Act 2019 Section 2"
+    ],
+    "prototype": "Charging above Maximum Retail Price (MRP), overpricing packaged goods, illegal pricing by retailers, disputes involving printed retail price and consumer overcharging.",
+    "examples": [
+      "shopkeeper charging above MRP",
+      "selling above maximum retail price",
+      "overcharging on printed price",
+      "shop sold above MRP"
+    ]
+  },
+  {
+    "intent": "bail",
+    "category": "criminal",
+    "anchors": [
+      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 478",
+      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 480",
+      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 483"
+    ],
+    "prototype": "Regular bail, anticipatory bail, interim bail, bail conditions, cancellation of bail, release from custody, criminal court bail procedure and bail applications.",
+    "examples": [
+      "regular bail",
+      "anticipatory bail",
+      "bail conditions",
+      "how to get bail",
+      "bail application in court"
+    ]
+  },
+  {
+    "intent": "murder_punishment",
+    "category": "criminal",
+    "anchors": [
+      "Bharatiya Nyaya Sanhita 2023 Section 101",
+      "Bharatiya Nyaya Sanhita 2023 Section 103",
+      "Bharatiya Nyaya Sanhita 2023 Section 104"
+    ],
+    "prototype": "Murder, culpable homicide, causing death, homicide offences, punishment for murder, life imprisonment, death penalty, criminal liability for unlawful killing.",
+    "examples": [
+      "punishment for murder india",
+      "IPC section 302 equivalent BNS",
+      "homicide sentence life imprisonment",
+      "culpable homicide punishment",
+      "what is punishment for killing someone"
+    ]
+  },
+  {
+    "intent": "fir_police",
+    "category": "criminal",
+    "anchors": [
+      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 173",
+      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 176"
+    ],
+    "prototype": "Registration of FIR, filing a police complaint, cognizable offences, refusal to register FIR, police investigation, criminal complaint procedure and investigation after FIR.",
+    "examples": [
+      "what happens when police file FIR",
+      "FIR registration procedure",
+      "how to file FIR",
+      "police investigation after FIR",
+      "cognizable offence FIR"
+    ]
+  },
+  {
+    "intent": "narcotics_drugs",
+    "category": "criminal",
+    "anchors": [
+      "Narcotic Drugs And Psychotropic Substances Act 1985 Section 20",
+      "Narcotic Drugs And Psychotropic Substances Act 1985 Section 27"
+    ],
+    "prototype": "Possession, consumption, trafficking, transport or manufacture of narcotic drugs or psychotropic substances, NDPS offences, arrests, penalties and bail under drug laws.",
+    "examples": [
+      "caught with illegal drugs",
+      "drug possession case india",
+      "NDPS act punishment",
+      "first time drug offence",
+      "arrested for carrying drugs"
+    ]
+  },
+  {
+    "intent": "weapons_arms",
+    "category": "criminal",
+    "anchors": [
+      "The Arms Act 1959 Section 25",
+      "The Arms Act 1959 Section 3"
+    ],
+    "prototype": "Illegal possession, carrying, manufacture, sale or use of firearms or prohibited weapons, licensing requirements, unlicensed weapon offences and Arms Act violations.",
+    "examples": [
+      "found carrying unlicensed weapon",
+      "illegal arms possession",
+      "carrying gun without license",
+      "arms act punishment",
+      "unlicensed firearm case"
+    ]
+  },
+  {
+    "intent": "tenant_rights",
+    "category": "property",
+    "anchors": [
+      "Transfer of Property Act 1882 Section 108",
+      "Transfer of Property Act 1882 Section 106"
+    ],
+    "prototype": "Landlord-tenant disputes including eviction, lease termination, security deposit, rent disputes, landlord harassment, tenant rights, notice requirements and lease obligations.",
+    "examples": [
+      "landlord not returning security deposit",
+      "landlord wants to evict without notice",
+      "tenant rights under lease",
+      "rights of tenant in india",
+      "landlord harassment"
+    ]
+  },
+  {
+    "intent": "divorce",
+    "category": "family",
+    "anchors": [
+      "Hindu Marriage Act 1955 Section 13",
+      "Special Marriage Act 1954 Section 27"
+    ],
+    "prototype": "Divorce proceedings, mutual consent divorce, contested divorce, cruelty, desertion, adultery, dissolution of marriage and legal grounds for divorce.",
+    "examples": [
+      "grounds for divorce under hindu law",
+      "divorce procedure india",
+      "how to get divorce",
+      "mutual consent divorce",
+      "divorce on grounds of cruelty"
+    ]
+  },
+  {
+    "intent": "inheritance_succession",
+    "category": "family",
+    "anchors": [
+      "Hindu Succession Act 1956 Section 6",
+      "Hindu Succession Act 1956 Section 15"
+    ],
+    "prototype": "Inheritance of property, succession rights, legal heirs, ancestral property, self-acquired property, partition, daughter's inheritance rights, distribution of estate after death and succession disputes.",
+    "examples": [
+      "inheritance rights of daughter",
+      "who inherits property after death",
+      "succession rights india",
+      "daughter right in father property",
+      "hindu succession rights"
+    ]
+  },
+  {
+    "intent": "guardianship",
+    "category": "family",
+    "anchors": [
+      "Guardians And Wards Act 1890 Section 17",
+      "Guardians And Wards Act 1890 Section 7"
+    ],
+    "prototype": "Appointment of guardian for a minor, child custody and guardianship, legal guardian applications, welfare of the child, guardian rights and court proceedings relating to minors.",
+    "examples": [
+      "who can be appointed guardian of minor child",
+      "child guardianship application",
+      "guardian appointment court",
+      "custody and guardianship minor"
+    ]
+  },
+  {
+    "intent": "rti_application",
+    "category": "rights",
+    "anchors": [
+      "Right To Information Act 2005 Section 6",
+      "Right To Information Act 2005 Section 7"
+    ],
+    "prototype": "Right to Information applications, seeking information from public authorities, RTI filing procedure, government records, response timelines, RTI appeals and rejection of information requests.",
+    "examples": [
+      "how to file RTI application",
+      "RTI request procedure",
+      "file information request government",
+      "public authority information request",
+      "RTI appeal rejection"
+    ]
+  },
+  {
+    "intent": "legal_aid",
+    "category": "rights",
+    "anchors": [
+      "Legal Services Authorities Act 1987 Section 12",
+      "Legal Services Authorities Act 1987 Section 13"
+    ],
+    "prototype": "Eligibility for free legal aid, government-funded legal assistance, legal services authorities, free lawyer requests, access to justice for eligible persons and legal aid schemes.",
+    "examples": [
+      "free legal aid for poor person",
+      "free lawyer government scheme",
+      "legal services authority help",
+      "cannot afford lawyer india",
+      "free legal help india"
+    ]
+  },
+  {
+    "intent": "cyber_crime",
+    "category": "cyber",
+    "anchors": [
+      "Information Technology Act 2000 Section 66",
+      "Information Technology Act 2000 Section 66C",
+      "Information Technology Act 2000 Section 66D"
+    ],
+    "prototype": "Cyber crimes including hacking, phishing, identity theft, online fraud, account compromise, unauthorized access, impersonation, cyber cheating, digital fraud and reporting cyber offences.",
+    "examples": [
+      "someone hacked my online account",
+      "cyber crime complaint india",
+      "online fraud complaint",
+      "upi fraud",
+      "bank scam",
+      "fake website",
+      "identity theft online india",
+      "hacker stole my data"
+    ]
+  },
+  {
+    "intent": "online_privacy",
+    "category": "cyber",
+    "anchors": [
+      "Information Technology Act 2000 Section 66E",
+      "Information Technology Act 2000 Section 72"
+    ],
+    "prototype": "Violation of online privacy including unauthorized sharing of personal photos or videos, fake profiles, image morphing, privacy breaches, misuse of personal information and online impersonation.",
+    "examples": [
+      "fake profile created using my photos",
+      "someone sharing my photos without permission",
+      "privacy violation online india",
+      "morphed photos shared online",
+      "online defamation fake profile"
+    ]
+  },
+  {
+    "intent": "road_accident",
+    "category": "transport",
+    "anchors": [
+      "Motor Vehicles Act 1988 Section 161",
+      "Motor Vehicles Act 1988 Section 164"
+    ],
+    "prototype": "Road traffic accidents, hit-and-run incidents, motor accident compensation, MACT claims, injury or death due to motor vehicles, victim compensation and accident liability.",
+    "examples": [
+      "compensation after road accident",
+      "hit and run accident compensation",
+      "motor accident claim",
+      "MACT claim India",
+      "road accident victim rights"
+    ]
+  },
+  {
+    "intent": "traffic_offence",
+    "category": "transport",
+    "anchors": [
+      "Motor Vehicles Act 1988 Section 181",
+      "Motor Vehicles Act 1988 Section 182"
+    ],
+    "prototype": "Traffic violations including driving without licence, driving without permit, drunken driving, traffic challans, penalties, fines and offences under motor vehicle laws.",
+    "examples": [
+      "driving without license penalty",
+      "traffic challan penalty",
+      "driving drunk fine india",
+      "vehicle without permit penalty",
+      "motor vehicle offence punishment"
+    ]
+  },
+  {
+    "intent": "disability_rights",
+    "category": "social_justice",
+    "anchors": [
+      "Rights Of Persons With Disabilities Act 2016 Section 3",
+      "Rights Of Persons With Disabilities Act 2016 Section 20"
+    ],
+    "prototype": "Rights of persons with disabilities including discrimination, equal opportunity, accessibility, reasonable accommodation, employment rights, education rights and protections under disability law.",
+    "examples": [
+      "rights of disabled person at workplace",
+      "disability discrimination employment",
+      "person with disability rights india",
+      "RPWD act protections",
+      "employer discriminating disabled employee"
+    ]
+  },
+  {
+    "intent": "sc_st_atrocities",
+    "category": "social_justice",
+    "anchors": [
+      "Scheduled Castes And Scheduled Tribes Act 1989 Section 3",
+      "Scheduled Castes And Scheduled Tribes Act 1989 Section 15A"
+    ],
+    "prototype": "Atrocities, caste-based violence, discrimination, humiliation, social boycott, intimidation, denial of rights or offences committed against members of Scheduled Castes or Scheduled Tribes.",
+    "examples": [
+      "discrimination against scheduled caste person",
+      "atrocity against SC ST",
+      "caste based violence complaint",
+      "SC ST act case",
+      "untouchability offense"
+    ]
+  },
+  {
+    "intent": "senior_citizen_maintenance",
+    "category": "social_justice",
+    "anchors": [
+      "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 4",
+      "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 9"
+    ],
+    "prototype": "Maintenance and welfare of parents or senior citizens, neglect by children or relatives, financial support for elderly parents, maintenance tribunal proceedings and protection of senior citizens.",
+    "examples": [
+      "elderly parents not taken care of by children",
+      "children not supporting old parents",
+      "maintenance for senior citizens",
+      "old parents neglected by son",
+      "senior citizen maintenance tribunal"
+    ]
+  },
+
+  {
+    "intent": "cheating_fraud",
+    "category": "criminal",
+    "prototype": "Cheating, criminal breach of trust, fraud, deception, financial cheating, investment scams, dishonest inducement, property or money obtained through deception, complaint against fraudsters and criminal cheating offences.",
+    "anchors": [
+      "Bharatiya Nyaya Sanhita 2023 Section 318",
+      "Bharatiya Nyaya Sanhita 2023 Section 316"
+    ],
+    "examples": [
+      "someone cheated me",
+      "fraud complaint",
+      "criminal breach of trust",
+      "investment scam",
+      "money cheating case"
+    ]
+  },
+  {
+    "intent": "theft_robbery",
+    "category": "criminal",
+    "prototype": "Theft, robbery, burglary, stolen property, snatching, house breaking, vehicle theft, mobile phone theft, recovery of stolen property and police complaints relating to theft offences.",
+    "anchors": [
+      "Bharatiya Nyaya Sanhita 2023 Section 303",
+      "Bharatiya Nyaya Sanhita 2023 Section 309"
+    ],
+    "examples": [
+      "my phone was stolen",
+      "theft complaint",
+      "robbery case",
+      "burglary complaint",
+      "vehicle theft"
+    ]
+  },
+  {
+    "intent": "maintenance",
+    "category": "family",
+    "prototype": "Maintenance rights of wife, husband, children or parents, interim maintenance, permanent alimony, child support, financial support after separation or divorce and maintenance proceedings before court.",
+    "anchors": [
+      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 144",
+      "Hindu Marriage Act 1955 Section 24",
+      "Hindu Marriage Act 1955 Section 25"
+    ],
+    "examples": [
+      "husband not giving money",
+      "maintenance after divorce",
+      "wife maintenance rights",
+      "child maintenance",
+      "interim maintenance"
+    ]
+  },
+  {
+    "intent": "property_dispute",
+    "category": "property",
+    "prototype": "Property ownership disputes, land disputes, boundary disputes, partition of ancestral property, title disputes, possession disputes, encroachment, easement rights and civil property litigation.",
+    "anchors": [
+      "Transfer of Property Act 1882 Section 8",
+      "Transfer of Property Act 1882 Section 54"
+    ],
+    "examples": [
+      "land dispute",
+      "property ownership dispute",
+      "boundary dispute",
+      "partition property",
+      "encroachment on land"
+    ]
+  },
+  {
+    "intent": "online_shopping_dispute",
+    "category": "consumer",
+    "prototype": "Consumer disputes arising from online shopping including wrong product delivery, damaged goods, refund refusal, replacement disputes, cancelled orders, fake products and e-commerce platform complaints.",
+    "anchors": [
+      "Consumer Protection Act 2019 Section 2",
+      "Consumer Protection Act 2019 Section 39"
+    ],
+    "examples": [
+      "amazon refused refund",
+      "flipkart delivered wrong product",
+      "wrong item received online",
+      "ecommerce complaint",
+      "online shopping refund"
+    ]
+  },
+  {
+    "intent": "online_financial_fraud",
+    "category": "cyber",
+    "prototype": "Online financial fraud including UPI scams, internet banking fraud, unauthorized transactions, OTP fraud, QR code scams, credit card fraud, phishing attacks and digital payment fraud.",
+    "anchors": [
+      "Information Technology Act 2000 Section 66C",
+      "Information Technology Act 2000 Section 66D"
+    ],
+    "examples": [
+      "UPI scam",
+      "bank OTP fraud",
+      "unauthorized bank transaction",
+      "online banking fraud",
+      "QR code scam"
+    ]
+  },
+  {
+    "intent": "stalking_voyeurism",
+    "category": "women_child",
+    "prototype": "Stalking, voyeurism, hidden camera offences, repeated unwanted contact, obscene messages, online stalking, following someone without consent, invasion of privacy and harassment targeting women.",
+    "anchors": [
+      "Bharatiya Nyaya Sanhita 2023 Section 77",
+      "Bharatiya Nyaya Sanhita 2023 Section 78"
+    ],
+    "examples": [
+      "someone keeps following me",
+      "stalking complaint",
+      "obscene messages",
+      "hidden camera",
+      "online stalking"
+    ]
+  },
+  {
+    "intent": "wrongful_termination",
+    "category": "labour",
+    "prototype": "Wrongful termination, illegal dismissal, unfair dismissal, termination without notice, retrenchment disputes, unlawful discharge from employment, employer violating termination procedures and reinstatement claims.",
+    "anchors": [
+      "Industrial Disputes Act 1947 Section 25F",
+      "Industrial Relations Code 2020 Section 70"
+    ],
+    "examples": [
+      "employer fired me without notice",
+      "wrongful termination",
+      "illegal dismissal",
+      "termination without notice",
+      "unfair retrenchment"
+    ]
+  }
 ]
+

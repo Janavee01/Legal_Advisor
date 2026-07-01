@@ -6,9 +6,10 @@ results = collection.get(
     include=["metadatas"]
 )
 
-for meta in results["metadatas"]:
-    act = meta.get("act_name", "")
 
-    if "Domestic Violence" in act:
-        print(meta)
-        break
+
+collection.query(
+    query_texts=["how to file an RTI application"],
+    n_results=20,
+    where={"category": "rights"}
+)

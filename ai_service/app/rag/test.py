@@ -42,18 +42,18 @@ def run_debug_tests():
         print("\nEXPANDED QUERY:")
         print(ctx.expanded_query[:300])
 
-        #output = retrieve(query)
+        output = retrieve(query)
 
-        #results = output["results"]
+        results = output["results"]
 
-        #print("\nTOP RESULTS:")
+        print("\nTOP RESULTS:")
 
-        #for r in results[:5]:
-         #   print(
-          #      round(r.get("final_score", r["score"]), 4),
-           #     r.get("citation"),
-            #    r.get("section_title")
-            #)
+        for r in results[:5]:
+           print(
+              round(r.get("final_score", r["score"]), 4),
+              r.get("citation"),
+              r.get("section_title")
+           )
 
 if __name__ == "__main__":
     run_debug_tests()

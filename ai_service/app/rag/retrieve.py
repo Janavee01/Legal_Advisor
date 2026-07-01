@@ -64,9 +64,12 @@ def _tokenize(text: str):
 def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min_score: float = 0.0):
     
     context = QueryContextBuilder().build(query)
-    print("\nINTENTS:", context.intents)
+    print("QUERY:", query)
+    print("INTENTS:", getattr(context, "intents", None))
+    print("MATCHED INTENTS:", getattr(context, "matched_intents", None))
+    print("CATEGORY:", context.category)
     print("ANCHORS:", context.anchors)
-    print("EXPANDED:", context.expanded_query)
+    print("EXPANDED QUERY:", context.expanded_query)
     print()
 
     anchor_text = " ".join(context.anchors)
@@ -114,44 +117,29 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
     }
 
 
-    where = None
-
-    if context.category:
-        where = None
-    
+    where = {"category": context.category} if context.category else None
 
     chroma_results = collection.query(
         query_embeddings=[query_embedding],
         n_results=50,
         where=where,
         include=["documents", "metadatas", "distances"],
-    )   
+    )
+    print("\nActs returned by Chroma:")
+    acts = sorted(set(
+        meta.get("act_name", "")
+        for meta in chroma_results["metadatas"][0]
+    ))
+    for act in acts:
+        print("-", act)
 
-    print("\nTOP CHROMA CANDIDATES")
-
-    for meta in chroma_results["metadatas"][0][:20]:
-        print(
-            meta.get("act_name"),
-            meta.get("section_number"),
-            meta.get("section_title")
-        )
-
-    print("\nCATEGORY:", context.category)
-    print("WHERE:", where)
-
-    print("\nTOP CHROMA CANDIDATES")
-    for meta in chroma_results["metadatas"][0][:20]:
-        print(
-            meta.get("act_name"),
-            meta.get("section_number"),
-            meta.get("section_title")
-        )
 
     results = []
     
     
     bm25_scores = np.array(bm25_scores)
-
+    bm25_mean = np.mean(bm25_scores)
+    bm25_std = np.std(bm25_scores) + 1e-6
     for doc_text, meta, distance in zip(
         chroma_results["documents"][0],
         chroma_results["metadatas"][0],
@@ -180,28 +168,35 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
                 category_bonus = 0.10
             elif context.category in meta.get("topics", ""):
                 category_bonus = 0.03
+
+        anchor_bonus = 0.0
+        act_name_lower = meta.get("act_name", "").lower()
+        if any(act_name_lower in anchor.lower() for anchor in context.anchors):
+            anchor_bonus = 0.15   # tune this
+        
+        if anchor_bonus > 0:
+            print("ANCHOR BONUS:", meta["act_name"], meta["section_number"], anchor_bonus)
        
         doc_id = int(meta.get("doc_id", -1))
         if doc_id == -1:
             continue
 
         bm25_score = bm25_lookup.get(doc_id, 0.0)
-        bm25_mean = np.mean(bm25_scores)
-        bm25_std = np.std(bm25_scores) + 1e-6
+  
 
         bm25_norm = (bm25_score - bm25_mean) / bm25_std
-        bm25_norm = 1 / (1 + np.exp(-bm25_norm))
 
         intent_match = len(set(context.intents) & set(meta.get("topics", "").split(",")))
         intent_boost = 0.08 * intent_match
             
+        bm25_norm_sigmoid = 1 / (1 + np.exp(-bm25_norm))
+
         base_score = (
-        0.68 * semantic_score +
-        0.32 * bm25_norm +
-        category_bonus +
-        intent_boost +
-        section_penalty
-    )
+            0.7 * semantic_score +
+            0.3 * bm25_norm_sigmoid +
+            category_bonus + anchor_bonus +
+            intent_boost +
+            section_penalty)
 
         results.append({
             "text": doc_text,
@@ -220,29 +215,54 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
             "score": base_score,
         })
 
+    print("\nRelevant act scores before rerank:")
+    for r in sorted(results, key=lambda x: x["score"], reverse=True):
+        if r["act_name"] in (
+            "Protection Of Women From Domestic Violence Act 2005",
+            "Legal Metrology Act 2009",
+        ):
+            print(
+                r["score"],
+                r["act_name"],
+                r["section_number"],
+                r["section_title"],
+            )
+
     results.sort(key=lambda x: x["score"], reverse=True)
-    results = results[:15]
-
-    for r in results:
-        if "Sexual Harassment" in r["act_name"]:
-            print("FOUND POSH:", r["score"], r["citation"])
-
-        if "Domestic Violence" in r["act_name"]:
-            print("FOUND DV:", r["score"], r["citation"])
-
-    print("BEFORE RERANK:", len(results))
-
+    results = results[:20]
+    print("\nTop retrieval scores before rerank:")
+    for r in sorted(results, key=lambda x: x["score"], reverse=True)[:20]:
+            print(
+                f"{r['score']:.4f}",
+                r["act_name"],
+                r["section_number"],
+                r["section_title"]
+            )
+    rerank(
+    f"{query}. Related legal concepts: {' '.join(context.intents)}",
+    results,
+)
+    print("\nReranker scores:")
+    for r in sorted(results, key=lambda x: x["final_score"], reverse=True):
+        print(
+            f"{r['final_score']:.4f}",
+            f"rr={r['rerank_score']:.4f}",
+            f"ret={r['score']:.4f}",
+            r["act_name"],
+            r["section_number"],
+            r["section_title"],
+        )
+    results.sort(key=lambda x: x["final_score"], reverse=True)
+    results = results[:top_k] 
     print("\nTOP RETRIEVAL RESULTS")
 
-    for r in results[:10]:
+    for r in results[:top_k]:
         print(
             round(r["score"], 4),
             r["act_name"],
             r["section_number"],
             r["section_title"]
         )
-    
-    results = rerank(context.expanded_query, results)
 
     seen = set()
     deduped = []
@@ -259,7 +279,7 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
         seen.add(key)
         deduped.append(r)
 
-    results = deduped
+    results = deduped[:top_k]
 
     for r in results[:10]:
         print(
@@ -270,8 +290,6 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
             r["section_number"]
         )
     
-    print("AFTER RERANK:", len(results))
-
     for r in results[:20]:
         print(
             round(r["final_score"], 4),
@@ -279,30 +297,28 @@ def retrieve(query: str, top_k: int = 5, category_filter: str | None = None, min
             r["section_number"],
             r["section_title"]
         )
-   
-
-    print([type(r) for r in results])
-  
-    #return results[:top_k]
+     
     return {
-        "context": context,
-        "results": results[:top_k]
-    }
+    "context": context,
+    "chroma": chroma_results,
+    "results": results[:top_k]
+}
 
-if __name__ == "__main__":
-    import sys
+#if __name__ == "__main__":
+#    import sys
+#
+#    query = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "test query"
+#
+#    output = retrieve(query, top_k=5)
+#
+#    results = output["results"]
+#
+#    if not results:
+#        print("No results found")
+#    else:
+#        for r in results:
+#            print("\nSCORE:", r.get("final_score", r["score"]))
+#            print("BM25:", r["bm25_score"], "SEM:", r["semantic_score"])
+#            print("CITATION:", r["citation"])
+#            print(r["text"][:300])
 
-    query = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "test query"
-
-    output = retrieve(query, top_k=5)
-
-    results = output["results"]
-
-    if not results:
-        print("No results found")
-    else:
-        for r in results:
-            print("\nSCORE:", r.get("final_score", r["score"]))
-            print("BM25:", r["bm25_score"], "SEM:", r["semantic_score"])
-            print("CITATION:", r["citation"])
-            print(r["text"][:300])
