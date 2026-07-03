@@ -34,8 +34,8 @@ def load_act_metadata():
 ACT_METADATA = load_act_metadata()
 
 SECTION_PATTERN = re.compile(
-    r"^(?:Section\s+)?(\d+[A-Z]?)\.\s+(.+?)\.[—–―-]",
-    re.MULTILINE,
+    r"^(?:\d+\s*\[\s*)?(?:Section\s+)?(\d+[A-Z]?)\.\s+(.{1,300}?)\.[—–―-]",
+    re.MULTILINE | re.DOTALL,
 )
 
 CHAPTER_PATTERN = re.compile(
@@ -81,7 +81,16 @@ def extract_text_from_pdf(pdf_path: Path) -> str:
 
 def parse_sections(full_text: str, act_metadata: dict) -> list[dict]:
     cleaned = clean_text(full_text)
+    idx = cleaned.find("134. Duty of driver")
+    print(repr(cleaned[idx-80:idx+80]))
     section_matches = list(SECTION_PATTERN.finditer(cleaned))
+    
+    for m in section_matches:
+        if "134" in m.group(0):
+            print("=" * 80)
+            print("NUMBER:", m.group(1))
+            print("TITLE :", m.group(2))
+            print(repr(m.group(0)[:300]))
 
     if not section_matches:
         log.warning("No sections detected — falling back to paragraph chunking")
@@ -114,14 +123,11 @@ def parse_sections(full_text: str, act_metadata: dict) -> list[dict]:
 
         if _is_footnote_match(section_title, section_text):
             skipped_footnotes += 1
-            # IMPORTANT: a footnote match still owns a text span (start:end)
-            # that contains real downstream Act content (e.g. the rest of
-            # Section 2's definitions, which continue after the footnote
-            # interrupts mid-section). Dropping the match entirely would
-            # silently delete that content. Instead, fold this span's text
-            # — with the footnote's own boilerplate sentence stripped out —
-            # onto the END of the most recently kept real section, so the
-            # content survives under the correct citation.
+            log.warning(
+                "  Treated as footnote, merged into previous section: "
+                "'%s. %s' (%.60s...)",
+                section_number, section_title, section_text
+            )
             if sections:
                 remainder = _strip_footnote_sentence(section_text)
                 if remainder:
@@ -150,7 +156,22 @@ def parse_sections(full_text: str, act_metadata: dict) -> list[dict]:
         s["char_count"] = len(s["text"])
 
     sections = _merge_duplicate_section_numbers(sections)
-
+    
+    def _check_sequence_gaps(sections: list[dict]) -> None:
+        """Warn if numeric section numbers have suspicious gaps — a strong
+        signal that a section failed to match and got silently absorbed
+        into a neighboring section's text."""
+        nums = []
+        for s in sections:
+            m = re.match(r"(\d+)", s["section_number"])
+            if m:
+                nums.append(int(m.group(1)))
+        nums = sorted(set(nums))
+        gaps = [(a, b) for a, b in zip(nums, nums[1:]) if b - a > 1]
+        if gaps:
+            log.warning("  Possible missing sections (numeric gaps): %s", gaps)
+    
+    _check_sequence_gaps(sections)
     if skipped_footnotes:
         log.info(
             "  Filtered %d footnote/notification false matches "
@@ -343,6 +364,8 @@ def run():
     success, failed = [], []
 
     for pdf_path in pdf_files:
+        if pdf_path.stem != "motor_vehicles_act_1988":
+            continue
         category = pdf_path.parent.name
         log.info("\nParsing: %s [%s]", pdf_path.name, category)
         out = parse_act(pdf_path, category)

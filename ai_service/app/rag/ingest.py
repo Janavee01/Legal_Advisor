@@ -3,11 +3,8 @@ import json
 import pickle
 import logging
 import argparse
-import os
 import hashlib
 from pathlib import Path
-from rank_bm25 import BM25Okapi
-from .tagger import extract_topics
 from .chunker import chunk_sections
 from .vectordb import get_collection
 from .parser import ACT_METADATA
@@ -18,12 +15,10 @@ from concurrent.futures import ThreadPoolExecutor
 BASE_DIR = Path(__file__).resolve().parents[3]
 PARSED_DIR = BASE_DIR / "datasets" / "parsed"
 DATA_DIR = BASE_DIR / "ai_service" / "app" / "data"
-from itertools import islice
 VECTOR_STORE_PATH = DATA_DIR / "vector_store.pkl"
 INGESTED_LOG_PATH = DATA_DIR / "ingested_files.json"
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
-DOC_PREFIX = "[LEGAL_DOC]"
 EMBED_CACHE_PATH = DATA_DIR / "embedding_cache.pkl"
 
 # ───────────────────────────────
@@ -41,8 +36,16 @@ def file_hash(path):
 
 def prepare_chunk(chunk):
     cid = chunk["chunk_id"]
-    text = build_search_text(chunk)
-    return cid, text, chunk
+
+    title = chunk.get("section_title", "")
+    text = chunk.get("text", "")
+
+    boosted_text = (
+    f"SECTION TITLE: {title}\n"
+    f"ACT: {chunk['act_name']}\n\n"
+    f"{text}"
+)
+    return cid, boosted_text, chunk
 
 def save_embedding_cache(cache):
     with open(EMBED_CACHE_PATH, "wb") as f:
@@ -78,11 +81,16 @@ def tokenize(text: str):
     return re.findall(r"[a-zA-Z0-9]+", text.lower())
 
 def build_search_text(chunk):
-    return f"""
-{chunk['act_name']}
-{chunk['section_number']} {chunk['section_title']}
-{chunk['chapter']}
 
+    return f"""
+Act: {chunk['act_name']}
+Category: {chunk.get('category', '')}
+Chapter: {chunk.get('chapter', '')}
+
+Section {chunk['section_number']}
+Title: {chunk['section_title']}
+
+Legal Text:
 {chunk['text']}
 """.strip()
 
@@ -94,15 +102,14 @@ LOW_VALUE_SECTIONS = [
     "delegation of powers",
 ]
 
-# ───────────────────────────────
-# Model (GLOBAL - IMPORTANT FIX)
-# ───────────────────────────────
-
 model = get_model()
 model.eval()
 
-def ingest_file(json_path, category, act_metadata, collection, doc_id_start, cache):
-    doc_id = doc_id_start 
+def ingest_file(
+        json_path,
+        category,
+        act_metadata,
+    ):
 
     with open(json_path, encoding="utf-8") as f:
         sections = json.load(f)
@@ -118,94 +125,22 @@ def ingest_file(json_path, category, act_metadata, collection, doc_id_start, cac
     chunks = chunk_sections(sections)
 
     if not chunks:
-        return [], doc_id_start
+        return []
 
-    filtered_chunks = []
+    filtered_chunks = [
+        chunk
+        for chunk in chunks
+        if not any(
+            x in chunk["section_title"].lower()
+            for x in LOW_VALUE_SECTIONS
+        )
+    ]
 
-    for chunk in chunks:
-        title = chunk["section_title"].lower()
-
-        if any(x in title for x in LOW_VALUE_SECTIONS):
-            continue
-
-        filtered_chunks.append(chunk)
-
-    if not filtered_chunks:
-        return [], doc_id_start
-
-    save_embedding_cache(cache)
-
-    ids = []
-    documents = []
-    metadatas = []
-    new_docs = []
-    embeddings = []
-    
-
-    for chunk in filtered_chunks:
-
-        cid = chunk["chunk_id"]
-
-        # skip if not newly embedded
-        if cid not in cache:
-            continue
-
-        embedding = cache[cid]
-        embeddings.append(embedding)
-        topics = extract_topics(chunk["text"]) or ["general"]
-
-        ids.append(cid)
-        documents.append(chunk["text"])
+    return filtered_chunks
 
     
-        metadatas.append({
-            "doc_id": doc_id,
-            "citation": chunk["citation"],
-            "section_number": chunk["section_number"],
-            "section_title": chunk["section_title"],
-            "chapter": chunk.get("chapter", ""),
-            "act_name": chunk["act_name"],
-            "topics": ", ".join(topics),
-            "short_name": chunk["short_name"],
-            "year": chunk["year"],
-            "category": chunk["category"],
-            "source": chunk["source"],
-            "chunk_index": chunk["chunk_index"],
-            "total_chunks": chunk["total_chunks"],
-            "chunk_id": cid,
-        })
-
-        new_docs.append({
-            "id": doc_id,
-            "text": chunk["text"],
-            "citation": chunk["citation"],
-            "chunk_id": cid,
-            "topics": topics,
-            "section_number": chunk["section_number"],
-            "section_title": chunk["section_title"],
-            "chapter": chunk.get("chapter", ""),
-            "act_name": chunk["act_name"],
-            "short_name": chunk["short_name"],
-            "year": chunk["year"],
-            "category": chunk["category"],
-            "source": chunk["source"],
-        })
-
-        doc_id += 1
-
-        
-    
-
-    return new_docs, doc_id, filtered_chunks
-
-# ───────────────────────────────
-# Main run
-# ───────────────────────────────
-
 def run(reset: bool = False):
-    all_new_texts = []
     all_new_chunks = []
-    all_new_docs = []
     if not PARSED_DIR.exists():
         log.error("Parsed directory missing")
         return
@@ -249,19 +184,14 @@ def run(reset: bool = False):
         log.info("Ingesting: %s [%s]", json_path.name, category)
 
         try:
-            new_docs, doc_id, chunks = ingest_file(
+            chunks = ingest_file(
                 json_path,
                 category,
                 act_metadata,
-                collection,
-                doc_id,
-                cache
             )
 
-            all_new_docs.extend(new_docs)
             all_new_chunks.extend(chunks)
-    
-            total_new_docs.extend(new_docs)
+
             ingested_log.add(key)
 
             
@@ -275,9 +205,9 @@ def run(reset: bool = False):
 
     with ThreadPoolExecutor(max_workers=8) as executor:
         results = list(executor.map(prepare_chunk, all_new_chunks))
-    log.info("Encoding %d chunks...", len(texts_to_embed))
     for cid, text, chunk in [(r[0], r[1], r[2]) for r in results]:
-        if cid in cache:
+        cache_key = f"{cid}:v2"
+        if cache_key in cache:
             continue
 
         texts_to_embed.append(text)
@@ -299,7 +229,8 @@ def run(reset: bool = False):
         ).tolist()
 
         for c, emb in zip(batch_chunks, embeddings):
-            cache[c["chunk_id"]] = emb
+            cache_key = f"{c['chunk_id']}:v2"
+            cache[cache_key] = emb
 
     save_embedding_cache(cache)
     
@@ -315,17 +246,35 @@ def run(reset: bool = False):
     for chunk in all_new_chunks:
         cid = chunk["chunk_id"]
 
-        if cid not in cache:
+        cache_key = f"{cid}:v2"
+        if cache_key not in cache:
             continue
 
         safe_id = f"{chunk['category']}::{cid}"
 
         safe_ids.append(safe_id)
-        documents.append(chunk["text"])
-        embeddings.append(cache[cid])
+        
+        embeddings.append(cache[cache_key])
 
-        topics = extract_topics(chunk["text"]) or ["general"]
+        search_text = build_search_text(chunk)
 
+        documents.append(search_text)
+
+        total_new_docs.append({
+            "id": doc_id,
+            "text": search_text,
+            "citation": chunk["citation"],
+            "chunk_id": cid,
+            "section_number": chunk["section_number"],
+            "section_title": chunk["section_title"],
+            "chapter": chunk.get("chapter", ""),
+            "act_name": chunk["act_name"],
+            "short_name": chunk["short_name"],
+            "year": chunk["year"],
+            "category": chunk["category"],
+            "source": chunk["source"],
+        })
+        
         metadatas.append({
             "doc_id": doc_id,
             "citation": chunk["citation"],
@@ -333,7 +282,6 @@ def run(reset: bool = False):
             "section_title": chunk["section_title"],
             "chapter": chunk.get("chapter", ""),
             "act_name": chunk["act_name"],
-            "topics": ", ".join(topics),
             "short_name": chunk["short_name"],
             "year": chunk["year"],
             "category": chunk["category"],
@@ -342,6 +290,7 @@ def run(reset: bool = False):
             "total_chunks": chunk["total_chunks"],
             "chunk_id": cid,
         })
+
 
         doc_id += 1
         
@@ -359,8 +308,7 @@ def run(reset: bool = False):
     all_docs = existing_docs + total_new_docs
 
     # BM25 rebuild
-    tokens = [tokenize(build_search_text(d)) for d in all_docs]
-
+    tokens = [tokenize(d["text"]) for d in all_docs]
     bm25_store = {
         "tokenized_corpus": tokens,
         "documents": [{"doc_id": d["id"]} for d in all_docs]
@@ -371,7 +319,18 @@ def run(reset: bool = False):
 
     save_pickle(all_docs)
     save_ingested_log(ingested_log)
+    log.info("all_new_chunks: %d", len(all_new_chunks))
+    log.info("texts_to_embed: %d", len(texts_to_embed))
+    print("Cache hits:", len(cache))
+    print("Sample embedding input:", texts_to_embed[:1])
 
+    from collections import Counter
+
+    counts = Counter(d["category"] for d in all_docs)
+    print("\nDocuments per category:")
+    for k, v in sorted(counts.items()):
+        print(f"{k}: {v}")
+        
     print("\n── Ingestion Summary ─────────────────────────")
     print("New chunks :", len(total_new_docs))
     print("Skipped    :", len(skipped))

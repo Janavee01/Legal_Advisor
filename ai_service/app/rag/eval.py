@@ -23,376 +23,14 @@ Run:
 
 import argparse
 import sys
-from dataclasses import dataclass, field
+
 from collections import Counter
 
 from .retrieve import retrieve
 
-
-@dataclass
-class TestCase:
-    query: str
-    primary: list[tuple[str, str]]
-    secondary: list[tuple[str, str]] = field(default_factory=list)
-    category_filter: str | None = None
-    notes: str = ""
+from .retrieval_test_cases import TestCase, TEST_CASES
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TEST SET
-# Organized by category. Each case should reflect a realistic user situation,
-# not a law-school exam question — that's what Nyaya will actually receive.
-# Expand this over time; 60-100 cases is a credible eval set for a final
-# year project. This starter set covers your existing categories.
-# ─────────────────────────────────────────────────────────────────────────────
-TEST_CASES: list[TestCase] = [
-# ── Tenant / Property ──────────────────────────────────────────────────
-
-TestCase(
-    "landlord not returning security deposit",
-    primary=[
-        ("Transfer of Property", "108"),
-    ],
-    secondary=[],
-    notes="No dedicated deposit section in TPA — commonly Sec 108 (lessee rights) is closest central-law anchor; state Rent Acts usually govern this better.",
-),
-
-TestCase(
-    "landlord wants to evict me without notice",
-    primary=[
-        ("Transfer of Property", "106"),
-    ],
-    secondary=[],
-),
-
-TestCase(
-    "what are my rights as a tenant under a lease",
-    primary=[
-        ("Transfer of Property", "108"),
-    ],
-    secondary=[],
-),
-
-    # ── Consumer ────────────────────────────────────────────────────────────
-    TestCase(
-    "shop refused to give refund on defective product",
-    primary=[
-        ("Consumer Protection", "39"),
-    ],
-    secondary=[
-        ("Consumer Protection", "83"),
-    ],
-    category_filter="consumer",
-),
-   # ── Consumer ─────────────────────────────────────────────────────────────
-
-TestCase(
-    "defective product caused injury compensation",
-    primary=[
-        ("Consumer Protection", "83"),
-    ],
-    secondary=[
-        ("Consumer Protection", "86"),
-    ],
-    category_filter="consumer",
-),
-
-TestCase(
-    "shopkeeper selling product above MRP",
-    primary=[
-        ("Legal Metrology", ""),
-    ],
-    secondary=[],
-    category_filter="consumer",
-    notes="Section number flexible — any Legal Metrology Act hit on MRP/pricing is a pass.",
-),
-
-TestCase(
-    "how to file a consumer complaint",
-    primary=[
-        ("Consumer Protection", "35"),
-    ],
-    secondary=[],
-    category_filter="consumer",
-),
-
-# ── Labour ──────────────────────────────────────────────────────────────
-
-TestCase(
-    "employer not paying overtime wages",
-    primary=[
-        ("Labour Factories Act", "59"),
-    ],
-    secondary=[
-        ("Code on Wages", "14"),
-    ],
-    category_filter="labour",
-),
-
-TestCase(
-    "can employer make worker work more than 9 hours",
-    primary=[
-        ("Labour Factories Act", "54"),
-    ],
-    secondary=[
-        ("Labour Factories Act", "51"),
-    ],
-    category_filter="labour",
-),
-
-TestCase(
-    "maternity leave entitlement",
-    primary=[
-        ("Maternity Benefit", ""),
-    ],
-    secondary=[],
-    category_filter="labour",
-),
-
-TestCase(
-    "employer deducted salary without explanation",
-    primary=[
-        ("Payment of Wages", ""),
-    ],
-    secondary=[],
-    category_filter="labour",
-),
-    TestCase(
-    "injured at workplace who pays compensation",
-    primary=[
-        ("Code On Security", "74"),
-    ],
-    secondary=[
-        ("Employees Compensation", "3"),
-    ],
-    category_filter="labour",
-),
- # ── Criminal ────────────────────────────────────────────────────────────
-
-TestCase(
-    "punishment for murder",
-    primary=[
-        ("Bharatiya Nyaya Sanhita", "103"),
-    ],
-    secondary=[],
-    category_filter="criminal",
-),
-
-TestCase(
-    "bail conditions in a theft case",
-    primary=[
-        ("Bharatiya Nagarik Suraksha Sanhita", "480"),
-    ],
-    secondary=[
-        ("Bharatiya Nagarik Suraksha Sanhita", "478"),
-    ],
-    category_filter="criminal",
-),
-
-TestCase(
-    "what happens when police file an FIR",
-    primary=[
-        ("Bharatiya Nagarik Suraksha Sanhita", "173"),
-    ],
-    secondary=[],
-    category_filter="criminal",
-),
-
-TestCase(
-    "caught with illegal drugs first time",
-    primary=[
-        ("Narcotic Drugs", ""),
-    ],
-    secondary=[],
-    category_filter="criminal",
-),
-
-TestCase(
-    "found carrying an unlicensed weapon",
-    primary=[
-        ("Arms Act", ""),
-    ],
-    secondary=[],
-    category_filter="criminal",
-),
-
-# ── Women & Child ───────────────────────────────────────────────────────
-
-TestCase(
-    "sexual harassment at workplace remedy",
-    primary=[
-        ("Sexual Harassment Of Women", "9"),
-    ],
-    secondary=[
-        ("Sexual Harassment Of Women", "11"),
-    ],
-    category_filter="women_child",
-),
-
-TestCase(
-    "wife harassed by husband legal remedy",
-    primary=[
-        ("Domestic Violence", "12"),
-    ],
-    secondary=[
-        ("Domestic Violence", "18"),
-    ],
-    category_filter="women_child",
-),
-
-TestCase(
-    "demanding dowry from bride's family",
-    primary=[
-        ("Dowry Prohibition", ""),
-    ],
-    secondary=[],
-    category_filter="women_child",
-),
-
-TestCase(
-    "child labour or child abuse complaint",
-    primary=[
-        ("Protection Of Children", ""),
-    ],
-    secondary=[
-        ("Juvenile Justice", ""),
-    ],
-    category_filter="women_child",
-),
-
-# ── Family ──────────────────────────────────────────────────────────────
-
-TestCase(
-    "grounds for divorce under hindu law",
-    primary=[
-        ("Hindu Marriage", "13"),
-    ],
-    secondary=[],
-    category_filter="family",
-),
-
-TestCase(
-    "inheritance rights of daughter in hindu family",
-    primary=[
-        ("Hindu Succession", ""),
-    ],
-    secondary=[],
-    category_filter="family",
-),
-
-TestCase(
-    "who can be appointed guardian of a minor child",
-    primary=[
-        ("Guardians and Wards", ""),
-    ],
-    secondary=[],
-    category_filter="family",
-),
-
-# ── Rights / Constitution ───────────────────────────────────────────────
-
-TestCase(
-    "right to free speech in india",
-    primary=[
-        ("Constitution", "19"),
-    ],
-    secondary=[],
-    category_filter="constitution",
-),
-
-TestCase(
-    "how to file an RTI application",
-    primary=[
-        ("Right To Information", "6"),
-    ],
-    secondary=[],
-    category_filter="rights",
-),
-
-TestCase(
-    "free legal aid for poor person",
-    primary=[
-        ("Legal Services Authorities", ""),
-    ],
-    secondary=[],
-    category_filter="rights",
-),
-
-    # ── Cyber ───────────────────────────────────────────────────────────────
-    TestCase(
-    "someone hacked my online account",
-    primary=[
-        ("Information Technology", "66"),
-        ("Information Technology", "66C"),
-    ],
-    secondary=[
-        ("Information Technology", "72"),
-    ],
-    category_filter="cyber",
-),
-    TestCase(
-    "fake profile created using my photos online",
-    primary=[
-        ("Information Technology", "66E"),
-    ],
-    secondary=[
-        ("Information Technology", "66D"),
-    ],
-    category_filter="cyber",
-),
-
-    # ── Transport ───────────────────────────────────────────────────────────
-# ── Transport ───────────────────────────────────────────────────────────
-
-TestCase(
-    "driving without a license penalty",
-    primary=[
-        ("Motor Vehicles", ""),
-    ],
-    secondary=[],
-    category_filter="transport",
-),
-
-TestCase(
-    "compensation after road accident",
-    primary=[
-        ("Motor Vehicles", "163"),
-    ],
-    secondary=[
-        ("Motor Vehicles", "161"),
-    ],
-    category_filter="transport",
-),
-
-# ── Social justice ──────────────────────────────────────────────────────
-
-TestCase(
-    "discrimination against scheduled caste person",
-    primary=[
-        ("Scheduled Castes", ""),
-    ],
-    secondary=[],
-    category_filter="social_justice",
-),
-
-TestCase(
-    "rights of a disabled person at workplace",
-    primary=[
-        ("Rights Of Persons With Disabilities", ""),
-    ],
-    secondary=[],
-    category_filter="social_justice",
-),
-
-TestCase(
-    "elderly parents not being taken care of by children",
-    primary=[
-        ("Maintenance and Welfare", ""),
-    ],
-    secondary=[],
-    category_filter="social_justice",
-),
-]
 
 def citation_matches(result: dict, expected_substr: str, expected_section: str) -> bool:
     act_name = result.get("act_name", "")
@@ -410,41 +48,36 @@ def run_case(case: TestCase, top_k: int) -> dict:
     )
     results = output["results"] if isinstance(output, dict) else output
 
-    primary_rank = None
-    secondary_rank = None
+    preferred_rank = None
+    acceptable_rank = None
 
     for i, r in enumerate(results, start=1):
 
-        # Look for a primary match first
-        if primary_rank is None:
-            for exp_act, exp_sec in case.primary:
+        # Preferred: single best answer
+        if preferred_rank is None and case.preferred is not None:
+            exp_act, exp_sec = case.preferred
+            if citation_matches(r, exp_act, exp_sec):
+                preferred_rank = i
+
+        # Acceptable: any citation in the acceptable set
+        if acceptable_rank is None:
+            for exp_act, exp_sec in case.acceptable:
                 if citation_matches(r, exp_act, exp_sec):
-                    primary_rank = i
+                    acceptable_rank = i
                     break
 
-        # Look for a secondary match
-        if secondary_rank is None:
-            for exp_act, exp_sec in case.secondary:
-                if citation_matches(r, exp_act, exp_sec):
-                    secondary_rank = i
-                    break
-
-        # Stop once we've found both
         if (
-            (primary_rank is not None or not case.primary)
-            and
-            (secondary_rank is not None or not case.secondary)
+            (preferred_rank is not None or case.preferred is None)
+            and acceptable_rank is not None
         ):
             break
 
-    # Duplicate-citation check
     seen = Counter(
         (r.get("act_name", ""), str(r.get("section_number", "")))
         for r in results
     )
     dupes = {k: v for k, v in seen.items() if v > 1}
 
-    # Category leakage check
     leaks = []
     if case.category_filter:
         leaks = [
@@ -456,8 +89,8 @@ def run_case(case: TestCase, top_k: int) -> dict:
     return {
         "case": case,
         "results": results,
-        "primary_rank": primary_rank,
-        "secondary_rank": secondary_rank,
+        "primary_rank": preferred_rank,
+        "secondary_rank": acceptable_rank,
         "dupes": dupes,
         "leaks": leaks,
     }
@@ -531,6 +164,16 @@ def main():
 
         if strict_rank is None:
             strict_failures.append((case, outcome))
+        
+        if strict_rank is None:
+            print(f'✗ {case.query}')
+            print(f'Expected: {case.preferred}')        
+        
+            for r in outcome["results"]:
+                print(
+                    f'   -> {r["citation"]} '
+                    f'({r["final_score"]:.3f})'
+                )
 
         if relaxed_rank == 1:
             relaxed_hit_at_1 += 1
@@ -592,7 +235,7 @@ def main():
         for case, _ in strict_failures:
             print(
                 f'  - "{case.query}" '
-                f'(primary={case.primary}, secondary={case.secondary})'
+                f'(preferred={case.preferred}, acceptable={case.acceptable})'   # was case.primary/case.secondary
             )
         print()
 

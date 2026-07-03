@@ -12,12 +12,10 @@ import json
 import numpy as np
 from pathlib import Path
 from ai_service.app.rag.embedder import get_model
-from ai_service.app.retrieval.semantic_router import semantic_route
 BASE_DIR = Path(__file__).resolve().parents[3]
 INTENT_PATH = BASE_DIR / "ai_service" / "app" / "rag" / "intent_index.json"
 
 QUERY_PREFIX = "Represent this query for retrieving relevant legal passages: "
-ROUTER_CONFIDENCE = 0.50
 
 class LegalIntentExpander:
 
@@ -58,7 +56,12 @@ class LegalIntentExpander:
             dtype=np.float32
         )
 
-    def expand(self, query: str) -> dict:
+    def match_intents(
+            self,
+            query: str,
+            category: str | None = None,
+            router_confidence: float = 1.0,
+        ) -> dict:
         """
         Score the query against all intents and return top matches.
 
@@ -87,20 +90,14 @@ class LegalIntentExpander:
         that pushes the query embedding in conflicting directions.
         """
 
-        route = semantic_route(query)
-
-        predicted_category = route["category"]
-        confidence = route["confidence"]
-        print(predicted_category, confidence)
-
-        # Use only intents from the predicted category if the router is confident.
-        if predicted_category and confidence >= ROUTER_CONFIDENCE:
+        if category and router_confidence >= 0.5:
             candidate_indices = [
                 i for i, intent in enumerate(self.intents)
-                if intent.get("category") == predicted_category
+                if intent["category"] == category
             ]
         else:
             candidate_indices = list(range(len(self.intents)))
+        
 
         print("Candidate intents:")
         for i in candidate_indices:
@@ -111,14 +108,18 @@ class LegalIntentExpander:
             normalize_embeddings=True
         )
 
+        
+        if len(candidate_indices) == 0:
+            return {"matched_intents": []}
         candidate_embeddings = self.intent_embeddings[candidate_indices]
-
+        
         scores = candidate_embeddings @ query_vec
-
+        if scores.size == 0:
+            return {"matched_intents": []}
         top_local_indices = np.argsort(scores)[::-1]
 
+
         best_score = float(scores[top_local_indices[0]])
-        
         # Collect ALL intents above threshold first, THEN truncate to top-2.
         # The old code interleaved truncation with collection, causing
         # non-deterministic results depending on loop iteration order.
@@ -158,34 +159,7 @@ class LegalIntentExpander:
         print("\nMatched intents:")
         for m in matched_intents:
             print(f"{m['intent']} ({m['score']:.4f})")
-        return {"matched_intents": matched_intents,
-                "category": predicted_category,
-                "confidence": confidence}
     
-
-#def main():
-#    expander = LegalIntentExpander()
-#
-#    queries = [
-#      #  "wife harassed by husband",
-#      #  "shopkeeper selling above mrp",
-#      #  "how to file rti",
-#      #  "employee not paid salary",
-#       # "husband asking for dowry",
-#       # "boss touching me at office",
-#        "fake shopping website took my money",
-#        #"tenant not getting security deposit",
-#        #"cyber fraud through UPI",
-#        #"divorce due to cruelty",
-#        #"child sexually abused"
-#        "amazon delivered the wrong product",
-#        "i paid through a fake website and lost 5000"
-#    ]
-#
-#    for query in queries:
-#        print(f"\nQuery: {query}")
-#        expander.expand(query)
-#
-#
-#if __name__ == "__main__":
-#    main()
+        return {
+    "matched_intents": matched_intents
+}
