@@ -11,11 +11,8 @@ venv/
 
 # Vector DB
 chroma_db/
-datasets/raw_pdfs
-# Data artifacts
-ai-service/app/data/vector_store.pkl
-ai-service/app/data/ingested_files.json
-ai-service/app/data/embedding_cache.pkl
+datasets/raw_pdfs/
+ai_service/app/data/
 # OS/editor
 .DS_Store
 .vscode/
