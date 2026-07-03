@@ -9,18 +9,17 @@ __pycache__/
 venv/
 .env
 
-# Vector DB
-chroma_db/
+# Raw source documents
 datasets/raw_pdfs/
+
+# Generated RAG data
 ai_service/app/data/
-# OS/editor
-.DS_Store
-.vscode/
-.idea/venv/
-__pycache__/
-*.pyc
-ai-service/venv/
-__pycache__/
-*.pyc
+chroma_db/
 ai_service/app/data/chroma/
-ai_service_app/rag/suggesstion.txt
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+#
