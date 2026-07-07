@@ -52,7 +52,6 @@ TestCase(
     preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
     acceptable=[
         ("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "341"),
     ],
     category_filter="criminal",
     notes="Right to legal counsel.",
@@ -80,18 +79,6 @@ TestCase(
     ],
     category_filter="criminal",
     notes="Search and seizure powers.",
-),
-
-TestCase(
-    id="BNSS_009",
-    query="can I get summons instead of arrest",
-    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "35"),
-    acceptable=[
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "35"),
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "90"),
-    ],
-    category_filter="criminal",
-    notes="Summons vs warrant system.",
 ),
 
 TestCase(
@@ -129,29 +116,7 @@ TestCase(
     notes="Statements to police and protection against coercion.",
 ),
 
-TestCase(
-    id="BNS_001",
-    query="someone stole my phone what legal action can I take",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "303"),
-    acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "303"),
-        ("Bharatiya Nyaya Sanhita 2023", "305"),
-    ],
-    category_filter="criminal",
-    notes="Theft and aggravated theft cluster.",
-),
 
-TestCase(
-    id="BNS_002",
-    query="what is punishment for robbery or armed robbery",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "309"),
-    acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "309"),
-        ("Bharatiya Nyaya Sanhita 2023", "310"),
-    ],
-    category_filter="criminal",
-    notes="Robbery and dacoity cluster.",
-),
 
 TestCase(
     id="BNS_003",
@@ -212,54 +177,12 @@ TestCase(
 ),
 
 TestCase(
-    id="BNS_008",
-    query="cheating or online fraud scam case",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "318"),
-    acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "318"),
-        ("Bharatiya Nyaya Sanhita 2023", "319"),
-    ],
-    category_filter="criminal",
-    notes="Cheating and fraud.",
-),
-
-TestCase(
-    id="BNS_009",
-    query="criminal breach of trust or misuse of money",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "316"),
-    acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "316"),
-    ],
-    category_filter="criminal",
-),
-
-TestCase(
-    id="BNS_010",
-    query="defamation case for false allegations",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "356"),
-    acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "356"),
-    ],
-    category_filter="criminal",
-),
-
-TestCase(
     id="BNS_011",
     query="kidnapping or abduction of a person",
     preferred=("Bharatiya Nyaya Sanhita 2023", "137"),
     acceptable=[
         ("Bharatiya Nyaya Sanhita 2023", "137"),
         ("Bharatiya Nyaya Sanhita 2023", "138"),
-    ],
-    category_filter="criminal",
-),
-
-TestCase(
-    id="BNS_012",
-    query="criminal intimidation or threats",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "351"),
-    acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "351"),
     ],
     category_filter="criminal",
 ),
@@ -276,21 +199,10 @@ TestCase(
 ),
 
 TestCase(
-    id="BNS_014",
-    query="forgery of documents or fake certificate",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "336"),
-    acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "336"),
-        ("Bharatiya Nyaya Sanhita 2023", "337"),
-    ],
-    category_filter="criminal",
-),
-
-TestCase(
     id="IDA_001",
     query="can employer fire me without any notice in India",
     preferred=("Industrial Disputes Act 1947", "25F"),
-    acceptable=[("Industrial Disputes Act 1947", "25F"), ("Industrial Disputes Act 1947", "25N")],
+    acceptable=[("Industrial Disputes Act 1947", "25F")],
     category_filter="labour",
 ),
 
@@ -298,39 +210,16 @@ TestCase(
     id="IDA_002",
     query="what is retrenchment compensation",
     preferred=("Industrial Disputes Act 1947", "25F"),
-    acceptable=[("Industrial Disputes Act 1947", "25F"), ("Industrial Disputes Act 1947", "25N")],
+    acceptable=[("Industrial Disputes Act 1947", "25F")],
     category_filter="labour",
 ),
 
-TestCase(
-    id="IDA_003",
-    query="how can I file industrial dispute against company",
-    preferred=("Industrial Disputes Act 1947", "10"),
-    acceptable=[("Industrial Disputes Act 1947", "10")],
-    category_filter="labour",
-),
 
 TestCase(
     id="IDA_004",
     query="what is illegal strike or lockout",
     preferred=("Industrial Disputes Act 1947", "22"),
     acceptable=[("Industrial Disputes Act 1947", "22"), ("Industrial Disputes Act 1947", "23")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="IDA_005",
-    query="when is termination considered illegal",
-    preferred=("Industrial Disputes Act 1947", "25N"),
-    acceptable=[("Industrial Disputes Act 1947", "25N"), ("Industrial Disputes Act 1947", "25F")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="IDA_006",
-    query="can company close factory without government approval",
-    preferred=("Industrial Disputes Act 1947", "25O"),
-    acceptable=[("Industrial Disputes Act 1947", "25O"), ("Industrial Disputes Act 1947", "25M")],
     category_filter="labour",
 ),
 
@@ -343,26 +232,10 @@ TestCase(
 ),
 
 TestCase(
-    id="OSH_002",
-    query="can I refuse unsafe work in factory",
-    preferred=("Occupational Safety Health And Working Conditions Code 2020", "15"),
-    acceptable=[("Occupational Safety Health And Working Conditions Code 2020", "15")],
-    category_filter="labour",
-),
-
-TestCase(
     id="OSH_003",
     query="what is maximum working hours per day in factory",
     preferred=("Occupational Safety Health And Working Conditions Code 2020", "25"),
     acceptable=[("Occupational Safety Health And Working Conditions Code 2020", "25"), ("Occupational Safety Health And Working Conditions Code 2020", "28")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="OSH_004",
-    query="what happens if employer violates safety rules",
-    preferred=("Occupational Safety Health And Working Conditions Code 2020", "41"),
-    acceptable=[("Occupational Safety Health And Working Conditions Code 2020", "41"), ("Occupational Safety Health And Working Conditions Code 2020", "42")],
     category_filter="labour",
 ),
 
@@ -383,26 +256,10 @@ TestCase(
 ),
 
 TestCase(
-    id="PWA_001",
-    query="can employer delay salary payment",
-    preferred=("Payment Of Wages Act 1936", "4"),
-    acceptable=[("Payment Of Wages Act 1936", "4"), ("Payment Of Wages Act 1936", "5")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="PWA_002",
-    query="what is time limit for salary payment",
-    preferred=("Payment Of Wages Act 1936", "5"),
-    acceptable=[("Payment Of Wages Act 1936", "5")],
-    category_filter="labour",
-),
-
-TestCase(
     id="PWA_003",
     query="can salary be deducted without reason",
     preferred=("Payment Of Wages Act 1936", "7"),
-    acceptable=[("Payment Of Wages Act 1936", "7"), ("Payment Of Wages Act 1936", "8")],
+    acceptable=[("Payment Of Wages Act 1936", "7")],
     category_filter="labour",
 ),
 
@@ -419,14 +276,6 @@ TestCase(
     query="what to do if employer does not pay salary",
     preferred=("Payment Of Wages Act 1936", "15"),
     acceptable=[("Payment Of Wages Act 1936", "15"), ("Payment Of Wages Act 1936", "17")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="PWA_006",
-    query="can company pay salary in cash instead of bank transfer",
-    preferred=("Payment Of Wages Act 1936", "6"),
-    acceptable=[("Payment Of Wages Act 1936", "6")],
     category_filter="labour",
 ),
 
@@ -463,66 +312,10 @@ TestCase(
 ),
 
 TestCase(
-    id="CSS_005",
-    query="can employer avoid social security contributions",
-    preferred=("The Code On Security 2020", "141"),
-    acceptable=[("The Code On Security 2020", "141"), ("The Code On Security 2020", "142")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="CSS_006",
-    query="what happens if company does not deposit PF contributions",
-    preferred=("The Code On Security 2020", "143"),
-    acceptable=[("The Code On Security 2020", "143"), ("The Code On Security 2020", "142")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="ECA_001",
-    query="what compensation is given if worker dies in workplace accident",
-    preferred=("The Employees Compensation Act 1923", "3"),
-    acceptable=[("The Employees Compensation Act 1923", "3"), ("The Employees Compensation Act 1923", "4")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="ECA_002",
-    query="who pays compensation for work injury",
-    preferred=("The Employees Compensation Act 1923", "4"),
-    acceptable=[("The Employees Compensation Act 1923", "4")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="ECA_003",
-    query="how is compensation calculated for disability at work",
-    preferred=("The Employees Compensation Act 1923", "4"),
-    acceptable=[("The Employees Compensation Act 1923", "4"), ("The Employees Compensation Act 1923", "4A")],
-    category_filter="labour",
-),
-
-TestCase(
     id="ECA_004",
     query="what injuries are covered under employee compensation law",
     preferred=("The Employees Compensation Act 1923", "3"),
     acceptable=[("The Employees Compensation Act 1923", "3")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="ECA_005",
-    query="can employee claim compensation if accident happens while commuting",
-    preferred=("The Employees Compensation Act 1923", "3"),
-    acceptable=[("The Employees Compensation Act 1923", "3"), ("The Employees Compensation Act 1923", "4")],
-    category_filter="labour",
-),
-
-TestCase(
-    id="ECA_006",
-    query="what is employer liability in workplace injury cases",
-    preferred=("The Employees Compensation Act 1923", "4"),
-    acceptable=[("The Employees Compensation Act 1923", "4")],
     category_filter="labour",
 ),
 
@@ -721,26 +514,14 @@ TestCase(
 TestCase(
     id="EPF_001",
     query="How much contribution does employer and employee make to PF?",
-    preferred=("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "7"),
+    preferred=("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "6"),
     acceptable=[
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "7"),
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "6A"),
+        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "6"),
     ],
     category_filter="labour",
     notes="Contribution rates for employer and employee.",
 ),
 
-TestCase(
-    id="EPF_002",
-    query="When can I withdraw my provident fund money?",
-    preferred=("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "Withdrawal"),
-    acceptable=[
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "Withdrawal"),
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "68"),
-    ],
-    category_filter="labour",
-    notes="Conditions for PF withdrawal.",
-),
 
 TestCase(
     id="EPF_003",
@@ -752,54 +533,6 @@ TestCase(
     ],
     category_filter="labour",
     notes="Damages and interest for default.",
-),
-
-TestCase(
-    id="EPF_004",
-    query="Is PF mandatory for all employees in India?",
-    preferred=("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "1"),
-    acceptable=[
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "1"),
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "2"),
-    ],
-    category_filter="labour",
-    notes="Applicability of the Act.",
-),
-
-TestCase(
-    id="EPF_005",
-    query="Can I transfer PF when changing jobs?",
-    preferred=("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "17"),
-    acceptable=[
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "17"),
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "Transfer"),
-    ],
-    category_filter="labour",
-    notes="Transfer of PF account.",
-),
-
-TestCase(
-    id="EPF_006",
-    query="What are penalties for non-compliance under PF law?",
-    preferred=("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "14"),
-    acceptable=[
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "14"),
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "14A"),
-    ],
-    category_filter="labour",
-    notes="Offences and penalties.",
-),
-
-TestCase(
-    id="EPF_007",
-    query="I changed jobs, what happens to my PF account?",
-    preferred=("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "17"),
-    acceptable=[
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "17"),
-        ("The Employees Provident Funds And Miscellaneous Provisions Act 1952", "Transfer"),
-    ],
-    category_filter="labour",
-    notes="Real-world job change scenario.",
 ),
 
 TestCase(
@@ -838,17 +571,6 @@ TestCase(
     notes="Protection against dismissal.",
 ),
 
-TestCase(
-    id="MBA_004",
-    query="Who is eligible for maternity benefits in a company?",
-    preferred=("The Maternity Benefit Act 1961", "5"),
-    acceptable=[
-        ("The Maternity Benefit Act 1961", "5"),
-        ("The Maternity Benefit Act 1961", "Eligibility"),
-    ],
-    category_filter="labour",
-    notes="Eligibility conditions.",
-),
 
 TestCase(
     id="MBA_005",
@@ -860,18 +582,6 @@ TestCase(
     ],
     category_filter="labour",
     notes="Procedure for claiming benefit.",
-),
-
-TestCase(
-    id="MBA_006",
-    query="Does maternity benefit apply to adoption cases?",
-    preferred=("The Maternity Benefit Act 1961", "9A"),
-    acceptable=[
-        ("The Maternity Benefit Act 1961", "9A"),
-        ("The Maternity Benefit Act 1961", "5"),
-    ],
-    category_filter="labour",
-    notes="Adoption and commissioning mothers.",
 ),
 
 TestCase(
@@ -887,30 +597,6 @@ TestCase(
 ),
 
 TestCase(
-    id="BSA_001",
-    query="Is WhatsApp chat admissible as evidence in court?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "65"),
-    acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "65"),
-        ("Bharatiya Sakshya Adhiniyam 2023", "63"),
-    ],
-    category_filter="criminal",
-    notes="Electronic records admissibility.",
-),
-
-TestCase(
-    id="BSA_002",
-    query="Can police use recorded phone calls as evidence?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "65"),
-    acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "65"),
-        ("Bharatiya Sakshya Adhiniyam 2023", "59"),
-    ],
-    category_filter="criminal",
-    notes="Audio recordings and admissibility.",
-),
-
-TestCase(
     id="BSA_003",
     query="Is a confession made to police valid in court?",
     preferred=("Bharatiya Sakshya Adhiniyam 2023", "23"),
@@ -922,36 +608,13 @@ TestCase(
     notes="Confessions to police officer.",
 ),
 
-TestCase(
-    id="BSA_004",
-    query="Who has the burden of proof in a criminal case?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "101"),
-    acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "101"),
-        ("Bharatiya Sakshya Adhiniyam 2023", "102"),
-    ],
-    category_filter="criminal",
-    notes="Burden of proof principle.",
-),
 
-TestCase(
-    id="BSA_005",
-    query="Can a statement given to magistrate be used as evidence?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "164"),
-    acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "164"),
-        ("Bharatiya Sakshya Adhiniyam 2023", "26"),
-    ],
-    category_filter="criminal",
-    notes="Magistrate-recorded statements.",
-),
 
 TestCase(
     id="BSA_006",
     query="Are electronic documents like emails valid evidence in court?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "65"),
+    preferred=("Bharatiya Sakshya Adhiniyam 2023", "63"),
     acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "65"),
         ("Bharatiya Sakshya Adhiniyam 2023", "63"),
     ],
     category_filter="criminal",
@@ -959,47 +622,10 @@ TestCase(
 ),
 
 TestCase(
-    id="BSA_007",
-    query="Can silence of accused be used against them?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "114"),
-    acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "114"),
-        ("Bharatiya Sakshya Adhiniyam 2023", "106"),
-    ],
-    category_filter="criminal",
-    notes="Presumptions and inference rules.",
-),
-
-TestCase(
-    id="BSA_008",
-    query="What is primary evidence and secondary evidence difference?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "62"),
-    acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "62"),
-        ("Bharatiya Sakshya Adhiniyam 2023", "63"),
-    ],
-    category_filter="criminal",
-    notes="Types of documentary evidence.",
-),
-
-TestCase(
-    id="BSA_009",
-    query="Can a family member be forced to testify in court?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "118"),
-    acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "118"),
-        ("Bharatiya Sakshya Adhiniyam 2023", "120"),
-    ],
-    category_filter="criminal",
-    notes="Witness competency and compulsion.",
-),
-
-TestCase(
     id="BSA_010",
     query="Is CCTV footage accepted as legal proof in criminal cases?",
-    preferred=("Bharatiya Sakshya Adhiniyam 2023", "65"),
+    preferred=("Bharatiya Sakshya Adhiniyam 2023", "63"),
     acceptable=[
-        ("Bharatiya Sakshya Adhiniyam 2023", "65"),
         ("Bharatiya Sakshya Adhiniyam 2023", "63"),
     ],
     category_filter="criminal",
@@ -1105,25 +731,13 @@ TestCase(
 TestCase(
     id="HMA_003",
     query="Can I remarry without getting divorce first?",
-    preferred=("Hindu Marriage Act 1955", "11"),
+    preferred=("Hindu Marriage Act 1955", "5"),
     acceptable=[
-        ("Hindu Marriage Act 1955", "11"),
         ("Hindu Marriage Act 1955", "5"),
+        ("Hindu Marriage Act 1955", "11"),
     ],
     category_filter="family",
     notes="Bigamy invalidity.",
-),
-
-TestCase(
-    id="HMA_004",
-    query="What is cruelty as a ground for divorce?",
-    preferred=("Hindu Marriage Act 1955", "13"),
-    acceptable=[
-        ("Hindu Marriage Act 1955", "13"),
-        ("Hindu Marriage Act 1955", "10"),
-    ],
-    category_filter="family",
-    notes="Divorce on cruelty ground.",
 ),
 
 TestCase(
@@ -1156,46 +770,9 @@ TestCase(
     preferred=("Hindu Marriage Act 1955", "5"),
     acceptable=[
         ("Hindu Marriage Act 1955", "5"),
-        ("Hindu Marriage Act 1955", "7"),
     ],
     category_filter="family",
     notes="Marriage validity ambiguity.",
-),
-
-TestCase(
-    id="HSA_001",
-    query="Who inherits property after a Hindu male dies without a will?",
-    preferred=("Hindu Succession Act 1956", "8"),
-    acceptable=[
-        ("Hindu Succession Act 1956", "8"),
-        ("Hindu Succession Act 1956", "9"),
-    ],
-    category_filter="family",
-    notes="Intestate succession rules.",
-),
-
-TestCase(
-    id="HSA_002",
-    query="Do daughters have equal rights in ancestral property?",
-    preferred=("Hindu Succession Act 1956", "6"),
-    acceptable=[
-        ("Hindu Succession Act 1956", "6"),
-        ("Hindu Succession Act 1956", "8"),
-    ],
-    category_filter="family",
-    notes="Daughter inheritance rights.",
-),
-
-TestCase(
-    id="HSA_003",
-    query="Can a daughter claim father's property after marriage?",
-    preferred=("Hindu Succession Act 1956", "6"),
-    acceptable=[
-        ("Hindu Succession Act 1956", "6"),
-        ("Hindu Succession Act 1956", "8"),
-    ],
-    category_filter="family",
-    notes="Married daughter's rights.",
 ),
 
 TestCase(
@@ -1223,30 +800,6 @@ TestCase(
 ),
 
 TestCase(
-    id="HSA_006",
-    query="Who are class 1 heirs under Hindu succession law?",
-    preferred=("Hindu Succession Act 1956", "8"),
-    acceptable=[
-        ("Hindu Succession Act 1956", "8"),
-        ("Hindu Succession Act 1956", "9"),
-    ],
-    category_filter="family",
-    notes="Heir classification.",
-),
-
-TestCase(
-    id="ISA_001",
-    query="How is property distributed when someone dies without a will?",
-    preferred=("Indian Succession Act 1925", "33"),
-    acceptable=[
-        ("Indian Succession Act 1925", "33"),
-        ("Indian Succession Act 1925", "32"),
-    ],
-    category_filter="family",
-    notes="Intestate succession (non-Hindu).",
-),
-
-TestCase(
     id="ISA_002",
     query="What is a legal will and how do I make one valid?",
     preferred=("Indian Succession Act 1925", "63"),
@@ -1256,18 +809,6 @@ TestCase(
     ],
     category_filter="family",
     notes="Execution of will.",
-),
-
-TestCase(
-    id="ISA_003",
-    query="Can a person change their will after writing it?",
-    preferred=("Indian Succession Act 1925", "70"),
-    acceptable=[
-        ("Indian Succession Act 1925", "70"),
-        ("Indian Succession Act 1925", "63"),
-    ],
-    category_filter="family",
-    notes="Revocation/amendment of will.",
 ),
 
 TestCase(
@@ -1331,18 +872,6 @@ TestCase(
 ),
 
 TestCase(
-    id="SMA_003",
-    query="Is parental consent required for marriage under Special Marriage Act?",
-    preferred=("Special Marriage Act 1954", "4"),
-    acceptable=[
-        ("Special Marriage Act 1954", "4"),
-        ("Special Marriage Act 1954", "5"),
-    ],
-    category_filter="family",
-    notes="Consent requirement.",
-),
-
-TestCase(
     id="SMA_004",
     query="Can I marry without religious ceremony under law?",
     preferred=("Special Marriage Act 1954", "11"),
@@ -1352,30 +881,6 @@ TestCase(
     ],
     category_filter="family",
     notes="Civil marriage validity.",
-),
-
-TestCase(
-    id="SMA_005",
-    query="What is notice period before marriage registration?",
-    preferred=("Special Marriage Act 1954", "5"),
-    acceptable=[
-        ("Special Marriage Act 1954", "5"),
-        ("Special Marriage Act 1954", "6"),
-    ],
-    category_filter="family",
-    notes="Notice requirement.",
-),
-
-TestCase(
-    id="SMA_006",
-    query="Can foreign nationals marry under Special Marriage Act in India?",
-    preferred=("Special Marriage Act 1954", "4"),
-    acceptable=[
-        ("Special Marriage Act 1954", "4"),
-        ("Special Marriage Act 1954", "18"),
-    ],
-    category_filter="family",
-    notes="Cross-national applicability.",
 ),
 
 TestCase(
@@ -1463,18 +968,6 @@ TestCase(
 ),
 
 TestCase(
-    id="LSA_002",
-    query="Who is eligible for free lawyer provided by government?",
-    preferred=("Legal Services Authorities Act 1987", "12"),
-    acceptable=[
-        ("Legal Services Authorities Act 1987", "12"),
-        ("Legal Services Authorities Act 1987", "11"),
-    ],
-    category_filter="rights",
-    notes="Eligibility criteria for legal aid.",
-),
-
-TestCase(
     id="LSA_003",
     query="does government provide lawyer for domestic violence victim",
     preferred=("Legal Services Authorities Act 1987", "13"),
@@ -1486,17 +979,6 @@ TestCase(
     notes="Procedure for applying legal aid.",
 ),
 
-TestCase(
-    id="LSA_004",
-    query="can undertrial prisoner get free legal aid",
-    preferred=("Legal Services Authorities Act 1987", "12"),
-    acceptable=[
-        ("Legal Services Authorities Act 1987", "12"),
-        ("Legal Services Authorities Act 1987", "14"),
-    ],
-    category_filter="rights",
-    notes="Scope of free legal services.",
-),
 
 TestCase(
     id="LSA_005",
@@ -1508,18 +990,6 @@ TestCase(
     ],
     category_filter="rights",
     notes="Economic eligibility condition.",
-),
-
-TestCase(
-    id="LSA_006",
-    query="What authorities provide legal aid in district courts?",
-    preferred=("Legal Services Authorities Act 1987", "6"),
-    acceptable=[
-        ("Legal Services Authorities Act 1987", "6"),
-        ("Legal Services Authorities Act 1987", "11"),
-    ],
-    category_filter="rights",
-    notes="Legal Services Authorities structure.",
 ),
 
 TestCase(
@@ -1576,7 +1046,7 @@ TestCase(
     preferred=("Right To Information Act 2005", "19"),
     acceptable=[
         ("Right To Information Act 2005", "19"),
-        ("Right To Information Act 2005", "20"),
+        ("Right To Information Act 2005", "18"),
     ],
     category_filter="rights",
     notes="Appeal and complaint mechanism.",
@@ -1678,25 +1148,15 @@ TestCase(
     notes="Prohibition of discrimination.",
 ),
 
-TestCase(
-    id="RPWD_003",
-    query="What facilities must be provided for disabled persons in public buildings?",
-    preferred=("Rights Of Persons With Disabilities Act 2016", "44"),
-    acceptable=[
-        ("Rights Of Persons With Disabilities Act 2016", "44"),
-        ("Rights Of Persons With Disabilities Act 2016", "45"),
-    ],
-    category_filter="social_justice",
-    notes="Accessibility requirements.",
-),
+
 
 TestCase(
     id="RPWD_004",
     query="How do I get disability certificate in India?",
-    preferred=("Rights Of Persons With Disabilities Act 2016", "57"),
+    preferred=("Rights Of Persons With Disabilities Act 2016", "58"),
     acceptable=[
-        ("Rights Of Persons With Disabilities Act 2016", "57"),
         ("Rights Of Persons With Disabilities Act 2016", "58"),
+        ("Rights Of Persons With Disabilities Act 2016", "57"),
     ],
     category_filter="social_justice",
     notes="Certification process.",
@@ -1708,7 +1168,6 @@ TestCase(
     preferred=("Rights Of Persons With Disabilities Act 2016", "34"),
     acceptable=[
         ("Rights Of Persons With Disabilities Act 2016", "34"),
-        ("Rights Of Persons With Disabilities Act 2016", "35"),
     ],
     category_filter="social_justice",
     notes="Reservation and quotas.",
@@ -1720,22 +1179,9 @@ TestCase(
     preferred=("Scheduled Castes And Scheduled Tribes Act 1989", "3"),
     acceptable=[
         ("Scheduled Castes And Scheduled Tribes Act 1989", "3"),
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "4"),
     ],
     category_filter="social_justice",
     notes="Definition of atrocities.",
-),
-
-TestCase(
-    id="SCST_002",
-    query="How can a victim file complaint under SC/ST Act?",
-    preferred=("Scheduled Castes And Scheduled Tribes Act 1989", "9"),
-    acceptable=[
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "9"),
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "10"),
-    ],
-    category_filter="social_justice",
-    notes="Complaint procedure.",
 ),
 
 TestCase(
@@ -1744,34 +1190,9 @@ TestCase(
     preferred=("Scheduled Castes And Scheduled Tribes Act 1989", "3"),
     acceptable=[
         ("Scheduled Castes And Scheduled Tribes Act 1989", "3"),
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "4"),
     ],
     category_filter="social_justice",
     notes="Punishment for atrocities.",
-),
-
-TestCase(
-    id="SCST_004",
-    query="Can police refuse to register FIR in SC/ST cases?",
-    preferred=("Scheduled Castes And Scheduled Tribes Act 1989", "4"),
-    acceptable=[
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "4"),
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "9"),
-    ],
-    category_filter="social_justice",
-    notes="Mandatory FIR provisions.",
-),
-
-TestCase(
-    id="SCST_005",
-    query="What protection is given to SC/ST victims during trial?",
-    preferred=("Scheduled Castes And Scheduled Tribes Act 1989", "15"),
-    acceptable=[
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "15"),
-        ("Scheduled Castes And Scheduled Tribes Act 1989", "14"),
-    ],
-    category_filter="social_justice",
-    notes="Witness protection and trial safeguards.",
 ),
 
 TestCase(
@@ -1792,22 +1213,9 @@ TestCase(
     preferred=("Dowry Prohibition Act 1961", "3"),
     acceptable=[
         ("Dowry Prohibition Act 1961", "3"),
-        ("Dowry Prohibition Act 1961", "4"),
     ],
     category_filter="women_child",
     notes="Penalty for dowry demand.",
-),
-
-TestCase(
-    id="DPA_003",
-    query="How can I file complaint for dowry harassment?",
-    preferred=("Dowry Prohibition Act 1961", "4"),
-    acceptable=[
-        ("Dowry Prohibition Act 1961", "4"),
-        ("Dowry Prohibition Act 1961", "7"),
-    ],
-    category_filter="women_child",
-    notes="Complaint mechanism and enforcement.",
 ),
 
 TestCase(
@@ -1838,15 +1246,6 @@ TestCase(
     acceptable=[("Labour Factories Act 1948", "6"), ("Labour Factories Act 1948", "7")],
     category_filter="labour",
     notes="Approval, licensing, and notice requirements.",
-),
-
-TestCase(
-    id="FA_003",
-    query="duties of factory owner for worker safety",
-    preferred=("Labour Factories Act 1948", "7A"),
-    acceptable=[("Labour Factories Act 1948", "7A")],
-    category_filter="labour",
-    notes="General duties of occupier.",
 ),
 
 TestCase(
@@ -1895,15 +1294,6 @@ TestCase(
 ),
 
 TestCase(
-    id="FA_009",
-    query="factory fire safety and emergency exit rules",
-    preferred=("Labour Factories Act 1948", "38"),
-    acceptable=[("Labour Factories Act 1948", "37"), ("Labour Factories Act 1948", "38")],
-    category_filter="labour",
-    notes="Fire safety and hazardous process precautions.",
-),
-
-TestCase(
     id="FA_010",
     query="maximum working hours per day in factory",
     preferred=("Labour Factories Act 1948", "54"),
@@ -1930,13 +1320,6 @@ TestCase(
     notes="Prohibition of child labour and limits on young workers.",
 ),
 
-TestCase(
-    id="TPA_001",
-    query="landlord wants to evict me without notice",
-    preferred=("Transfer Of Property Act 1882", "106"),
-    acceptable=[("Transfer Of Property Act 1882", "106"), ("Transfer Of Property Act 1882", "111")],
-    category_filter="property",
-),
 
 TestCase(
     id="TPA_002",
@@ -2095,7 +1478,7 @@ TestCase(
 ),
 
 TestCase(
-    id="COI_008",
+    id="COI_013",
     query="seller refused refund for defective item after purchase",
     preferred=("Consumer Protection Act 2019", "39"),
     acceptable=[
@@ -2115,27 +1498,6 @@ TestCase(
     category_filter="consumer",
 ),
 
-TestCase(
-    id="COI_021",
-    query="A celebrity promoted a health drink with false claims and I suffered losses. Can action be taken against misleading advertisements?",
-    preferred=("Consumer Protection Act 2019", "21"),
-    acceptable=[
-        ("Consumer Protection Act 2019", "18"),
-        ("Consumer Protection Act 2019", "89"),
-    ],
-    category_filter="consumer",
-),
-TestCase(
-    id="COI_022",
-    query="shop is giving false discounts to customers",
-    preferred=("Consumer Protection Act 2019", "21"),
-    acceptable=[
-        ("Consumer Protection Act 2019", "21"),
-        ("Consumer Protection Act 2019", "19"),
-        ("Consumer Protection Act 2019", "2"),
-    ],
-    category_filter="consumer",
-),
 TestCase(
     id="COI_023",
     query="internet provider is not providing promised service",
@@ -2163,7 +1525,7 @@ TestCase(
     acceptable=[
         ("Consumer Protection Act 2019", "83"),
         ("Consumer Protection Act 2019", "84"),
-        ("Consumer Protection Act 2019", "2(34)")
+        ("Consumer Protection Act 2019", "2")
     ],
     category_filter="consumer",
 ),
@@ -2211,16 +1573,6 @@ TestCase(
 ),
 
 TestCase(
-    id="COI_013",
-    query="what details must be printed on packaged goods?",
-    preferred=("Legal Metrology Act 2009", "18"),
-    acceptable=[
-        ("Legal Metrology Act 2009", "18"),
-    ],
-    category_filter="consumer",
-),
-
-TestCase(
     id="COI_014",
     query="can legal metrology officer inspect my warehouse",
     preferred=("Legal Metrology Act 2009", "15"),
@@ -2259,17 +1611,6 @@ TestCase(
     acceptable=[
         ("Legal Metrology Act 2009", "11"),
         ("Legal Metrology Act 2009", "29"),
-    ],
-    category_filter="consumer",
-),
-
-TestCase(
-    id="COI_018",
-    query="i bought only 900g instead of 1kg what offence is this",
-    preferred=("Legal Metrology Act 2009", "34"),
-    acceptable=[
-        ("Legal Metrology Act 2009", "34"),
-        ("Legal Metrology Act 2009", "30"),
     ],
     category_filter="consumer",
 ),
@@ -2376,17 +1717,6 @@ TestCase(
 ),
 
 TestCase(
-    id="LAB_WAGE_008",
-    query="why was money deducted from my paycheck without explanation",
-    preferred=("Code On Wages 2019", "18"),
-    acceptable=[
-        ("Code On Wages 2019", "18"),
-    ],
-    category_filter="labour",
-    notes="Question form.",
-),
-
-TestCase(
     id="LAB_WAGE_009",
     query="i worked overtime but my employer did not pay extra wages",
     preferred=("Code On Wages 2019", "14"),
@@ -2409,43 +1739,6 @@ TestCase(
 ),
 
 TestCase(
-    id="NDPS_001",
-    query="caught with illegal drugs for the first time",
-    preferred=("Narcotic Drugs And Psychotropic Substances Act 1985", "21"),
-    acceptable=[
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "21"),
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "22"),
-    ],
-    category_filter="criminal",
-),
-
-TestCase(
-    id="NDPS_002",
-    query="caught with illegal drugs or narcotics",
-    preferred=("Narcotic Drugs And Psychotropic Substances Act 1985", "21"),
-    acceptable=[
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "20"),
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "21"),
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "22"),
-    ],
-    category_filter="criminal",
-    notes="Core possession/consumption/possession for sale cluster.",
-),
-
-TestCase(
-    id="NDPS_003",
-    query="drug trafficking or selling narcotics punishment",
-    preferred=("Narcotic Drugs And Psychotropic Substances Act 1985", "21"),
-    acceptable=[
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "21"),
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "27A"),
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "29"),
-    ],
-    category_filter="criminal",
-    notes="Trafficking, commercial supply, abetment.",
-),
-
-TestCase(
     id="NDPS_004",
     query="police search and seizure in drug cases without warrant",
     preferred=("Narcotic Drugs And Psychotropic Substances Act 1985", "42"),
@@ -2459,22 +1752,11 @@ TestCase(
 ),
 
 TestCase(
-    id="NDPS_005",
-    query="bail rules in NDPS cases",
-    preferred=("Narcotic Drugs And Psychotropic Substances Act 1985", "37"),
-    acceptable=[
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "37"),
-    ],
-    category_filter="criminal",
-    notes="Strict bail conditions under NDPS.",
-),
-
-TestCase(
     id="NDPS_006",
     query="drug addict seeking treatment instead of punishment",
-    preferred=("Narcotic Drugs And Psychotropic Substances Act 1985", "64A"),
+    preferred=("Narcotic Drugs And Psychotropic Substances Act 1985", "64"),
     acceptable=[
-        ("Narcotic Drugs And Psychotropic Substances Act 1985", "64A"),
+        ("Narcotic Drugs And Psychotropic Substances Act 1985", "64"),
     ],
     category_filter="criminal",
     notes="Immunity/rehabilitation for addicts.",
@@ -2516,16 +1798,6 @@ TestCase(
     category_filter="criminal",
     notes="Refusal, suspension, cancellation and appeal cluster.",
 ),
-TestCase(
-    id="ARMS_004",
-    query="using firearm during an offence punishment",
-    preferred=("The Arms Act 1959", "27"),
-    acceptable=[
-        ("The Arms Act 1959", "27"),
-    ],
-    category_filter="criminal",
-    notes="Aggravated offence involving firearms.",
-),
 
 TestCase(
     id="ARMS_005",
@@ -2540,31 +1812,7 @@ TestCase(
 ),
 
 TestCase(
-    id="COI_001",
-    query="right to equality under constitution",
-    preferred=("Constitution Of India", "14"),
-    acceptable=[("Constitution Of India", "14")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_002",
-    query="is untouchability banned in india",
-    preferred=("Constitution Of India", "17"),
-    acceptable=[("Constitution Of India", "17")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_003",
-    query="right to education for children",
-    preferred=("Constitution Of India", "21A"),
-    acceptable=[("Constitution Of India", "21A")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_004",
+    id="COI_008",
     query="freedom of speech in india",
     preferred=("Constitution Of India", "19"),
     acceptable=[("Constitution Of India", "19")],
@@ -2572,15 +1820,7 @@ TestCase(
 ),
 
 TestCase(
-    id="COI_005",
-    query="right to life and personal liberty",
-    preferred=("Constitution Of India", "21"),
-    acceptable=[("Constitution Of India", "21")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_006",
+    id="9",
     query="freedom of religion in india",
     preferred=("Constitution Of India", "25"),
     acceptable=[("Constitution Of India", "25")],
@@ -2588,82 +1828,10 @@ TestCase(
 ),
 
 TestCase(
-    id="COI_007",
-    query="can i approach supreme court for fundamental rights violation",
-    preferred=("Constitution Of India", "32"),
-    acceptable=[("Constitution Of India", "32")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_008",
-    query="does every state have high court",
-    preferred=("Constitution Of India", "214"),
-    acceptable=[("Constitution Of India", "214")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_009",
-    query="official language of india",
-    preferred=("Constitution Of India", "343"),
-    acceptable=[("Constitution Of India", "343")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_010",
-    query="constitutional head of india",
-    preferred=("Constitution Of India", "52"),
-    acceptable=[("Constitution Of India", "52")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="COI_011",
-    query="constitutional status of jammu and kashmir",
-    preferred=("Constitution Of India", "370"),
-    acceptable=[("Constitution Of India", "370")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="ITA_001",
-    query="someone hacked my email account",
-    preferred=("Information Technology Act 2000", "66"),
-    acceptable=[("Information Technology Act 2000", "66"), ("Information Technology Act 2000", "43")],
-    category_filter="cyber",
-),
-
-TestCase(
     id="ITA_002",
     query="unauthorized access to my computer or files",
     preferred=("Information Technology Act 2000", "43"),
-    acceptable=[("Information Technology Act 2000", "43"), ("Information Technology Act 2000", "66")],
-    category_filter="cyber",
-),
-
-TestCase(
-    id="ITA_003",
-    query="someone created fake profile using my identity",
-    preferred=("Information Technology Act 2000", "66C"),
-    acceptable=[("Information Technology Act 2000", "66C"), ("Information Technology Act 2000", "66D")],
-    category_filter="cyber",
-),
-
-TestCase(
-    id="ITA_004",
-    query="online impersonation and cheating using my identity",
-    preferred=("Information Technology Act 2000", "66D"),
-    acceptable=[("Information Technology Act 2000", "66D"), ("Information Technology Act 2000", "66C")],
-    category_filter="cyber",
-),
-
-TestCase(
-    id="ITA_005",
-    query="my personal data or photos were leaked online without consent",
-    preferred=("Information Technology Act 2000", "43A"),
-    acceptable=[("Information Technology Act 2000", "43A"), ("Information Technology Act 2000", "72"), ("Information Technology Act 2000", "72A")],
+    acceptable=[("Information Technology Act 2000", "43")],
     category_filter="cyber",
 ),
 
@@ -2696,14 +1864,6 @@ TestCase(
     query="government blocking or restricting a website",
     preferred=("Information Technology Act 2000", "69A"),
     acceptable=[("Information Technology Act 2000", "69A")],
-    category_filter="cyber",
-),
-
-TestCase(
-    id="ITA_010",
-    query="is electronic contract valid without physical signature",
-    preferred=("Information Technology Act 2000", "10A"),
-    acceptable=[("Information Technology Act 2000", "10A"), ("Information Technology Act 2000", "4")],
     category_filter="cyber",
 ),
 

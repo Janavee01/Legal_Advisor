@@ -22,4 +22,4 @@ ai_service/app/data/chroma/
 .idea/
 .DS_Store
 
-#
+parser.log

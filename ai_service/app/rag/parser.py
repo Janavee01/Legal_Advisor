@@ -1,229 +1,249 @@
 """
-parser.py — Extracts structured sections from Indian legal Act PDFs.
+parser.py — Extracts structured sections from Indian legal Act PDFs
+(India Code style documents: Constitution, Acts, Sanhitas/Codes).
+
+Redesigned from the original prototype to fix:
+  - infinite recursion in the "hybrid" structure branch
+  - a hardcoded section-number > 300 cap that silently dropped real
+    sections in long acts (BNSS has 531 sections, BNS has 358)
+  - a reference to an undefined name (_FOOTNOTE_BODY_MARKERS) that
+    would crash the moment that code path was hit
+  - inconsistent return arity from parse_act() that crashes run()
+  - placeholder metadata (year=0, ministry="Unknown" for everything)
+  - schedules leaking into the text of the preceding section
+  - unbounded debug print() calls with no verbosity control
+
+Usage:
+    python parser.py                      # parse every PDF under RAW_PDF_DIR
+    python parser.py --act the_arms_act_1959   # parse just one act (by stem)
+    python parser.py --verbose            # include debug-level logging
+    python parser.py --show-unregistered  # list PDFs with no ACT_REGISTRY entry
 """
 
-import re
+from __future__ import annotations
+
+import argparse
 import json
 import logging
+import os
+import re
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
+
 import pdfplumber
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-log = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve().parents[3]
+
 RAW_PDF_DIR = BASE_DIR / "datasets" / "raw_pdfs"
 PARSED_DIR = BASE_DIR / "datasets" / "parsed"
 
-
-def load_act_metadata():
-    metadata = {}
-    for pdf_path in RAW_PDF_DIR.rglob("*.pdf"):
-        stem = pdf_path.stem
-        metadata[stem] = {
-            "act_name": stem.replace("_", " ").title(),
-            "short_name": stem[:12],
-            "year": 0,
-            "ministry": "Unknown",
-            "relevance": []
-        }
-    return metadata
+log = logging.getLogger("act_parser")
 
 
-ACT_METADATA = load_act_metadata()
+def configure_logging(verbose: bool) -> None:
+    logging.basicConfig(
+        level=logging.DEBUG if verbose else logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        handlers=[
+            logging.FileHandler("parser.log", encoding="utf-8"),
+            logging.StreamHandler(),
+        ],
+        force=True,
+    )
 
-SECTION_PATTERN = re.compile(
-    r"^(?:\d+\s*\[\s*)?(?:Section\s+)?(\d+[A-Z]?)\.\s+(.{1,300}?)\.[—–―-]",
-    re.MULTILINE | re.DOTALL,
-)
 
-CHAPTER_PATTERN = re.compile(
-    r"^CHAPTER\s+([IVXLCDM]+|[0-9]+)\s*\n(.+)$",
-    re.MULTILINE,
-)
+# --------------------------------------------------------------------------
+# Act registry — real metadata, keyed by PDF stem (filename without .pdf).
+#
+# This covers the 37 acts in the supplied manifest. For any PDF found on
+# disk that ISN'T in this dict, load_act_metadata() falls back to a
+# heuristic (title-case the filename, pull the year off the end) so the
+# parser still runs on acts you haven't registered yet — it just tags
+# them so you can find and backfill them later (--show-unregistered).
+# --------------------------------------------------------------------------
+ACT_REGISTRY: dict[str, dict] = {
+    "the_passports_act_1967": dict(
+        act_name="The Passports Act, 1967", short_name="Passports Act",
+        year=1967, ministry="Ministry of External Affairs", category="administrative"),
+    "constitution_of_india": dict(
+        act_name="The Constitution of India", short_name="Constitution",
+        year=1950, ministry="Ministry of Law and Justice", category="constitution",
+        structure="constitution"),
+    "consumer_protection_act_2019": dict(
+        act_name="The Consumer Protection Act, 2019", short_name="Consumer Protection Act",
+        year=2019, ministry="Ministry of Consumer Affairs, Food and Public Distribution", category="consumer"),
+    "legal_metrology_act_2009": dict(
+        act_name="The Legal Metrology Act, 2009", short_name="Legal Metrology Act",
+        year=2009, ministry="Ministry of Consumer Affairs, Food and Public Distribution", category="consumer"),
+    "bharatiya_nagarik_suraksha_sanhita_2023": dict(
+        act_name="The Bharatiya Nagarik Suraksha Sanhita, 2023", short_name="BNSS",
+        year=2023, ministry="Ministry of Home Affairs", category="criminal"),
+    "bharatiya_nyaya_sanhita_2023": dict(
+        act_name="The Bharatiya Nyaya Sanhita, 2023", short_name="BNS",
+        year=2023, ministry="Ministry of Home Affairs", category="criminal"),
+    "bharatiya_sakshya_adhiniyam_2023": dict(
+        act_name="The Bharatiya Sakshya Adhiniyam, 2023", short_name="BSA",
+        year=2023, ministry="Ministry of Home Affairs", category="criminal"),
+    "narcotic_drugs_and_psychotropic_substances_act_1985": dict(
+        act_name="The Narcotic Drugs and Psychotropic Substances Act, 1985", short_name="NDPS Act",
+        year=1985, ministry="Department of Revenue, Ministry of Finance", category="criminal"),
+    "the_arms_act_1959": dict(
+        act_name="The Arms Act, 1959", short_name="Arms Act",
+        year=1959, ministry="Ministry of Home Affairs", category="criminal"),
+    "information_technology_act_2000": dict(
+        act_name="The Information Technology Act, 2000", short_name="IT Act",
+        year=2000, ministry="Ministry of Electronics and Information Technology", category="cyber"),
+    "guardians_and_wards_act_1890": dict(
+        act_name="The Guardians and Wards Act, 1890", short_name="Guardians and Wards Act",
+        year=1890, ministry="Ministry of Law and Justice", category="family"),
+    "hindu_marriage_act_1955": dict(
+        act_name="The Hindu Marriage Act, 1955", short_name="Hindu Marriage Act",
+        year=1955, ministry="Ministry of Law and Justice", category="family"),
+    "hindu_succession_act_1956": dict(
+        act_name="The Hindu Succession Act, 1956", short_name="Hindu Succession Act",
+        year=1956, ministry="Ministry of Law and Justice", category="family"),
+    "indian_succession_act_1925": dict(
+        act_name="The Indian Succession Act, 1925", short_name="Indian Succession Act",
+        year=1925, ministry="Ministry of Law and Justice", category="family"),
+    "special_marriage_act_1954": dict(
+        act_name="The Special Marriage Act, 1954", short_name="Special Marriage Act",
+        year=1954, ministry="Ministry of Law and Justice", category="family"),
+    "code_on_wages_2019": dict(
+        act_name="The Code on Wages, 2019", short_name="Code on Wages",
+        year=2019, ministry="Ministry of Labour and Employment", category="labour"),
+    "industrial_disputes_act_1947": dict(
+        act_name="The Industrial Disputes Act, 1947", short_name="Industrial Disputes Act",
+        year=1947, ministry="Ministry of Labour and Employment", category="labour"),
+    "labour_factories_act_1948": dict(
+        act_name="The Factories Act, 1948", short_name="Factories Act",
+        year=1948, ministry="Ministry of Labour and Employment", category="labour"),
+    "occupational_safety_health_and_working_conditions_code_2020": dict(
+        act_name="The Occupational Safety, Health and Working Conditions Code, 2020", short_name="OSH Code",
+        year=2020, ministry="Ministry of Labour and Employment", category="labour"),
+    "payment_of_wages_act_1936": dict(
+        act_name="The Payment of Wages Act, 1936", short_name="Payment of Wages Act",
+        year=1936, ministry="Ministry of Labour and Employment", category="labour"),
+    "the_code_on_security_2020": dict(
+        act_name="The Code on Social Security, 2020", short_name="Social Security Code",
+        year=2020, ministry="Ministry of Labour and Employment", category="labour"),
+    "the_employees_compensation_act_1923": dict(
+        act_name="The Employee's Compensation Act, 1923", short_name="Employee's Compensation Act",
+        year=1923, ministry="Ministry of Labour and Employment", category="labour"),
+    "the_employees_provident_funds_and_miscellaneous_provisions_act_1952": dict(
+        act_name="The Employees' Provident Funds and Miscellaneous Provisions Act, 1952", short_name="EPF Act",
+        year=1952, ministry="Ministry of Labour and Employment", category="labour"),
+    "the_maternity_benefit_act_1961": dict(
+        act_name="The Maternity Benefit Act, 1961", short_name="Maternity Benefit Act",
+        year=1961, ministry="Ministry of Labour and Employment", category="labour"),
+    "registration_act_1908": dict(
+        act_name="The Registration Act, 1908", short_name="Registration Act",
+        year=1908, ministry="Ministry of Rural Development", category="property"),
+    "transfer_of_property_act_1882": dict(
+        act_name="The Transfer of Property Act, 1882", short_name="Transfer of Property Act",
+        year=1882, ministry="Ministry of Law and Justice", category="property"),
+    "legal_services_authorities_act_1987": dict(
+        act_name="The Legal Services Authorities Act, 1987", short_name="Legal Services Authorities Act",
+        year=1987, ministry="Ministry of Law and Justice", category="rights"),
+    "right_to_information_act_2005": dict(
+        act_name="The Right to Information Act, 2005", short_name="RTI Act",
+        year=2005, ministry="Ministry of Personnel, Public Grievances and Pensions", category="rights"),
+    "maintenance_and_welfare_of_parents_and_senior_citizens_act_2007": dict(
+        act_name="The Maintenance and Welfare of Parents and Senior Citizens Act, 2007",
+        short_name="Senior Citizens Act",
+        year=2007, ministry="Ministry of Social Justice and Empowerment", category="social_justice"),
+    "rights_of_persons_with_disabilities_act_2016": dict(
+        act_name="The Rights of Persons with Disabilities Act, 2016", short_name="RPWD Act",
+        year=2016, ministry="Ministry of Social Justice and Empowerment", category="social_justice"),
+    "scheduled_castes_and_scheduled_tribes_act_1989": dict(
+        act_name="The Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act, 1989",
+        short_name="SC/ST (POA) Act",
+        year=1989, ministry="Ministry of Social Justice and Empowerment", category="social_justice"),
+    "motor_vehicles_act_1988": dict(
+        act_name="The Motor Vehicles Act, 1988", short_name="Motor Vehicles Act",
+        year=1988, ministry="Ministry of Road Transport and Highways", category="transport"),
+    "dowry_prohibition_act_1961": dict(
+        act_name="The Dowry Prohibition Act, 1961", short_name="Dowry Prohibition Act",
+        year=1961, ministry="Ministry of Women and Child Development", category="women_child"),
+    "juvenile_justice_act_2015": dict(
+        act_name="The Juvenile Justice (Care and Protection of Children) Act, 2015", short_name="JJ Act",
+        year=2015, ministry="Ministry of Women and Child Development", category="women_child"),
+    "protection_of_Children_from_sexual_offences_act_2012": dict(
+        act_name="The Protection of Children from Sexual Offences Act, 2012", short_name="POCSO Act",
+        year=2012, ministry="Ministry of Women and Child Development", category="women_child"),
+    "protection_of_women_from_domestic_violence_act_2005": dict(
+        act_name="The Protection of Women from Domestic Violence Act, 2005", short_name="PWDVA",
+        year=2005, ministry="Ministry of Women and Child Development", category="women_child"),
+    "sexual_harassment_of_women_at_workplace_act_2013": dict(
+        act_name="The Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+        short_name="POSH Act",
+        year=2013, ministry="Ministry of Women and Child Development", category="women_child"),
+}
 
+_YEAR_RE = re.compile(r"(18|19|20)\d{2}$")
+
+
+def load_act_metadata(stem: str, category_from_path: str) -> dict:
+    """Look the PDF stem up in ACT_REGISTRY; fall back to a heuristic guess
+    for acts that haven't been registered yet, and flag them as such so
+    they're easy to find with --show-unregistered."""
+    if stem in ACT_REGISTRY:
+        meta = dict(ACT_REGISTRY[stem])
+        if meta.get("category") != category_from_path:
+            log.warning(
+                "Category mismatch for %s: registry says '%s', folder says '%s'",
+                stem, meta.get("category"), category_from_path,
+            )
+        meta["registered"] = True
+        return meta
+
+    log.warning("No registry entry for '%s' — using heuristic metadata", stem)
+    year_match = _YEAR_RE.search(stem)
+    year = int(year_match.group()) if year_match else 0
+    name_part = stem[: year_match.start()].rstrip("_") if year_match else stem
+    act_name = name_part.replace("_", " ").title()
+    if year:
+        act_name = f"{act_name}, {year}"
+    return dict(
+        act_name=act_name,
+        short_name=act_name[:40],
+        year=year,
+        ministry="Unknown",
+        category=category_from_path,
+        registered=False,
+    )
+
+
+# --------------------------------------------------------------------------
+# Noise / footnote filtering
+# --------------------------------------------------------------------------
 NOISE_PATTERNS = [
-    re.compile(r"^\s*\d+\s*$"),
+    re.compile(r"^\s*\d+\s*$"),                      # bare page numbers
     re.compile(r"THE GAZETTE OF INDIA", re.I),
     re.compile(r"MINISTRY OF LAW", re.I),
     re.compile(r"^\s*—\s*$"),
-    re.compile(r"jftLVªh laö", re.I),
+    re.compile(r"jftLVªh laö", re.I),                 # Hindi header OCR artifact
     re.compile(r"REGISTERED NO\.", re.I),
     re.compile(r"EXTRAORDINARY", re.I),
 ]
 
+# Markers that reliably identify amendment/commencement footnote text,
+# whether it appears as a "section header" false-match or inline within
+# a genuine section's body (pdfplumber often interleaves footnotes with
+# body text because it just reads the page top-to-bottom).
+_FOOTNOTE_BODY_MARKERS = re.compile(
+    r"^\s*\d{1,2}\.\s*(Subs\.|Ins\.|Inserted|Omitted|Rep\.|Repealed|Renumbered|"
+    r"Added|Vide notification|Vide Act|w\.e\.f\.)",
+    re.I,
+)
 
-def clean_text(text: str) -> str:
-    lines = text.split("\n")
-    cleaned = []
-    for line in lines:
-        if any(p.search(line) for p in NOISE_PATTERNS):
-            continue
-        cleaned.append(line)
-    text = "\n".join(cleaned)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    text = re.sub(r"[ \t]+", " ", text)
-    return text.strip()
-
-
-def extract_text_from_pdf(pdf_path: Path) -> str:
-    log.info("Extracting text from: %s", pdf_path.name)
-    pages_text = []
-    with pdfplumber.open(pdf_path) as pdf:
-        log.info("  Pages: %d", len(pdf.pages))
-        for i, page in enumerate(pdf.pages):
-            text = page.extract_text(x_tolerance=2, y_tolerance=3)
-            if text:
-                pages_text.append(text)
-    return "\n".join(pages_text)
-
-
-def parse_sections(full_text: str, act_metadata: dict) -> list[dict]:
-    cleaned = clean_text(full_text)
-    idx = cleaned.find("134. Duty of driver")
-    print(repr(cleaned[idx-80:idx+80]))
-    section_matches = list(SECTION_PATTERN.finditer(cleaned))
-    
-    for m in section_matches:
-        if "134" in m.group(0):
-            print("=" * 80)
-            print("NUMBER:", m.group(1))
-            print("TITLE :", m.group(2))
-            print(repr(m.group(0)[:300]))
-
-    if not section_matches:
-        log.warning("No sections detected — falling back to paragraph chunking")
-        return _paragraph_fallback(cleaned, act_metadata)
-
-    log.info("  Detected %d raw section matches", len(section_matches))
-
-    chapter_matches = {m.start(): m.group(2).strip() for m in CHAPTER_PATTERN.finditer(cleaned)}
-    chapter_positions = sorted(chapter_matches.keys())
-
-    def get_chapter_at(pos: int) -> str:
-        relevant = [p for p in chapter_positions if p <= pos]
-        if not relevant:
-            return "General"
-        return chapter_matches[max(relevant)]
-
-    sections = []
-    skipped_footnotes = 0
-
-    for i, match in enumerate(section_matches):
-        section_number = match.group(1).strip()
-        section_title = match.group(2).strip()
-
-        start = match.start()
-        end = section_matches[i + 1].start() if i + 1 < len(section_matches) else len(cleaned)
-        section_text = cleaned[start:end].strip()
-
-        if len(section_text) < 50:
-            continue
-
-        if _is_footnote_match(section_title, section_text):
-            skipped_footnotes += 1
-            log.warning(
-                "  Treated as footnote, merged into previous section: "
-                "'%s. %s' (%.60s...)",
-                section_number, section_title, section_text
-            )
-            if sections:
-                remainder = _strip_footnote_sentence(section_text)
-                if remainder:
-                    sections[-1]["text"] = sections[-1]["text"].rstrip() + "\n" + remainder
-            continue
-
-        chapter = get_chapter_at(start)
-        citation = f"{act_metadata['act_name']} › Section {section_number} › {section_title}"
-
-        sections.append({
-            "category": act_metadata.get("category", "unknown"),
-            "act_name": act_metadata["act_name"],
-            "year": act_metadata["year"],
-            "chapter": chapter,
-            "section_number": section_number,
-            "section_title": section_title,
-            "topics": act_metadata.get("relevance", []),
-            "text": section_text,
-            "citation": citation,
-            "char_count": len(section_text),
-        })
-
-    # char_count may now be stale for sections that absorbed footnote
-    # remainders — refresh it before returning.
-    for s in sections:
-        s["char_count"] = len(s["text"])
-
-    sections = _merge_duplicate_section_numbers(sections)
-    
-    def _check_sequence_gaps(sections: list[dict]) -> None:
-        """Warn if numeric section numbers have suspicious gaps — a strong
-        signal that a section failed to match and got silently absorbed
-        into a neighboring section's text."""
-        nums = []
-        for s in sections:
-            m = re.match(r"(\d+)", s["section_number"])
-            if m:
-                nums.append(int(m.group(1)))
-        nums = sorted(set(nums))
-        gaps = [(a, b) for a, b in zip(nums, nums[1:]) if b - a > 1]
-        if gaps:
-            log.warning("  Possible missing sections (numeric gaps): %s", gaps)
-    
-    _check_sequence_gaps(sections)
-    if skipped_footnotes:
-        log.info(
-            "  Filtered %d footnote/notification false matches "
-            "(non-footnote remainder text was preserved in the preceding section)",
-            skipped_footnotes,
-        )
-    log.info("  Kept %d genuine sections", len(sections))
-
-    return sections
-
-
-def _strip_footnote_sentence(footnote_span_text: str) -> str:
-    """
-    A footnote match's text span runs from the footnote marker to the start
-    of the next match. That span is mostly notification boilerplate, but it
-    can also contain the *next real chunk* of Act text that follows the
-    footnote on the page (e.g. clauses (4)/(5) of Section 2 continuing
-    after the footnote block ends).
-
-    Strategy: a footnote block always starts with "<small int>. <date>.--"
-    and runs as one long notification sentence until a terminal period
-    that ends a "Gazette of India ... sec. N(ii)." citation. We locate
-    that whole block (marker → end-of-notification-sentence) and remove
-    it wholesale, rather than splitting on every period — gazette
-    boilerplate is full of internal abbreviation periods ("S.O.", "s.",
-    "sec.") that make naive sentence-splitting shred real text around it.
-    """
-    footnote_block = re.compile(
-        r"^\d{1,2}\.\s+\d{1,2}(st|nd|rd|th)?\s+\w+,?\s*\d{4}\.?\s*[-–—.]{1,2}"
-        r".*?(?:Extraordinary,?\s*Part\s*[IVX]+,?\s*sec\.\s*\d+\([a-z]+\)\.|"
-        r"see Gazette of India[^.]*\.|vide notification[^.]*\.)",
-        re.I | re.S,
-    )
-
-    remainder = footnote_block.sub("", footnote_span_text)
-
-    # Safety net: if the block regex didn't fully match (notification text
-    # varies across Acts), fall back to dropping only lines that still
-    # carry an unambiguous footnote marker, rather than returning the
-    # untouched span.
-    if _FOOTNOTE_BODY_MARKERS.search(remainder) or re.search(
-        r"^\d{1,2}\.\s+\d{1,2}(st|nd|rd|th)?\s+\w+,?\s*\d{4}", remainder.strip()
-    ):
-        lines = remainder.split("\n")
-        remainder = "\n".join(
-            ln for ln in lines
-            if not _FOOTNOTE_BODY_MARKERS.search(ln)
-            and not re.match(r"^\d{1,2}\.\s+\d{1,2}(st|nd|rd|th)?\s+\w+,?\s*\d{4}", ln.strip())
-        )
-
-    return remainder.strip()
-
+_FOOTNOTE_TITLE_RE = re.compile(
+    r"^(The\s+Explanation|The\s+proviso|Section\s+\d+\s+renumbered|"
+    r"Sub-section|Clause|Explanation\s+\d+|Inserted by|Omitted by|"
+    r"Substituted by|Renumbered by|Subs\.|Ins\.|Omitted|Sub\.|Sub-)",
+    re.I,
+)
 
 _DATE_TITLE_PATTERN = re.compile(
     r"^\d{1,2}(st|nd|rd|th)?\s+(January|February|March|April|May|June|July|"
@@ -231,64 +251,328 @@ _DATE_TITLE_PATTERN = re.compile(
     re.I,
 )
 
-_FOOTNOTE_BODY_MARKERS = re.compile(
-    r"vide notification|gazette of india|S\.O\.\s*\d|w\.e\.f\.|"
-    r"shall come into force|extraordinary,?\s*part",
-    re.I,
+# A full commencement-notification footnote block: starts "N. <date>.--"
+# and runs until it hits a Gazette citation sentence terminator. Applied
+# globally (re.sub, all occurrences) as a cleanup pass over final section
+# text, rather than tracked as inter-match spans — this avoids the
+# span-slicing bugs in the original implementation.
+_FOOTNOTE_BLOCK_RE = re.compile(
+    r"\d{1,2}\.\s+\d{1,2}(st|nd|rd|th)?\s+\w+,?\s*\d{4}\.?\s*[-–—.]{1,2}"
+    r".*?(?:Extraordinary,?\s*Part\s*[IVX]+,?\s*sec\.\s*\d+\([a-z]+\)\.|"
+    r"see Gazette of India[^.]*\.|vide notification[^.]*\.)",
+    re.I | re.S,
 )
 
 
-def _is_footnote_match(section_title: str, section_text: str) -> bool:
-    """
-    Detects commencement-notification footnotes that masquerade as section
-    headers, e.g.:
-        "2. 24th July, 2020.-- S. 2 [clauses (4), (13)...], vide notification
-        No. S.O. 2421(E), dated 23rd July 2020, see Gazette of India..."
+def strip_footnotes(text: str) -> str:
+    """Remove amendment/commencement-notification footnote text from a
+    section body. Two passes: (1) whole notification-citation blocks via
+    the block regex, (2) any remaining lines that still open with an
+    unambiguous footnote marker (catches cases where page-break formatting
+    keeps the block regex from matching end-to-end)."""
+    text = _FOOTNOTE_BLOCK_RE.sub("", text)
+    lines = text.split("\n")
+    lines = [ln for ln in lines if not _FOOTNOTE_BODY_MARKERS.search(ln)]
+    return "\n".join(lines)
 
-    These match SECTION_PATTERN structurally (number + text + terminal dash)
-    but are not real Act sections. Two independent signals catch them:
-      1. The "title" captured is itself just a date (e.g. "24th July, 2020").
-      2. The body text contains gazette/notification boilerplate language
-         that never appears in actual substantive section text.
-    """
+
+def is_footnote_title(title: str) -> bool:
+    return bool(_FOOTNOTE_TITLE_RE.match(title.strip()))
+
+
+def is_footnote_header_match(section_title: str, section_body_head: str) -> bool:
+    """A 'section header' that's actually a commencement-notification
+    footnote masquerading as one, e.g. '2. 24th July, 2020.-- S. 2 ...'"""
     if _DATE_TITLE_PATTERN.match(section_title.strip()):
         return True
-
-    # Check only the first ~300 chars — footnote markers appear early;
-    # avoids false positives from a real section that merely *cites* a
-    # notification deep in its body (e.g. an amendment proviso).
-    head = section_text[:300]
-    if _FOOTNOTE_BODY_MARKERS.search(head):
+    if _FOOTNOTE_BODY_MARKERS.search(section_body_head[:120]):
         return True
-
     return False
 
 
+# --------------------------------------------------------------------------
+# Structural regexes
+# --------------------------------------------------------------------------
+# Section headers: line-start, number (with optional letter suffix for
+# inserted sections like 10A / 10AA), period, then a title that starts
+# with an uppercase letter, quote, or "(" — this single constraint kills
+# most false positives (numbers mid-sentence, like "40 per cent of ...")
+# because the character right after the digits+period in real prose is
+# almost always lowercase.
+HEADER_PATTERN = re.compile(
+    r"(?m)^(?P<num>\d{1,3}[A-Z]{0,2})\.[ \t]+"
+    r"(?P<title>[A-Z\"\u201c(][^\n]{1,300})$"
+)
+
+CHAPTER_PATTERN = re.compile(
+    r"(?m)^CHAPTER\s+([IVXLCDM]+|[0-9]+)\s*\n(.+)$"
+)
+
+SCHEDULE_PATTERN = re.compile(
+    r"(?m)^\s*(?:THE\s+)?"
+    r"(FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NINTH|TENTH)\s+SCHEDULE\b",
+    re.I,
+)
+
+CONSTITUTION_RE = re.compile(r"(?m)^(Article\s+\d{1,3}[A-Z]{0,2}\.)")
+
+
+# --------------------------------------------------------------------------
+# Text extraction / cleaning
+# --------------------------------------------------------------------------
+def extract_text_from_pdf(pdf_path: Path) -> str:
+    log.info("Extracting text from: %s", pdf_path.name)
+    pages_text = []
+    with pdfplumber.open(pdf_path) as pdf:
+        log.debug("  Pages: %d", len(pdf.pages))
+        for page in pdf.pages:
+            text = page.extract_text(x_tolerance=2, y_tolerance=3)
+            if text:
+                pages_text.append(text)
+    return "\n".join(pages_text)
+
+
+def clean_text(text) -> str:
+    if text is None:
+        return ""
+    if isinstance(text, list):
+        text = "\n".join(str(x) for x in text)
+    text = str(text)
+
+    lines = text.split("\n")
+    cleaned_lines = [ln for ln in lines if not any(p.search(ln) for p in NOISE_PATTERNS)]
+    text = "\n".join(cleaned_lines)
+
+    # Join genuine word-wrap hyphenation (e.g. "gov-\nernment") but NOT the
+    # "--" em-dash marker India Code uses after a section heading
+    # ("Definitions.--\n..."), which must stay on its own line or the next
+    # line's text gets swallowed into the header title.
+    text = re.sub(r"(?<=[a-z])-\n(?=[a-z])", "", text)
+    text = re.sub(r"\n+", "\n", text)
+    return text.strip()
+
+
+def remove_toc(text: str) -> str:
+    """Strip the 'ARRANGEMENT OF SECTIONS' table of contents, which
+    otherwise produces one false section-header match per TOC entry."""
+    if "ARRANGEMENT OF SECTIONS" not in text:
+        return text
+    remainder = text.split("ARRANGEMENT OF SECTIONS", 1)[1]
+    m = re.search(r"ACT NO\.\s+\d+\s+OF\s+\d+", remainder)
+    return remainder[m.start():] if m else text
+
+
+def detect_structure_type(act_metadata: dict, text: str) -> str:
+    """Only the Constitution should ever get routed to the Article-based
+    parser. Trust the registry's explicit 'structure' flag rather than
+    sniffing for the words 'article' or 'part' in the first 8000 chars —
+    those words show up constantly in ordinary acts (cross-references
+    like "under article 32", or plain "PART I" chapter divisions), and
+    that false-positive was routing 8 of 37 acts into the Constitution
+    parser, which then fell back to 1-paragraph chunking for all of them.
+    """
+    if act_metadata.get("structure") == "constitution":
+        return "constitution"
+    if "constitution" in act_metadata.get("act_name", "").lower():
+        return "constitution"
+    return "standard"
+
+
+# --------------------------------------------------------------------------
+# Core section parser
+# --------------------------------------------------------------------------
+def parse_sections(full_text: str, act_metadata: dict) -> list[dict]:
+    cleaned = remove_toc(clean_text(full_text))
+
+    schedule_matches = list(SCHEDULE_PATTERN.finditer(cleaned))
+    schedule_starts = [m.start() for m in schedule_matches]
+
+    raw_headers = list(HEADER_PATTERN.finditer(cleaned))
+    if not raw_headers:
+        log.warning("No sections detected — falling back to paragraph chunking")
+        return _paragraph_fallback(cleaned, act_metadata)
+
+    log.debug("  %d raw header candidates before validation", len(raw_headers))
+
+    # --- validate headers: keep only ones that look like real sections ---
+    valid_headers = []
+    for m in raw_headers:
+        title = m.group("title").strip()
+        if is_footnote_title(title):
+            continue
+        if len(title) < 3:
+            continue
+        peek = cleaned[m.end(): m.end() + 200]
+        if is_footnote_header_match(title, peek):
+            continue
+        valid_headers.append(m)
+
+    if not valid_headers:
+        log.warning("All header candidates filtered as noise — falling back to paragraph chunking")
+        return _paragraph_fallback(cleaned, act_metadata)
+
+    log.debug("  %d headers kept after validation", len(valid_headers))
+
+    chapter_matches = {m.start(): m.group(2).strip() for m in CHAPTER_PATTERN.finditer(cleaned)}
+    chapter_positions = sorted(chapter_matches.keys())
+
+    def chapter_at(pos: int) -> str:
+        relevant = [p for p in chapter_positions if p <= pos]
+        return chapter_matches[max(relevant)] if relevant else "General"
+
+    header_positions = [m.start() for m in valid_headers]
+
+    def next_boundary_after(pos: int) -> int:
+        """End of a section = the next real header OR the next schedule,
+        whichever comes first — this is what stops schedule text bleeding
+        into the last operative section."""
+        candidates = [p for p in header_positions if p > pos]
+        candidates += [s for s in schedule_starts if s > pos]
+        candidates.append(len(cleaned))
+        return min(candidates)
+
+    sections: list[dict] = []
+
+    for i, match in enumerate(valid_headers):
+        section_number = match.group("num").strip()
+        section_title = match.group("title").strip()
+        start = match.start()
+        end = next_boundary_after(start)
+        section_text = strip_footnotes(cleaned[start:end]).strip()
+
+        if len(section_text) < 10:
+            continue
+
+        chapter = chapter_at(start)
+        citation = f"{act_metadata['act_name']} \u203a Section {section_number} \u203a {section_title}"
+
+        sections.append({
+            "category": act_metadata.get("category", "unknown"),
+            "act_name": act_metadata["act_name"],
+            "short_name": act_metadata.get("short_name"),
+            "year": act_metadata["year"],
+            "ministry": act_metadata.get("ministry"),
+            "chapter": chapter,
+            "section_number": section_number,
+            "section_title": section_title,
+            "topics": act_metadata.get("relevance", []),
+            "text": section_text,
+            "citation": citation,
+            "char_count": len(section_text),
+            "is_schedule": False,
+        })
+
+    sections = _merge_duplicate_section_numbers(sections)
+
+    # --- separately capture schedule blocks so they aren't lost ---
+    for i, sm in enumerate(schedule_matches):
+        s_start = sm.start()
+        s_end = schedule_starts[i + 1] if i + 1 < len(schedule_starts) else len(cleaned)
+        s_text = clean_text(cleaned[s_start:s_end])
+        if len(s_text) < 10:
+            continue
+        label = sm.group(1).title()
+        sections.append({
+            "category": act_metadata.get("category", "unknown"),
+            "act_name": act_metadata["act_name"],
+            "short_name": act_metadata.get("short_name"),
+            "year": act_metadata["year"],
+            "ministry": act_metadata.get("ministry"),
+            "chapter": "Schedule",
+            "section_number": f"Schedule-{label}",
+            "section_title": f"{label} Schedule",
+            "topics": act_metadata.get("relevance", []),
+            "text": s_text,
+            "citation": f"{act_metadata['act_name']} \u203a {label} Schedule",
+            "char_count": len(s_text),
+            "is_schedule": True,
+        })
+
+    _check_sequence_gaps([s for s in sections if not s["is_schedule"]])
+    log.info("  Kept %d sections (%d schedule blocks)", len(sections),
+              sum(s["is_schedule"] for s in sections))
+    return sections
+
+
+def parse_constitution(full_text: str, act_metadata: dict) -> list[dict]:
+    cleaned = clean_text(full_text)
+    matches = list(CONSTITUTION_RE.finditer(cleaned))
+    if not matches:
+        log.warning("Constitution parser found no Article headers — falling back")
+        return _paragraph_fallback(cleaned, act_metadata)
+
+    sections = []
+    for i, m in enumerate(matches):
+        start = m.start()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(cleaned)
+        article_num = m.group(1).strip()
+        text = strip_footnotes(cleaned[start:end]).strip()
+        if len(text) < 10:
+            continue
+        sections.append({
+            "category": act_metadata.get("category", "constitution"),
+            "act_name": act_metadata["act_name"],
+            "short_name": act_metadata.get("short_name"),
+            "year": act_metadata["year"],
+            "ministry": act_metadata.get("ministry"),
+            "chapter": "Constitution",
+            "section_number": article_num.rstrip("."),
+            "section_title": article_num,
+            "topics": [],
+            "text": text,
+            "citation": f"{act_metadata['act_name']} \u203a {article_num}",
+            "char_count": len(text),
+            "is_schedule": False,
+        })
+    return sections
+
+
+def parse_document(full_text: str, act_metadata: dict) -> list[dict]:
+    """Single dispatch point — no recursion, no separate 'hybrid' branch
+    that could call back into itself."""
+    structure_type = detect_structure_type(act_metadata, full_text)
+    if structure_type == "constitution":
+        log.info("Using Constitution parser")
+        sections = parse_constitution(full_text, act_metadata)
+    else:
+        sections = parse_sections(full_text, act_metadata)
+
+    for s in sections:
+        nesting = s["text"].count("(1)") + s["text"].count("(a)") + s["text"].count("(i)")
+        s["structure"] = "deep_nested" if nesting > 15 else "normal"
+    return sections
+
+
+# --------------------------------------------------------------------------
+# Post-processing helpers
+# --------------------------------------------------------------------------
+def _check_sequence_gaps(sections: list[dict]) -> None:
+    """Log (don't drop) suspicious gaps in numeric section numbers — a
+    signal, not proof, that a section failed to match."""
+    nums = []
+    for s in sections:
+        m = re.match(r"(\d+)", s["section_number"])
+        if m:
+            nums.append(int(m.group(1)))
+    nums = sorted(set(nums))
+    gaps = [(a, b) for a, b in zip(nums, nums[1:]) if b - a > 1]
+    if gaps:
+        log.info("Possible missing sections: %s", gaps)
+
+
 def _merge_duplicate_section_numbers(sections: list[dict]) -> list[dict]:
-    """
-    If filtering still leaves two entries with the same section_number
-    (e.g. PDF text wrapped awkwardly around a footnote and split a real
-    section into two matches), keep the longer/more complete one rather
-    than silently duplicating citations.
-    """
+    """Keep the longer/more complete entry when the same section_number
+    appears twice (e.g. a page-break split a real section into two
+    header matches)."""
     by_number: dict[str, dict] = {}
     order: list[str] = []
-
     for s in sections:
         num = s["section_number"]
         if num not in by_number:
             by_number[num] = s
             order.append(num)
-        else:
-            existing = by_number[num]
-            # Prefer the version with a non-trivial title and more text
-            existing_is_bad_title = _DATE_TITLE_PATTERN.match(existing["section_title"])
-            new_is_bad_title = _DATE_TITLE_PATTERN.match(s["section_title"])
-            if existing_is_bad_title and not new_is_bad_title:
-                by_number[num] = s
-            elif len(s["text"]) > len(existing["text"]) and not new_is_bad_title:
-                by_number[num] = s
-
+        elif len(s["text"]) > len(by_number[num]["text"]):
+            by_number[num] = s
     return [by_number[n] for n in order]
 
 
@@ -297,90 +581,171 @@ def _paragraph_fallback(text: str, act_metadata: dict) -> list[dict]:
     log.warning("  Using paragraph fallback: %d chunks", len(paragraphs))
     return [
         {
-            "section_number": f"P{i+1}",
+            "category": act_metadata.get("category", "unknown"),
+            "act_name": act_metadata["act_name"],
+            "short_name": act_metadata.get("short_name"),
+            "year": act_metadata["year"],
+            "ministry": act_metadata.get("ministry"),
+            "section_number": f"P{i + 1}",
             "section_title": "Paragraph",
             "chapter": "Unknown",
             "text": para,
-            "citation": f"{act_metadata['act_name']} › Paragraph {i+1}",
-            "act_name": act_metadata["act_name"],
-            "short_name": act_metadata["short_name"],
-            "year": act_metadata["year"],
-            "ministry": act_metadata["ministry"],
+            "citation": f"{act_metadata['act_name']} \u203a Paragraph {i + 1}",
             "topics": act_metadata.get("relevance", []),
             "char_count": len(para),
+            "is_schedule": False,
         }
         for i, para in enumerate(paragraphs)
     ]
 
 
-def parse_act(pdf_path: Path, category: str) -> Optional[Path]:
+def check_health(sections: list[dict]) -> list[str]:
+    issues = []
+    body = [s for s in sections if not s.get("is_schedule")]
+    if len(body) < 5:
+        issues.append("TOO FEW SECTIONS")
+    nums = [s["section_number"] for s in body]
+    if nums and len(set(nums)) < len(nums) * 0.9:
+        issues.append("DUPLICATE SECTION NUMBERS")
+    short_sections = sum(len(s["text"]) < 30 for s in body)
+    if short_sections > max(5, len(body) * 0.10):
+        issues.append(f"TOO MANY SHORT SECTIONS ({short_sections})")
+    return issues
+
+
+def score_sections(sections: list[dict]) -> int:
+    body = [s for s in sections if not s.get("is_schedule")]
+    score = 100
+    if len(body) < 5:
+        score -= 40
+    nums = []
+    for s in body:
+        m = re.match(r"(\d+)", s["section_number"])
+        if m:
+            nums.append(int(m.group(1)))
+    if nums and len(set(nums)) < len(nums) * 0.7:
+        score -= 30
+    avg_len = sum(len(s["text"]) for s in body) / max(len(body), 1)
+    if avg_len < 200:
+        score -= 20
+    return max(score, 0)
+
+
+# --------------------------------------------------------------------------
+# Per-act driver
+# --------------------------------------------------------------------------
+@dataclass
+class ParseResult:
+    pdf_name: str
+    out_path: Optional[Path] = None
+    score: int = 0
+    sections: list[dict] = field(default_factory=list)
+    issues: list[str] = field(default_factory=list)
+    ok: bool = False
+
+
+def parse_act(pdf_path: Path, category: str) -> ParseResult:
     stem = pdf_path.stem
-    act_metadata = ACT_METADATA.get(stem)
-    if not act_metadata:
-        log.warning("No metadata defined for '%s' — using defaults", stem)
-        act_metadata = {
-            "act_name": stem.replace("_", " ").title(),
-            "short_name": stem[:10],
-            "year": 0,
-            "ministry": "Unknown",
-            "relevance": [],
-        }
-    act_metadata["category"] = category
+    result = ParseResult(pdf_name=pdf_path.name)
+    act_metadata = load_act_metadata(stem, category)
 
     try:
         full_text = extract_text_from_pdf(pdf_path)
     except Exception as e:
         log.error("PDF extraction failed for %s: %s", pdf_path.name, e)
-        return None
+        return result
 
-    sections = parse_sections(full_text, act_metadata)
-
+    sections = parse_document(full_text, act_metadata)
     if not sections:
         log.error("No sections extracted from %s", pdf_path.name)
-        return None
+        return result
+
+    result.sections = sections
+    result.issues = check_health(sections)
+    result.score = score_sections(sections)
+    if result.issues:
+        log.warning("Health issues in %s: %s", pdf_path.name, result.issues)
+    log.info("Parser score for %s: %d/100", pdf_path.name, result.score)
 
     out_dir = PARSED_DIR / category
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{stem}.json"
-
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(sections, f, ensure_ascii=False, indent=2)
 
-    log.info("✓ Parsed %d sections → %s", len(sections), out_path)
-    return out_path
+    result.out_path = out_path
+    result.ok = True
+    log.info("Parsed %d sections (incl. schedules) -> %s", len(sections), out_path)
+    return result
 
 
-def run():
+# --------------------------------------------------------------------------
+# Batch driver
+# --------------------------------------------------------------------------
+def run(only_stem: Optional[str] = None, show_unregistered: bool = False) -> None:
     if not RAW_PDF_DIR.exists():
         log.error("Raw PDF directory not found: %s", RAW_PDF_DIR)
         return
 
-    pdf_files = list(RAW_PDF_DIR.rglob("*.pdf"))
+    pdf_files = sorted(RAW_PDF_DIR.rglob("*.pdf"))
+    if only_stem:
+        pdf_files = [p for p in pdf_files if p.stem == only_stem]
     if not pdf_files:
-        log.error("No PDFs found in %s", RAW_PDF_DIR)
+        log.error("No matching PDFs found in %s", RAW_PDF_DIR)
         return
 
-    log.info("Found %d PDFs to parse", len(pdf_files))
-    success, failed = [], []
+    if show_unregistered:
+        unregistered = [p.name for p in pdf_files if p.stem not in ACT_REGISTRY]
+        print(f"\n{len(unregistered)} PDF(s) without ACT_REGISTRY metadata:")
+        for u in unregistered:
+            print(f"  - {u}")
+        print()
+
+    log.info("Found %d PDF(s) to parse", len(pdf_files))
+    success, failed, bad = [], [], []
 
     for pdf_path in pdf_files:
-        if pdf_path.stem != "motor_vehicles_act_1988":
-            continue
         category = pdf_path.parent.name
-        log.info("\nParsing: %s [%s]", pdf_path.name, category)
-        out = parse_act(pdf_path, category)
-        (success if out else failed).append(pdf_path.name)
+        log.info("Parsing: %s [%s]", pdf_path.name, category)
+        result = parse_act(pdf_path, category)
 
-    print("\n── Parse Summary ─────────────────────────────")
+        if not result.ok:
+            failed.append(pdf_path.name)
+            continue
+
+        is_bad = bool(result.issues or result.score < 70)
+        if is_bad:
+            bad.append(pdf_path.name)
+            failed.append(pdf_path.name)
+        else:
+            success.append(pdf_path.name)
+
+    print("\n\u2500\u2500 Parse Summary \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500")
     print(f"  Succeeded : {len(success)}")
     for s in success:
-        print(f"    ✓ {s}")
+        print(f"    \u2713 {s}")
     if failed:
         print(f"  Failed    : {len(failed)}")
         for f in failed:
-            print(f"    ✗ {f}")
-    print("──────────────────────────────────────────────")
+            print(f"    \u2717 {f}")
+    print("\u2500" * 48)
+    if bad:
+        print("\n\u274c Needs review (health issues or score < 70):")
+        for b in bad:
+            print("  -", b)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Parse India Code Act PDFs into structured JSON.")
+    parser.add_argument("--act", help="Only parse the PDF with this stem (filename without .pdf)")
+    parser.add_argument("--verbose", action="store_true", help="Enable debug-level logging")
+    parser.add_argument("--show-unregistered", action="store_true",
+                         help="List PDFs found on disk that have no ACT_REGISTRY entry")
+    args = parser.parse_args()
+
+    configure_logging(args.verbose)
+    run(only_stem=args.act, show_unregistered=args.show_unregistered)
 
 
 if __name__ == "__main__":
-    run()
+    main()
