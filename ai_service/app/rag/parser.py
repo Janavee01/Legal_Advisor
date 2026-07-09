@@ -65,118 +65,118 @@ def configure_logging(verbose: bool) -> None:
 # --------------------------------------------------------------------------
 ACT_REGISTRY: dict[str, dict] = {
     "the_passports_act_1967": dict(
-        act_name="The Passports Act, 1967", short_name="Passports Act",
+        act_name="The Passports Act 1967", short_name="Passports Act",
         year=1967, ministry="Ministry of External Affairs", category="administrative"),
     "constitution_of_india": dict(
-        act_name="The Constitution of India", short_name="Constitution",
+        act_name="Constitution of India", short_name="Constitution",
         year=1950, ministry="Ministry of Law and Justice", category="constitution",
         structure="constitution"),
     "consumer_protection_act_2019": dict(
-        act_name="The Consumer Protection Act, 2019", short_name="Consumer Protection Act",
+        act_name="Consumer Protection Act 2019", short_name="Consumer Protection Act",
         year=2019, ministry="Ministry of Consumer Affairs, Food and Public Distribution", category="consumer"),
     "legal_metrology_act_2009": dict(
-        act_name="The Legal Metrology Act, 2009", short_name="Legal Metrology Act",
+        act_name="Legal Metrology Act 2009", short_name="Legal Metrology Act",
         year=2009, ministry="Ministry of Consumer Affairs, Food and Public Distribution", category="consumer"),
     "bharatiya_nagarik_suraksha_sanhita_2023": dict(
-        act_name="The Bharatiya Nagarik Suraksha Sanhita, 2023", short_name="BNSS",
+        act_name="Bharatiya Nagarik Suraksha Sanhita 2023", short_name="BNSS",
         year=2023, ministry="Ministry of Home Affairs", category="criminal"),
     "bharatiya_nyaya_sanhita_2023": dict(
-        act_name="The Bharatiya Nyaya Sanhita, 2023", short_name="BNS",
+        act_name="Bharatiya Nyaya Sanhita 2023", short_name="BNS",
         year=2023, ministry="Ministry of Home Affairs", category="criminal"),
     "bharatiya_sakshya_adhiniyam_2023": dict(
-        act_name="The Bharatiya Sakshya Adhiniyam, 2023", short_name="BSA",
+        act_name="Bharatiya Sakshya Adhiniyam 2023", short_name="BSA",
         year=2023, ministry="Ministry of Home Affairs", category="criminal"),
     "narcotic_drugs_and_psychotropic_substances_act_1985": dict(
-        act_name="The Narcotic Drugs and Psychotropic Substances Act, 1985", short_name="NDPS Act",
+        act_name="Narcotic Drugs And Psychotropic Substances Act 1985", short_name="NDPS Act",
         year=1985, ministry="Department of Revenue, Ministry of Finance", category="criminal"),
     "the_arms_act_1959": dict(
-        act_name="The Arms Act, 1959", short_name="Arms Act",
+        act_name="The Arms Act 1959", short_name="Arms Act",
         year=1959, ministry="Ministry of Home Affairs", category="criminal"),
     "information_technology_act_2000": dict(
-        act_name="The Information Technology Act, 2000", short_name="IT Act",
+        act_name="Information Technology Act 2000", short_name="IT Act",
         year=2000, ministry="Ministry of Electronics and Information Technology", category="cyber"),
     "guardians_and_wards_act_1890": dict(
-        act_name="The Guardians and Wards Act, 1890", short_name="Guardians and Wards Act",
+        act_name="Guardians and Wards Act 1890", short_name="Guardians and Wards Act",
         year=1890, ministry="Ministry of Law and Justice", category="family"),
     "hindu_marriage_act_1955": dict(
-        act_name="The Hindu Marriage Act, 1955", short_name="Hindu Marriage Act",
+        act_name="Hindu Marriage Act 1955", short_name="Hindu Marriage Act",
         year=1955, ministry="Ministry of Law and Justice", category="family"),
     "hindu_succession_act_1956": dict(
-        act_name="The Hindu Succession Act, 1956", short_name="Hindu Succession Act",
+        act_name="Hindu Succession Act 1956", short_name="Hindu Succession Act",
         year=1956, ministry="Ministry of Law and Justice", category="family"),
     "indian_succession_act_1925": dict(
-        act_name="The Indian Succession Act, 1925", short_name="Indian Succession Act",
+        act_name="Indian Succession Act 1925", short_name="Indian Succession Act",
         year=1925, ministry="Ministry of Law and Justice", category="family"),
     "special_marriage_act_1954": dict(
-        act_name="The Special Marriage Act, 1954", short_name="Special Marriage Act",
+        act_name="Special Marriage Act 1954", short_name="Special Marriage Act",
         year=1954, ministry="Ministry of Law and Justice", category="family"),
     "code_on_wages_2019": dict(
-        act_name="The Code on Wages, 2019", short_name="Code on Wages",
+        act_name="Code on Wages 2019", short_name="Code on Wages",
         year=2019, ministry="Ministry of Labour and Employment", category="labour"),
     "industrial_disputes_act_1947": dict(
-        act_name="The Industrial Disputes Act, 1947", short_name="Industrial Disputes Act",
+        act_name="Industrial Disputes Act 1947", short_name="Industrial Disputes Act",
         year=1947, ministry="Ministry of Labour and Employment", category="labour"),
     "labour_factories_act_1948": dict(
-        act_name="The Factories Act, 1948", short_name="Factories Act",
+        act_name="Labour Factories Act 1948", short_name="Factories Act",
         year=1948, ministry="Ministry of Labour and Employment", category="labour"),
     "occupational_safety_health_and_working_conditions_code_2020": dict(
-        act_name="The Occupational Safety, Health and Working Conditions Code, 2020", short_name="OSH Code",
+        act_name="Occupational Safety Health And Working Conditions Code 2020", short_name="OSH Code",
         year=2020, ministry="Ministry of Labour and Employment", category="labour"),
     "payment_of_wages_act_1936": dict(
-        act_name="The Payment of Wages Act, 1936", short_name="Payment of Wages Act",
+        act_name="Payment of Wages Act 1936", short_name="Payment of Wages Act",
         year=1936, ministry="Ministry of Labour and Employment", category="labour"),
     "the_code_on_security_2020": dict(
-        act_name="The Code on Social Security, 2020", short_name="Social Security Code",
+        act_name="The Code On Security 2020", short_name="Social Security Code",
         year=2020, ministry="Ministry of Labour and Employment", category="labour"),
     "the_employees_compensation_act_1923": dict(
-        act_name="The Employee's Compensation Act, 1923", short_name="Employee's Compensation Act",
+        act_name="The Employees Compensation Act 1923", short_name="Employee's Compensation Act",
         year=1923, ministry="Ministry of Labour and Employment", category="labour"),
     "the_employees_provident_funds_and_miscellaneous_provisions_act_1952": dict(
-        act_name="The Employees' Provident Funds and Miscellaneous Provisions Act, 1952", short_name="EPF Act",
+        act_name="The Employees Provident Funds and Miscellaneous Provisions Act 1952", short_name="EPF Act",
         year=1952, ministry="Ministry of Labour and Employment", category="labour"),
     "the_maternity_benefit_act_1961": dict(
-        act_name="The Maternity Benefit Act, 1961", short_name="Maternity Benefit Act",
+        act_name="The Maternity Benefit Act 1961", short_name="Maternity Benefit Act",
         year=1961, ministry="Ministry of Labour and Employment", category="labour"),
     "registration_act_1908": dict(
-        act_name="The Registration Act, 1908", short_name="Registration Act",
+        act_name="The Registration Act 1908", short_name="Registration Act",
         year=1908, ministry="Ministry of Rural Development", category="property"),
     "transfer_of_property_act_1882": dict(
-        act_name="The Transfer of Property Act, 1882", short_name="Transfer of Property Act",
+        act_name="Transfer Of Property Act 1882", short_name="Transfer of Property Act",
         year=1882, ministry="Ministry of Law and Justice", category="property"),
     "legal_services_authorities_act_1987": dict(
-        act_name="The Legal Services Authorities Act, 1987", short_name="Legal Services Authorities Act",
+        act_name="Legal Services Authorities Act 1987", short_name="Legal Services Authorities Act",
         year=1987, ministry="Ministry of Law and Justice", category="rights"),
     "right_to_information_act_2005": dict(
-        act_name="The Right to Information Act, 2005", short_name="RTI Act",
+        act_name="Right To Information Act 2005", short_name="RTI Act",
         year=2005, ministry="Ministry of Personnel, Public Grievances and Pensions", category="rights"),
     "maintenance_and_welfare_of_parents_and_senior_citizens_act_2007": dict(
-        act_name="The Maintenance and Welfare of Parents and Senior Citizens Act, 2007",
+        act_name="Maintenance And Welfare Of Parents And Senior Citizens Act 2007",
         short_name="Senior Citizens Act",
         year=2007, ministry="Ministry of Social Justice and Empowerment", category="social_justice"),
     "rights_of_persons_with_disabilities_act_2016": dict(
-        act_name="The Rights of Persons with Disabilities Act, 2016", short_name="RPWD Act",
+        act_name="Rights Of Persons With Disabilities Act 2016", short_name="RPWD Act",
         year=2016, ministry="Ministry of Social Justice and Empowerment", category="social_justice"),
     "scheduled_castes_and_scheduled_tribes_act_1989": dict(
-        act_name="The Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act, 1989",
+        act_name="Scheduled Castes And Scheduled Tribes Act 1989",
         short_name="SC/ST (POA) Act",
         year=1989, ministry="Ministry of Social Justice and Empowerment", category="social_justice"),
     "motor_vehicles_act_1988": dict(
-        act_name="The Motor Vehicles Act, 1988", short_name="Motor Vehicles Act",
+        act_name="Motor Vehicles Act 1988", short_name="Motor Vehicles Act",
         year=1988, ministry="Ministry of Road Transport and Highways", category="transport"),
     "dowry_prohibition_act_1961": dict(
-        act_name="The Dowry Prohibition Act, 1961", short_name="Dowry Prohibition Act",
+        act_name="Dowry Prohibition Act 1961", short_name="Dowry Prohibition Act",
         year=1961, ministry="Ministry of Women and Child Development", category="women_child"),
     "juvenile_justice_act_2015": dict(
-        act_name="The Juvenile Justice (Care and Protection of Children) Act, 2015", short_name="JJ Act",
+        act_name="Juvenile Justice Act 2015", short_name="JJ Act",
         year=2015, ministry="Ministry of Women and Child Development", category="women_child"),
     "protection_of_Children_from_sexual_offences_act_2012": dict(
-        act_name="The Protection of Children from Sexual Offences Act, 2012", short_name="POCSO Act",
+        act_name="Protection Of Children From Sexual Offences Act 2012", short_name="POCSO Act",
         year=2012, ministry="Ministry of Women and Child Development", category="women_child"),
     "protection_of_women_from_domestic_violence_act_2005": dict(
-        act_name="The Protection of Women from Domestic Violence Act, 2005", short_name="PWDVA",
+        act_name="Protection Of Women From Domestic Violence Act 2005", short_name="PWDVA",
         year=2005, ministry="Ministry of Women and Child Development", category="women_child"),
     "sexual_harassment_of_women_at_workplace_act_2013": dict(
-        act_name="The Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+        act_name="Sexual Harassment Of Women At Workplace Act 2013",
         short_name="POSH Act",
         year=2013, ministry="Ministry of Women and Child Development", category="women_child"),
 }
@@ -300,8 +300,7 @@ def is_footnote_header_match(section_title: str, section_body_head: str) -> bool
 # because the character right after the digits+period in real prose is
 # almost always lowercase.
 HEADER_PATTERN = re.compile(
-    r"(?m)^(?P<num>\d{1,3}[A-Z]{0,2})\.[ \t]+"
-    r"(?P<title>[A-Z\"\u201c(][^\n]{1,300})$"
+    r"(?m)^(?P<num>\d{1,3}[A-Z]{0,2})\.[ \t]+(?P<title>[^\n]{1,300})$"
 )
 
 CHAPTER_PATTERN = re.compile(

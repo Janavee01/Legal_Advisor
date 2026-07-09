@@ -7,7 +7,7 @@ import hashlib
 from pathlib import Path
 from .chunker import chunk_sections
 from .vectordb import get_collection
-from .parser import ACT_METADATA
+from .parser import ACT_REGISTRY
 from .embedder import get_model
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -162,7 +162,7 @@ def run(reset: bool = False):
         category = json_path.parent.name
         stem = json_path.stem
 
-        act_metadata = ACT_METADATA.get(stem)
+        act_metadata = ACT_REGISTRY.get(stem)
         if act_metadata is None:
             act_metadata = {
                 "act_name": stem.replace("_", " ").title(),

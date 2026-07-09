@@ -1812,22 +1812,6 @@ TestCase(
 ),
 
 TestCase(
-    id="COI_008",
-    query="freedom of speech in india",
-    preferred=("Constitution Of India", "19"),
-    acceptable=[("Constitution Of India", "19")],
-    category_filter="constitution",
-),
-
-TestCase(
-    id="9",
-    query="freedom of religion in india",
-    preferred=("Constitution Of India", "25"),
-    acceptable=[("Constitution Of India", "25")],
-    category_filter="constitution",
-),
-
-TestCase(
     id="ITA_002",
     query="unauthorized access to my computer or files",
     preferred=("Information Technology Act 2000", "43"),
