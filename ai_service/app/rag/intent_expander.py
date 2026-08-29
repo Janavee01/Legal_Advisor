@@ -5,7 +5,7 @@ Loads intent_index.json at startup, builds embeddings once, then scores
 each query against all intents using cosine similarity.
 
 Returns the top-2 intents that score within 85% of the best score,
-with their anchors (Act + Section references) and example queries.
+with their example queries.
 """
 
 import json
@@ -16,22 +16,25 @@ BASE_DIR = Path(__file__).resolve().parents[3]
 INTENT_PATH = BASE_DIR / "ai_service" / "app" / "rag" / "intent_index.json"
 
 QUERY_PREFIX = "Represent this query for retrieving relevant legal passages: "
+CATEGORY_FILTER_THRESHOLD = 0.80
+
+from functools import lru_cache
+
+@lru_cache(maxsize=1)
+def get_intent_expander():
+    return LegalIntentExpander()
 
 class LegalIntentExpander:
 
     def __init__(self):
         self.model = get_model()
-
-        with open(INTENT_PATH, "r") as f:
-            self.intents = json.load(f)
-
-        self._build_index()
+        self._intent_mtime = None
+        self._load_intents()
 
     def _build_index(self):
         """
         Pre-compute one embedding per intent by combining:
             - example queries (the primary signal)
-            - anchors (Act + Section references)
             - the intent name itself
 
         Using the query prefix keeps the embedding space consistent
@@ -40,7 +43,6 @@ class LegalIntentExpander:
         texts = [
             QUERY_PREFIX + " ".join(
             i.get("examples", [])
-            + i.get("anchors", [])
             + [i.get("prototype", "")]
             + [i.get("intent", "").replace("_", " ")]
         )
@@ -56,12 +58,45 @@ class LegalIntentExpander:
             dtype=np.float32
         )
 
+    def _load_intents(self):
+        print("Loading intents from:", INTENT_PATH.resolve())
+
+        self._intent_mtime = INTENT_PATH.stat().st_mtime
+        print("mtime:", self._intent_mtime)
+
+        with open(INTENT_PATH, "r", encoding="utf-8") as f:
+            self.intents = json.load(f)
+
+        print("Loaded", len(self.intents), "intents")
+
+        found = [
+            i["intent"]
+            for i in self.intents
+            if "parent_maintenance" in i["intent"]
+            or "firearm_licence" in i["intent"]
+        ]
+        print("Special intents:", found)
+
+        self._build_index()
+
+    def _refresh_if_needed(self):
+        print("refresh check running")
+        current_mtime = INTENT_PATH.stat().st_mtime
+
+        print("old:", self._intent_mtime)
+        print("new:", current_mtime)
+
+        if current_mtime != self._intent_mtime:
+            print("intent_index.json changed, reloading...")
+            self._load_intents()
+
     def match_intents(
             self,
             query: str,
             category: str | None = None,
             router_confidence: float = 1.0,
         ) -> dict:
+        self._refresh_if_needed()
         """
         Score the query against all intents and return top matches.
 
@@ -71,7 +106,6 @@ class LegalIntentExpander:
                     {
                         "intent": "maternity_leave",
                         "score": 0.87,
-                        "anchors": [...],
                         "examples": [...]
                     },
                     ...
@@ -86,18 +120,23 @@ class LegalIntentExpander:
             4. Return the top-2 by score.
 
         The 85% threshold keeps closely-related intents (e.g. bail + FIR)
-        while excluding unrelated ones. Top-2 cap prevents anchor bloat
+        while excluding unrelated ones. Top-2 cap prevents query pollution
         that pushes the query embedding in conflicting directions.
         """
 
-        if category and router_confidence >= 0.5:
-            candidate_indices = [
+        candidate_indices = list(range(len(self.intents)))
+
+        if category and router_confidence >= CATEGORY_FILTER_THRESHOLD:
+            filtered = [
                 i for i, intent in enumerate(self.intents)
-                if intent["category"] == category
+                if intent.get("category") == category
             ]
-        else:
-            candidate_indices = list(range(len(self.intents)))
+
+            if filtered:
+                candidate_indices = filtered
         
+        print(category, router_confidence)
+        print(len(candidate_indices))
 
         print("Candidate intents:")
         for i in candidate_indices:
@@ -124,28 +163,62 @@ class LegalIntentExpander:
         # The old code interleaved truncation with collection, causing
         # non-deterministic results depending on loop iteration order.
         candidates = []
-        MIN_SCORE = 0.50 
-        SECONDARY_GAP = 0.05
+        MIN_SCORE = 0.62
+        SECONDARY_GAP = 0.85
+        RELATIVE_GAP = 0.85
+        RETRY_MIN_SCORE = 0.65    
 
+        candidates = []
         for local_idx in top_local_indices:
-            
             score = float(scores[local_idx])
+
             if score < MIN_SCORE:
                 continue
-
-            if best_score - score > SECONDARY_GAP:
+            if score < best_score * RELATIVE_GAP:
                 break
-            
+
             original_idx = candidate_indices[local_idx]
 
             candidates.append({
                 "intent": self.intents[original_idx]["intent"],
                 "score": score,
-                "anchors": self.intents[original_idx].get("anchors", []),
-                "examples": self.intents[original_idx].get("examples", [])
+                "examples": self.intents[original_idx].get("examples", []),
+                "prototype": self.intents[original_idx].get("prototype", ""),
             })
-        
-        matched_intents = candidates[:2]
+
+
+        if len(candidates) == 0 and category and best_score >= RETRY_MIN_SCORE:
+
+            print("No intents found in routed category, but best score",
+                  f"{best_score:.3f} is close — retrying without category restriction.")
+
+            candidate_indices = list(range(len(self.intents)))
+            candidate_embeddings = self.intent_embeddings
+
+            scores = candidate_embeddings @ query_vec
+            top_local_indices = np.argsort(scores)[::-1]
+
+            best_score = float(scores[top_local_indices[0]])
+
+            for local_idx in top_local_indices:
+                score = float(scores[local_idx])
+
+                if score < MIN_SCORE:
+                    continue
+                if score < best_score * RELATIVE_GAP:
+                    break
+
+                original_idx = local_idx
+
+                candidates.append({
+                    "intent": self.intents[original_idx]["intent"],
+                    "score": score,
+                    "examples": self.intents[original_idx].get("examples", []),
+                    "prototype": self.intents[original_idx].get("prototype", ""),
+                })
+
+        matched_intents = candidates[:2]   
+
 
         for local_idx in top_local_indices[:10]:
             original_idx = candidate_indices[local_idx]

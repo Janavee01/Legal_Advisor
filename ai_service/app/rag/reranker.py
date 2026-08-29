@@ -10,10 +10,11 @@ The final score blends:
     - retrieval score : normalized semantic + BM25 score from retrieve.py (0-1ish)
     - title_match   : weak signal if query terms appear in section title
 
-Weights: retrieval 55%, rerank 35%, title 10%.
-The retrieval score dominates slightly because the cross-encoder
-ms-marco-MiniLM-L-6-v2 was trained on web passages, not Indian statute
-text — it gives strong signal but isn't perfectly calibrated for this domain.
+Weights: retrieval 70%, rerank 25%, title 5%.
+Retrieval score dominates because the cross-encoder bge-reranker-v2-m3
+was trained on MS MARCO web passages, not Indian statute text — it
+frequently disagrees with the retrieval signal on legal text, causing
+correct sections to be demoted below top-5.
 """
 
 from sentence_transformers import CrossEncoder
@@ -29,9 +30,11 @@ MAX_TEXT_CHARS = 600
 def get_reranker() -> CrossEncoder:
     global _reranker
     if _reranker is None:
+        import torch
+        device = "cuda" if torch.cuda.is_available() else "cpu"
         _reranker = CrossEncoder(
-            "cross-encoder/ms-marco-MiniLM-L-6-v2",
-            device="cpu"
+            "BAAI/bge-reranker-v2-m3",
+            device=device
         )
     return _reranker
 
@@ -59,11 +62,11 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
         # Truncate to model token limit
         text_truncated = text[:MAX_TEXT_CHARS] + (" [truncated]" if len(text) > MAX_TEXT_CHARS else "")
 
-        # Format that gives the cross-encoder the most useful signal:
-        # title repeated twice gives it extra weight since the cross-encoder
-        # pays attention to early tokens more heavily.
+        # Format for the cross-encoder. Title is included once — repeating it
+        # was found to hurt disambiguation between adjacent sections of the
+        # same Act, which often share near-identical titles.
         doc = (
-            f"[TITLE] {title}. {title}. "
+            f"[TITLE] {title}. "
             f"[ACT] {act}. "
             f"[SECTION] {section}. "
             f"[TEXT] {text_truncated}"
@@ -110,12 +113,13 @@ def rerank(query: str, results: list[dict]) -> list[dict]:
         title_tokens = set(title.split())
         title_match = float(bool(query_tokens & title_tokens))
 
-        # Final blend: retrieval score dominates, rerank provides strong signal,
-        # title match is a small tiebreaker.
+        # Final blend: retrieval score dominates because the cross-encoder
+        # was trained on web passages and frequently mis-ranks Indian statute
+        # sections. Rerank is a sanity check, not the primary signal.
         r["final_score"] = (
-            0.55 * retrieval_score +
-            0.35 * float(norm_score) +
-            0.10 * title_match
+            0.70 * retrieval_score +
+            0.25 * float(norm_score) +
+            0.05 * title_match
         )
 
     return sorted(

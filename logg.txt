@@ -1,6 +1,6 @@
 Loaded 36 acts, 3748 sections total.
 
-Loaded 192 test cases from eval.py
+Loaded 187 test cases from eval.py
 
 ==============================================================================
 HARD ERRORS (0) -- these WILL always fail retrieval eval:
@@ -13,6 +13,6 @@ WARNINGS (0) -- ambiguous act-name matching:
 ==============================================================================
 SUMMARY
 ==============================================================================
-Test cases checked : 192
+Test cases checked : 187
 Hard errors        : 0
 Warnings           : 0

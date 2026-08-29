@@ -206,7 +206,7 @@ def run(reset: bool = False):
     with ThreadPoolExecutor(max_workers=8) as executor:
         results = list(executor.map(prepare_chunk, all_new_chunks))
     for cid, text, chunk in [(r[0], r[1], r[2]) for r in results]:
-        cache_key = f"{cid}:v2"
+        cache_key = f"{cid}:v3"
         if cache_key in cache:
             continue
 
@@ -229,7 +229,7 @@ def run(reset: bool = False):
         ).tolist()
 
         for c, emb in zip(batch_chunks, embeddings):
-            cache_key = f"{c['chunk_id']}:v2"
+            cache_key = f"{c['chunk_id']}:v3"
             cache[cache_key] = emb
 
     save_embedding_cache(cache)
@@ -246,7 +246,7 @@ def run(reset: bool = False):
     for chunk in all_new_chunks:
         cid = chunk["chunk_id"]
 
-        cache_key = f"{cid}:v2"
+        cache_key = f"{cid}:v3"
         if cache_key not in cache:
             continue
 

@@ -1,0 +1,337 @@
+Loading intents from: /home/janavee/legal_advisor/ai_service/app/rag/intent_index.json
+mtime: 1784048055.631695
+Loaded 113 intents
+Special intents: ['parent_maintenance_by_children', 'firearm_licence_refusal_cancellation']
+refresh check running
+old: 1784048055.631695
+new: 1784048055.631695
+women_child 0.6868
+113
+Candidate intents:
+- constitutional_equality
+- free_speech_rights
+- sexual_harassment_complaint
+- sexual_harassment_definition
+- domestic_violence
+- dowry_harassment
+- child_protection
+- working_hours
+- overtime_wages
+- maternity_leave
+- salary_deduction
+- workplace_injury
+- consumer_refund
+- product_liability
+- mrp_overcharging
+- bail
+- murder_punishment
+- fir_registration
+- unguarded_machinery_injury
+- arrest_rights
+- narcotics_drugs
+- weapons_arms
+- tenant_rights
+- divorce
+- inheritance_succession
+- guardianship
+- rti_application
+- legal_aid
+- cyber_crime
+- online_privacy
+- road_accident
+- traffic_offence
+- disability_rights
+- sc_st_atrocities
+- senior_citizen_maintenance
+- cheating_fraud
+- theft_robbery
+- maintenance
+- property_dispute
+- online_shopping_dispute
+- online_financial_fraud
+- stalking_voyeurism
+- wrongful_termination
+- passport_offences
+- voluntarily_causing_hurt
+- interrogation_rights
+- factory_definition
+- factory_safety
+- factory_safety_officer_requirement
+- parent_maintenance_by_children
+- firearm_licence_refusal_cancellation
+- factory_working_hours
+- factory_child_labour
+- factory_registration
+- salary_unpaid
+- pf_eligibility
+- pf_default
+- employee_insurance
+- child_juvenile_crime
+- electronic_evidence_admissibility
+- minor_as_adult
+- juvenile_rehabilitation
+- child_abuse_reporting
+- child_abuse_fir
+- dv_complaint_filing
+- live_in_dv
+- maternity_salary
+- maternity_refusal
+- evidence_electronic
+- evidence_cctv
+- guardian_appointment
+- guardian_without_consent
+- child_custody_petition
+- grandparent_guardian
+- remove_guardian
+- hindu_validity
+- bigamy_remarriage
+- live_in_hindu
+- will_validity
+- no_nominee
+- handwritten_will
+- interfaith_marriage
+- special_marriage_registration
+- civil_marriage
+- registration_compulsory
+- registration_consequences
+- gift_deed_registration
+- dv_legal_aid
+- rti_scope
+- rti_refusal
+- rti_personal_info
+- senior_citizen_complaint
+- disability_employment
+- sc_st_offence
+- landlord_repairs
+- mortgage_auction
+- ad_misleading
+- consumer_definition
+- consumer_refund_refused
+- consumer_deficient_service
+- consumer_warranty_denied
+- consumer_defective_food
+- legal_metrology_unstamped
+- legal_metrology_faulty
+- minimum_wage
+- equal_pay
+- salary_delay
+- ndps_rehabilitation
+- arms_without_licence
+- road_accident_immediate
+- driving_unlicensed
+- driving_uninsured
+- driving_license
+sexual_harassment_definition 0.7383
+sexual_harassment_complaint 0.7013
+wrongful_termination 0.6329
+stalking_voyeurism 0.6234
+child_protection 0.6003
+disability_rights 0.5955
+salary_deduction 0.5899
+equal_pay 0.5895
+minimum_wage 0.5873
+disability_employment 0.5694
+
+Matched intents:
+sexual_harassment_definition (0.7383)
+sexual_harassment_complaint (0.7013)
+ROUTING: {'category': 'women_child', 'confidence': 0.6868, 'section_number': None, 'all_scores': {'women_child': 0.6868, 'labour': 0.6047, 'cyber': 0.5314, 'social_justice': 0.5185, 'constitution': 0.4994, 'consumer': 0.4859, 'family': 0.4741, 'rights': 0.471, 'property': 0.4634, 'administrative': 0.4589, 'transport': 0.4521, 'criminal': 0.4436}}
+EXPANDED: {'matched_intents': [{'intent': 'sexual_harassment_definition', 'score': 0.7383015155792236, 'anchors': ['Sexual Harassment of Women at Workplace Act 2013 Section 2', 'Sexual Harassment of Women at Workplace Act 2013 Section 3'], 'examples': ['what is sexual harassment', 'what counts as sexual harassment at workplace', 'types of sexual harassment', 'does POSH apply to interns', 'does POSH apply to contractual workers', 'who is covered under POSH', 'definition of employee under POSH', 'what is workplace under POSH']}, {'intent': 'sexual_harassment_complaint', 'score': 0.7012739181518555, 'anchors': ['Sexual Harassment of Women at Workplace Act 2013 Section 9', 'Sexual Harassment of Women at Workplace Act 2013 Section 19'], 'examples': ['how to file POSH complaint', 'complaint procedure', 'where to complain', 'internal committee complaint']}]}
+AFTER RESOLVER: [{'intent': 'sexual_harassment_definition', 'score': 0.7383015155792236, 'anchors': ['Sexual Harassment of Women at Workplace Act 2013 Section 2', 'Sexual Harassment of Women at Workplace Act 2013 Section 3'], 'examples': ['what is sexual harassment', 'what counts as sexual harassment at workplace', 'types of sexual harassment', 'does POSH apply to interns', 'does POSH apply to contractual workers', 'who is covered under POSH', 'definition of employee under POSH', 'what is workplace under POSH']}, {'intent': 'sexual_harassment_complaint', 'score': 0.7012739181518555, 'anchors': ['Sexual Harassment of Women at Workplace Act 2013 Section 9', 'Sexual Harassment of Women at Workplace Act 2013 Section 19'], 'examples': ['how to file POSH complaint', 'complaint procedure', 'where to complain', 'internal committee complaint']}]
+FINAL INTENTS: ['sexual_harassment_definition', 'sexual_harassment_complaint']
+QUERY: What is considered sexual harassment at workplace?
+INTENTS: ['sexual_harassment_definition', 'sexual_harassment_complaint']
+MATCHED INTENTS: None
+CATEGORY: women_child
+ANCHORS: ['Sexual Harassment of Women at Workplace Act 2013 Section 2', 'Sexual Harassment of Women at Workplace Act 2013 Section 3', 'Sexual Harassment of Women at Workplace Act 2013 Section 9', 'Sexual Harassment of Women at Workplace Act 2013 Section 19']
+EXPANDED QUERY: What is considered sexual harassment at workplace? sexual harassment definition what is sexual harassment what counts as sexual harassment at workplace sexual harassment complaint how to file POSH complaint
+
+WHERE = {'category': 'women_child'}
+QUERY ACT NAMES: []
+['Act: Sexual Harassment Of Women At Workplace Act 2013\nCategory: women_child\nChapter: PRELIMINARY\n\nSection 2\nTitle: Definitions.—In this Act, unless the context otherwise requires, —\n\nLegal Text:\nSection 2 Definitions.—In this Act, unless the context otherwise requires, —\n\n(i) physical contact and advances; or\n(ii) a demand or request for sexual favours; or\n(iii) making sexually coloured remarks; or\n(iv) showing pornography; or\n(v) any other unwelcome physical, verbal or non-verbal conduct of sexual nature; (o) “workplace” includes— (i) any department, organisation, undertaking, establishment, enterprise, institution, office,\nbranch or unit which is established, owned, controlled or wholly or substantially financed by\nfunds provided directly or indirectly by the appropriate Government or the local authority or a\nGovernment company or a corporation or a co-operative society; (ii) any private sector organisation or a private venture, undertaking, enterprise, institution,\nestablishment, society, trust, non-governmental organisation, unit or service provider carrying on\ncommercial, professional, vocational, educational, entertainmental, industrial, health services or\nfinancial activities including production, supply, sale, distribution or service; (iii) hospitals or nursing homes; (iv) any sports institute, stadium, sports complex or competition or games venue, whether\nresidential or not used for training, sports or other activities relating thereto;', 'Act: Sexual Harassment Of Women At Workplace Act 2013\nCategory: women_child\nChapter: PRELIMINARY\n\nSection 2\nTitle: Definitions.—In this Act, unless the context otherwise requires, —\n\nLegal Text:\nSection 2 Definitions.—In this Act, unless the context otherwise requires, —\n\n(v) any place visited by the employee arising out of or during the course of employment\nincluding transportation by the employer for undertaking such journey; (vi) a dwelling place or a house; (p) “unorganised sector” in relation to a workplace means an enterprise owned by individuals or\nself-employed workers and engaged in the production or sale of goods or providing service of any\nkind whatsoever, and where the enterprise employs workers, the number of such workers is less than\nten.', 'Act: Sexual Harassment Of Women At Workplace Act 2013\nCategory: women_child\nChapter: COMPLAINT\n\nSection 9\nTitle: Complaint of sexual harassment.—(1) Any aggrieved woman may make, in writing, a complaint\n\nLegal Text:\nSection 9 Complaint of sexual harassment.—(1) Any aggrieved woman may make, in writing, a complaint\n\n9. Complaint of sexual harassment.—(1) Any aggrieved woman may make, in writing, a complaint\nof sexual harassment at workplace to the Internal Committee if so constituted, or the Local Committee, in\ncase it is not so constituted, within a period of three months from the date of incident and in case of a\nseries of incidents, within a period of three months from the date of last incident:\nProvided that where such complaint cannot be made in writing, the Presiding Officer or any Member\nof the Internal Committee or the Chairperson or any Member of the Local Committee, as the case may be,\nshall render all reasonable assistance to the woman for making the complaint in writing:\nProvided further that the Internal Committee or, as the case may be, the Local Committee may, for\nthe reasons to be recorded in writing, extend the time limit not exceeding three months , if it is satisfied\nthat the circumstances were such which prevented the woman from filing a complaint within the said\nperiod.']
+[{'section_title': 'Definitions.—In this Act, unless the context otherwise requires, —', 'year': 2013, 'chunk_id': '39e1509683f9e410bcf84235c7b92c35a2a5ec7eead95ddef6071ffca874ee6c', 'short_name': 'POSH Act', 'doc_id': 6235, 'source': 'sexual_harassment_of_women_at_workplace_act_2013.json', 'act_name': 'Sexual Harassment Of Women At Workplace Act 2013', 'citation': 'Sexual Harassment Of Women At Workplace Act 2013 › Section 2 › Definitions.—In this Act, unless the context otherwise requires, — (part 5/6)', 'category': 'women_child', 'chapter': 'PRELIMINARY', 'total_chunks': 6, 'section_number': '2', 'chunk_index': 4}, {'year': 2013, 'short_name': 'POSH Act', 'section_number': '2', 'doc_id': 6236, 'total_chunks': 6, 'section_title': 'Definitions.—In this Act, unless the context otherwise requires, —', 'chapter': 'PRELIMINARY', 'chunk_id': 'cabc6d8ecaaa425eea3a8917bbf0a876d48c436753875de4e867724df0a1aaa5', 'act_name': 'Sexual Harassment Of Women At Workplace Act 2013', 'source': 'sexual_harassment_of_women_at_workplace_act_2013.json', 'category': 'women_child', 'citation': 'Sexual Harassment Of Women At Workplace Act 2013 › Section 2 › Definitions.—In this Act, unless the context otherwise requires, — (part 6/6)', 'chunk_index': 5}, {'year': 2013, 'citation': 'Sexual Harassment Of Women At Workplace Act 2013 › Section 9 › Complaint of sexual harassment.—(1) Any aggrieved woman may make, in writing, a complaint (part 1/2)', 'act_name': 'Sexual Harassment Of Women At Workplace Act 2013', 'section_title': 'Complaint of sexual harassment.—(1) Any aggrieved woman may make, in writing, a complaint', 'section_number': '9', 'doc_id': 6246, 'chunk_id': 'ee346fd17e8dffbb8533fc8c28f2ee6584d6fbc3e4bec4746e53b47e7a8b7059', 'chapter': 'COMPLAINT', 'category': 'women_child', 'chunk_index': 0, 'short_name': 'POSH Act', 'total_chunks': 2, 'source': 'sexual_harassment_of_women_at_workplace_act_2013.json'}]
+[0.5043532848358154, 0.5313040018081665, 0.5562867522239685]
+
+Acts returned by Chroma:
+NUM RESULTS BEFORE DEDUPE: 0
+
+INSIDE DEDUPE
+INPUT: 0
+OUTPUT: 0
+AFTER DEDUPE: 0
+
+Top retrieval scores before rerank:
+
+Reranker scores:
+
+INSIDE DEDUPE
+INPUT: 0
+OUTPUT: 0
+
+Final Retrieval Results
+refresh check running
+old: 1784048055.631695
+new: 1784048055.631695
+women_child 0.6604
+113
+Candidate intents:
+- constitutional_equality
+- free_speech_rights
+- sexual_harassment_complaint
+- sexual_harassment_definition
+- domestic_violence
+- dowry_harassment
+- child_protection
+- working_hours
+- overtime_wages
+- maternity_leave
+- salary_deduction
+- workplace_injury
+- consumer_refund
+- product_liability
+- mrp_overcharging
+- bail
+- murder_punishment
+- fir_registration
+- unguarded_machinery_injury
+- arrest_rights
+- narcotics_drugs
+- weapons_arms
+- tenant_rights
+- divorce
+- inheritance_succession
+- guardianship
+- rti_application
+- legal_aid
+- cyber_crime
+- online_privacy
+- road_accident
+- traffic_offence
+- disability_rights
+- sc_st_atrocities
+- senior_citizen_maintenance
+- cheating_fraud
+- theft_robbery
+- maintenance
+- property_dispute
+- online_shopping_dispute
+- online_financial_fraud
+- stalking_voyeurism
+- wrongful_termination
+- passport_offences
+- voluntarily_causing_hurt
+- interrogation_rights
+- factory_definition
+- factory_safety
+- factory_safety_officer_requirement
+- parent_maintenance_by_children
+- firearm_licence_refusal_cancellation
+- factory_working_hours
+- factory_child_labour
+- factory_registration
+- salary_unpaid
+- pf_eligibility
+- pf_default
+- employee_insurance
+- child_juvenile_crime
+- electronic_evidence_admissibility
+- minor_as_adult
+- juvenile_rehabilitation
+- child_abuse_reporting
+- child_abuse_fir
+- dv_complaint_filing
+- live_in_dv
+- maternity_salary
+- maternity_refusal
+- evidence_electronic
+- evidence_cctv
+- guardian_appointment
+- guardian_without_consent
+- child_custody_petition
+- grandparent_guardian
+- remove_guardian
+- hindu_validity
+- bigamy_remarriage
+- live_in_hindu
+- will_validity
+- no_nominee
+- handwritten_will
+- interfaith_marriage
+- special_marriage_registration
+- civil_marriage
+- registration_compulsory
+- registration_consequences
+- gift_deed_registration
+- dv_legal_aid
+- rti_scope
+- rti_refusal
+- rti_personal_info
+- senior_citizen_complaint
+- disability_employment
+- sc_st_offence
+- landlord_repairs
+- mortgage_auction
+- ad_misleading
+- consumer_definition
+- consumer_refund_refused
+- consumer_deficient_service
+- consumer_warranty_denied
+- consumer_defective_food
+- legal_metrology_unstamped
+- legal_metrology_faulty
+- minimum_wage
+- equal_pay
+- salary_delay
+- ndps_rehabilitation
+- arms_without_licence
+- road_accident_immediate
+- driving_unlicensed
+- driving_uninsured
+- driving_license
+sexual_harassment_definition 0.7725
+sexual_harassment_complaint 0.6408
+child_protection 0.6086
+factory_child_labour 0.5773
+salary_deduction 0.5725
+working_hours 0.5714
+unguarded_machinery_injury 0.566
+overtime_wages 0.5659
+employee_insurance 0.5608
+workplace_injury 0.5562
+
+Matched intents:
+sexual_harassment_definition (0.7725)
+ROUTING: {'category': 'women_child', 'confidence': 0.6604, 'section_number': None, 'all_scores': {'women_child': 0.6604, 'labour': 0.6321, 'consumer': 0.5617, 'property': 0.5512, 'family': 0.5209, 'social_justice': 0.5158, 'cyber': 0.4995, 'constitution': 0.499, 'transport': 0.4945, 'administrative': 0.4867, 'criminal': 0.4813, 'rights': 0.48}}
+EXPANDED: {'matched_intents': [{'intent': 'sexual_harassment_definition', 'score': 0.7725453972816467, 'anchors': ['Sexual Harassment of Women at Workplace Act 2013 Section 2', 'Sexual Harassment of Women at Workplace Act 2013 Section 3'], 'examples': ['what is sexual harassment', 'what counts as sexual harassment at workplace', 'types of sexual harassment', 'does POSH apply to interns', 'does POSH apply to contractual workers', 'who is covered under POSH', 'definition of employee under POSH', 'what is workplace under POSH']}]}
+AFTER RESOLVER: [{'intent': 'sexual_harassment_definition', 'score': 0.7725453972816467, 'anchors': ['Sexual Harassment of Women at Workplace Act 2013 Section 2', 'Sexual Harassment of Women at Workplace Act 2013 Section 3'], 'examples': ['what is sexual harassment', 'what counts as sexual harassment at workplace', 'types of sexual harassment', 'does POSH apply to interns', 'does POSH apply to contractual workers', 'who is covered under POSH', 'definition of employee under POSH', 'what is workplace under POSH']}]
+FINAL INTENTS: ['sexual_harassment_definition']
+QUERY: Does POSH Act apply to contractual workers and interns?
+INTENTS: ['sexual_harassment_definition']
+MATCHED INTENTS: None
+CATEGORY: women_child
+ANCHORS: ['Sexual Harassment of Women at Workplace Act 2013 Section 2', 'Sexual Harassment of Women at Workplace Act 2013 Section 3']
+EXPANDED QUERY: Does POSH Act apply to contractual workers and interns? sexual harassment definition what is sexual harassment what counts as sexual harassment at workplace
+
+WHERE = {'category': 'women_child'}
+QUERY ACT NAMES: []
+['Act: Sexual Harassment Of Women At Workplace Act 2013\nCategory: women_child\nChapter: PRELIMINARY\n\nSection 2\nTitle: Definitions.—In this Act, unless the context otherwise requires, —\n\nLegal Text:\nSection 2 Definitions.—In this Act, unless the context otherwise requires, —\n\n(v) any place visited by the employee arising out of or during the course of employment\nincluding transportation by the employer for undertaking such journey; (vi) a dwelling place or a house; (p) “unorganised sector” in relation to a workplace means an enterprise owned by individuals or\nself-employed workers and engaged in the production or sale of goods or providing service of any\nkind whatsoever, and where the enterprise employs workers, the number of such workers is less than\nten.', 'Act: Sexual Harassment Of Women At Workplace Act 2013\nCategory: women_child\nChapter: PRELIMINARY\n\nSection 2\nTitle: Definitions.—In this Act, unless the context otherwise requires, —\n\nLegal Text:\nSection 2 Definitions.—In this Act, unless the context otherwise requires, —\n\n(i) physical contact and advances; or\n(ii) a demand or request for sexual favours; or\n(iii) making sexually coloured remarks; or\n(iv) showing pornography; or\n(v) any other unwelcome physical, verbal or non-verbal conduct of sexual nature; (o) “workplace” includes— (i) any department, organisation, undertaking, establishment, enterprise, institution, office,\nbranch or unit which is established, owned, controlled or wholly or substantially financed by\nfunds provided directly or indirectly by the appropriate Government or the local authority or a\nGovernment company or a corporation or a co-operative society; (ii) any private sector organisation or a private venture, undertaking, enterprise, institution,\nestablishment, society, trust, non-governmental organisation, unit or service provider carrying on\ncommercial, professional, vocational, educational, entertainmental, industrial, health services or\nfinancial activities including production, supply, sale, distribution or service; (iii) hospitals or nursing homes; (iv) any sports institute, stadium, sports complex or competition or games venue, whether\nresidential or not used for training, sports or other activities relating thereto;', 'Act: Sexual Harassment Of Women At Workplace Act 2013\nCategory: women_child\nChapter: PRELIMINARY\n\nSection 2\nTitle: Definitions.—In this Act, unless the context otherwise requires, —\n\nLegal Text:\nSection 2 Definitions.—In this Act, unless the context otherwise requires, —\n\n(e) “domestic worker” means a woman who is employed to do the household work in any\nhousehold for remuneration whether in cash or kind, either directly or through any agency on a\ntemporary, permanent, part time or full time basis, but does not include any member of the family of\nthe employer; (f) “employee” means a person employed at a workplace for any work on regular, temporary, ad\nhoc or daily wage basis, either directly or through an agent, including a contractor, with or, without\nthe knowledge of the principal employer, whether for remuneration or not, or working on a voluntary\nbasis or otherwise, whether the terms of employment are express or implied and includes a co-worker,\na contract worker, probationer, trainee, apprentice or called by any other such name; (g) “employer” means—']
+[{'category': 'women_child', 'chapter': 'PRELIMINARY', 'section_number': '2', 'chunk_index': 5, 'chunk_id': 'cabc6d8ecaaa425eea3a8917bbf0a876d48c436753875de4e867724df0a1aaa5', 'citation': 'Sexual Harassment Of Women At Workplace Act 2013 › Section 2 › Definitions.—In this Act, unless the context otherwise requires, — (part 6/6)', 'total_chunks': 6, 'doc_id': 6236, 'act_name': 'Sexual Harassment Of Women At Workplace Act 2013', 'year': 2013, 'section_title': 'Definitions.—In this Act, unless the context otherwise requires, —', 'source': 'sexual_harassment_of_women_at_workplace_act_2013.json', 'short_name': 'POSH Act'}, {'total_chunks': 6, 'short_name': 'POSH Act', 'section_number': '2', 'source': 'sexual_harassment_of_women_at_workplace_act_2013.json', 'chunk_index': 4, 'year': 2013, 'citation': 'Sexual Harassment Of Women At Workplace Act 2013 › Section 2 › Definitions.—In this Act, unless the context otherwise requires, — (part 5/6)', 'act_name': 'Sexual Harassment Of Women At Workplace Act 2013', 'doc_id': 6235, 'category': 'women_child', 'chapter': 'PRELIMINARY', 'section_title': 'Definitions.—In this Act, unless the context otherwise requires, —', 'chunk_id': '39e1509683f9e410bcf84235c7b92c35a2a5ec7eead95ddef6071ffca874ee6c'}, {'chapter': 'PRELIMINARY', 'chunk_id': '2291806a97ab6352a69654be43b2a799aff90a09ea1770b68024ed4ea5be949d', 'section_number': '2', 'year': 2013, 'category': 'women_child', 'act_name': 'Sexual Harassment Of Women At Workplace Act 2013', 'total_chunks': 6, 'short_name': 'POSH Act', 'citation': 'Sexual Harassment Of Women At Workplace Act 2013 › Section 2 › Definitions.—In this Act, unless the context otherwise requires, — (part 2/6)', 'source': 'sexual_harassment_of_women_at_workplace_act_2013.json', 'chunk_index': 1, 'section_title': 'Definitions.—In this Act, unless the context otherwise requires, —', 'doc_id': 6232}]
+[0.4622195363044739, 0.47925639152526855, 0.5108962059020996]
+
+Acts returned by Chroma:
+NUM RESULTS BEFORE DEDUPE: 0
+
+INSIDE DEDUPE
+INPUT: 0
+OUTPUT: 0
+AFTER DEDUPE: 0
+
+Top retrieval scores before rerank:
+
+Reranker scores:
+
+INSIDE DEDUPE
+INPUT: 0
+OUTPUT: 0
+
+Final Retrieval Results

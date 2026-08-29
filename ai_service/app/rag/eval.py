@@ -1,5 +1,5 @@
 """
-eval_retrieval.py — Retrieval quality test harness for Nyaya.
+eval.py — Retrieval quality test harness.
 
 Runs a labeled set of (query -> expected citation) test cases against
 retrieve.py and reports standard IR metrics:

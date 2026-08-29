@@ -8,3 +8,4 @@ class RetrievalContext:
     category: str | None
     confidence: float
     anchors: list[str] = field(default_factory=list)
+    prototype: str = ""

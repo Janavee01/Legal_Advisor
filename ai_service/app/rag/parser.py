@@ -232,16 +232,51 @@ NOISE_PATTERNS = [
 # whether it appears as a "section header" false-match or inline within
 # a genuine section's body (pdfplumber often interleaves footnotes with
 # body text because it just reads the page top-to-bottom).
+#
+# Unprefixed verbs must be followed by "by ..." (e.g. "Omitted by Act 44
+# of 1964") so a genuine body line like "...are hereby repealed:" is not
+# mistaken for a footnote. Bare verbs are only trusted when they follow a
+# "N." numbered line-start, which is how India Code renders footnotes.
 _FOOTNOTE_BODY_MARKERS = re.compile(
-    r"^\s*\d{1,2}\.\s*(Subs\.|Ins\.|Inserted|Omitted|Rep\.|Repealed|Renumbered|"
-    r"Added|Vide notification|Vide Act|w\.e\.f\.)",
+    r"(?:^\s*(?:\d{1,2}\.\s*)?|]\s*[—\-.\u2013\u2014\u2015]?\s*)"
+    r"(?:Subs\.|Ins\.|Inserted|Omitted|Rep\.|Repealed|Renumbered|Added)\s+by\b"
+    r"|^\s*\d{1,2}\.\s*(?:Subs\.|Ins\.|Inserted|Omitted|Rep\.|Repealed|"
+    r"Renumbered|Added)\b"
+    r"|^\s*(?:Vide notification|Vide Act\b|w\.e\.f\.|Notifn\.?)",
+    re.I | re.M,
+)
+
+# Broadened line-level stripper for section bodies only. Picks up the
+# extra India Code notes-section starters that are safe to delete inside a
+# body but too ambiguous to trust when deciding whether a header is real
+# (e.g. "3. The word \"and\" omitted by Act 54 of 1994, s. 9 ...").
+_FOOTNOTE_STRIP_RE = re.compile(
+    r"^\s*\d{1,2}\.\s*(?:The\s+word[s]?\b|Words?\s+omitted|Serial\s+"
+    r"|Cl\.?\s*\(\s*\d+\s*\)|(?:The\s+)?Proviso\s+|Explanation\b"
+    r"|Ins\s+by\b|Added\s+by\b)",
     re.I,
 )
 
 _FOOTNOTE_TITLE_RE = re.compile(
-    r"^(The\s+Explanation|The\s+proviso|Section\s+\d+\s+renumbered|"
-    r"Sub-section|Clause|Explanation\s+\d+|Inserted by|Omitted by|"
-    r"Substituted by|Renumbered by|Subs\.|Ins\.|Omitted|Sub\.|Sub-)",
+    r"^(The\s+Explanation|The\s+proviso|The\s+(?:first\s+)?proviso|The\s+last\s+paragraph|"
+    r"The\s+brackets?\s+and\s+figure[s]?\s*[“”'\"]|The\s+Bill,\s+inter\s+alia|"
+    r"Section\s+\d+\s*[A-Z]?\s+(?:re-?numbered|numbered|renumbered|shall\s+stand\s+ins)\b|"
+    r"Sub-section|Sub-clause\s*\(\s*[A-Za-z\d]+\s*\)\s*(?:omitted|added|substituted|inserted|rep)\.?\s+by\b|"
+    r"Clause\b|"
+    r"Cls?\.?\s*\(\s*[A-Za-z\d]+\s*\)(?:\s+and\s+\(\s*[A-Za-z\d]+\s*\))*\s*(?:omitted|renumbered|added|substituted|inserted|rep)\.?(?:\s+by\b|\b)|"
+    r"S\.\s*s\.\s*\(\s*[A-Za-z\d]+\s*\)(?:\s+and\s+\(\s*[A-Za-z\d]+\s*\))?\s*(?:omitted|added|substituted|inserted)\.?\s+by\b|"
+    r"Original\s+cl\.?\s*\(\s*[A-Za-z\d]+\s*\)\s*(?:re-?numbered|renumbered)\s*\(\s*[A-Za-z\d]+\s*\)\s+by\b|"
+    r"Serial\s+(?:No\.?s?\.?|numbers?)\s*\d|"
+    r"Explanation\s*(?:I|II|III|IV|V|\d+)?\s*(?:omitted|added|substituted|rep)\.?|"
+    r"Inserted by|Omitted by|Substituted by|Renumbered by|"
+    r"Subs\.|Ins\.|Ins\s+by\b|Omitted\b|Sub\.|Sub-\s|Added by|Rep\.|Repealed by|"
+    r"Proviso\s+(?:omitted|added|substituted|rep)\.?|"
+    r"(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Last)\s+paragraph\s+(?:omitted|added|substituted)\.?\s+by\b|"
+    r"(?:Certain\s+)?words?\s+omitted\s+by\b|Words?\s+and\s+figures|The\s+word[s]?\b|"
+    r"The\s+Act\s+has\s+been\s+extended|This\s+Act\s+has\s+been\s+extended|"
+    r"\d{1,2}(?:st|nd|rd|th)?\s+(?:day\s+of\s+)?[A-Za-z]+,\s*\d{4}\s*(?:\.-|--|\.\s*[—\u2013\u2014\u2015-]|,?\s*\[|,?\s+(?:except|vide|Notifn|notifn|see))|"
+    r"^\[[^\]]+\][.\s\-\u2013\u2014\u2015]*\s*(?:Omitted|Substituted|Inserted|Subs\.|Ins\.|Repealed|rep)\.?\b|"
+    r"\d+\.\s*(?:Subs\.|Ins\.|Omitted))",
     re.I,
 )
 
@@ -272,7 +307,8 @@ def strip_footnotes(text: str) -> str:
     keeps the block regex from matching end-to-end)."""
     text = _FOOTNOTE_BLOCK_RE.sub("", text)
     lines = text.split("\n")
-    lines = [ln for ln in lines if not _FOOTNOTE_BODY_MARKERS.search(ln)]
+    lines = [ln for ln in lines
+             if not _FOOTNOTE_BODY_MARKERS.search(ln) and not _FOOTNOTE_STRIP_RE.search(ln)]
     return "\n".join(lines)
 
 
@@ -285,7 +321,14 @@ def is_footnote_header_match(section_title: str, section_body_head: str) -> bool
     footnote masquerading as one, e.g. '2. 24th July, 2020.-- S. 2 ...'"""
     if _DATE_TITLE_PATTERN.match(section_title.strip()):
         return True
-    if _FOOTNOTE_BODY_MARKERS.search(section_body_head[:120]):
+    # Only the first line of the body is consulted: a genuine section opens
+    # with operative prose, while a footnote header is immediately followed
+    # by the rest of the notification (or a bracket-title continuation
+    # ending in "Omitted by ...", "Rep. by ...", etc.). Scanning deeper
+    # would let a footnote that merely appears INSIDE a real section's body
+    # (e.g. MVA s.15) wrongly kill that section.
+    first_line = section_body_head.split("\n", 1)[0][:120]
+    if _FOOTNOTE_BODY_MARKERS.search(first_line):
         return True
     return False
 
@@ -462,11 +505,19 @@ def parse_sections(full_text: str, act_metadata: dict) -> list[dict]:
         })
 
     sections = _merge_duplicate_section_numbers(sections)
+    def next_schedule_boundary(pos: int) -> int:
+        """End of a schedule block = the next schedule OR the next real
+        section header, whichever comes first — otherwise an operative
+        section sitting between two schedules gets its text duplicated
+        into (and diluted by) the preceding schedule chunk."""
+        candidates = [s for s in schedule_starts if s > pos]
+        candidates += [p for p in header_positions if p > pos]
+        candidates.append(len(cleaned))
+        return min(candidates)
 
-    # --- separately capture schedule blocks so they aren't lost ---
     for i, sm in enumerate(schedule_matches):
         s_start = sm.start()
-        s_end = schedule_starts[i + 1] if i + 1 < len(schedule_starts) else len(cleaned)
+        s_end = next_schedule_boundary(s_start)
         s_text = clean_text(cleaned[s_start:s_end])
         if len(s_text) < 10:
             continue

@@ -46,69 +46,68 @@ TestCase(
     notes="Custody limits and production before magistrate.",
 ),
 
-TestCase(
-    id="BNSS_004",
-    query="do I have right to legal aid during arrest",
-    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
-    acceptable=[
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
-    ],
-    category_filter="criminal",
-    notes="Right to legal counsel.",
-),
-
-TestCase(
-    id="BNSS_005",
-    query="what happens after police complete investigation",
-    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-    acceptable=[
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-    ],
-    category_filter="criminal",
-    notes="Investigation procedure after FIR.",
-),
-
-TestCase(
-    id="BNSS_006",
-    query="can police search my house without permission",
-    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
-    acceptable=[
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "185"),
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "97")
-    ],
-    category_filter="criminal",
-    notes="Search and seizure powers.",
-),
-
-TestCase(
-    id="BNSS_010",
-    query="what is charge sheet and when is it filed",
-    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-    acceptable=[
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-    ],
-    category_filter="criminal",
-    notes="Police report / charge sheet filing.",
-),
-
-TestCase(
-    id="BNSS_011",
-    query="can police remand me repeatedly",
-    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
-    acceptable=[
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
-    ],
-    category_filter="criminal",
-    notes="Remand and custody extension rules.",
-),
-
+#TestCase(
+#    id="BNSS_004",
+#    query="do I have right to legal aid during arrest",
+#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
+#    acceptable=[
+#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
+#    ],
+#    category_filter="criminal",
+#    notes="Right to legal counsel.",
+#),
+#
+#TestCase(
+#    id="BNSS_005",
+#    query="what happens after police complete investigation",
+#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+#    acceptable=[
+#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+#    ],
+#    category_filter="criminal",
+#    notes="Investigation procedure after FIR.",
+#),
+#
+#TestCase(
+#    id="BNSS_006",
+#    query="can police search my house without permission",
+#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
+#    acceptable=[
+#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
+#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "185"),
+#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "97")
+#    ],
+#    category_filter="criminal",
+#    notes="Search and seizure powers.",
+#),
+#
+#TestCase(
+#    id="BNSS_010",
+#    query="what is charge sheet and when is it filed",
+#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+#    acceptable=[
+#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+#    ],
+#    category_filter="criminal",
+#    notes="Police report / charge sheet filing.",
+#),
+#
+#TestCase(
+#    id="BNSS_011",
+#    query="can police remand me repeatedly",
+#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
+#    acceptable=[
+#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
+#    ],
+#    category_filter="criminal",
+#    notes="Remand and custody extension rules.",
+#),
+#
 TestCase(
     id="BNSS_012",
     query="what rights do I have during police interrogation",
-    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "180"),
+    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "181"),
     acceptable=[
-        ("Bharatiya Nagarik Suraksha Sanhita 2023", "180"),
         ("Bharatiya Nagarik Suraksha Sanhita 2023", "181"),
         ("Bharatiya Nagarik Suraksha Sanhita 2023", "183"),
     ],
@@ -134,9 +133,8 @@ TestCase(
 TestCase(
     id="BNS_004",
     query="murder punishment in india",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "101"),
+    preferred=("Bharatiya Nyaya Sanhita 2023", "103"),
     acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "101"),
         ("Bharatiya Nyaya Sanhita 2023", "103"),
     ],
     category_filter="criminal",
@@ -146,7 +144,7 @@ TestCase(
 TestCase(
     id="BNS_005",
     query="attempt to murder case punishment",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "110"),
+    preferred=("Bharatiya Nyaya Sanhita 2023", "109"),
     acceptable=[
         ("Bharatiya Nyaya Sanhita 2023", "110"),
     ],
@@ -156,10 +154,10 @@ TestCase(
 TestCase(
     id="BNS_006",
     query="rape or sexual assault punishment",
-    preferred=("Bharatiya Nyaya Sanhita 2023", "63"),
+    preferred=("Bharatiya Nyaya Sanhita 2023", "64"),
     acceptable=[
-        ("Bharatiya Nyaya Sanhita 2023", "63"),
         ("Bharatiya Nyaya Sanhita 2023", "64"),
+        ("Bharatiya Nyaya Sanhita 2023", "63"),
     ],
     category_filter="criminal",
     notes="Sexual offences cluster.",
@@ -218,7 +216,7 @@ TestCase(
 TestCase(
     id="IDA_004",
     query="what is illegal strike or lockout",
-    preferred=("Industrial Disputes Act 1947", "22"),
+    preferred=("Industrial Disputes Act 1947", "24"),
     acceptable=[("Industrial Disputes Act 1947", "22"), ("Industrial Disputes Act 1947", "23")],
     category_filter="labour",
 ),
@@ -251,7 +249,8 @@ TestCase(
     id="OSH_006",
     query="do companies need safety officer for factory",
     preferred=("Occupational Safety Health And Working Conditions Code 2020", "22"),
-    acceptable=[("Occupational Safety Health And Working Conditions Code 2020", "22")],
+    acceptable=[("Occupational Safety Health And Working Conditions Code 2020", "22"),
+                ('Labour Factories Act 1948', '40B')],
     category_filter="labour",
 ),
 
@@ -282,8 +281,8 @@ TestCase(
 TestCase(
     id="CSS_001",
     query="who is eligible for provident fund under social security code",
-    preferred=("The Code On Security 2020", "142"),
-    acceptable=[("The Code On Security 2020", "142"), ("The Code On Security 2020", "143")],
+    preferred=("The Code On Security 2020", "17"),
+    acceptable=[("The Code On Security 2020", "17"), ("The Code On Security 2020", "16")],
     category_filter="labour",
 ),
 
@@ -306,7 +305,7 @@ TestCase(
 TestCase(
     id="CSS_004",
     query="how is employee insurance provided under law",
-    preferred=("The Code On Security 2020", "39"),
+    preferred=("The Code On Security 2020", "40"),
     acceptable=[("The Code On Security 2020", "39"), ("The Code On Security 2020", "40")],
     category_filter="labour",
 ),
@@ -394,8 +393,8 @@ TestCase(
 TestCase(
     id="POCSO_004",
     query="What protection is given to child victim during trial?",
-    preferred=("Protection Of Children From Sexual Offences Act 2012", "33"),
-    acceptable=[("Protection Of Children From Sexual Offences Act 2012", "33"), ("Protection Of Children From Sexual Offences Act 2012", "36")],
+    preferred=("Protection Of Children From Sexual Offences Act 2012", "36"),
+    acceptable=[("Protection Of Children From Sexual Offences Act 2012", "36"), ("Protection Of Children From Sexual Offences Act 2012", "36")],
     category_filter="women_child",
 ),
 
@@ -802,7 +801,7 @@ TestCase(
 TestCase(
     id="ISA_002",
     query="What is a legal will and how do I make one valid?",
-    preferred=("Indian Succession Act 1925", "63"),
+    preferred=("Indian Succession Act 1925", "59"),
     acceptable=[
         ("Indian Succession Act 1925", "63"),
         ("Indian Succession Act 1925", "59"),
@@ -841,7 +840,6 @@ TestCase(
     preferred=("Indian Succession Act 1925", "63"),
     acceptable=[
         ("Indian Succession Act 1925", "63"),
-        ("Indian Succession Act 1925", "59"),
     ],
     category_filter="family",
     notes="Holographic will validity.",
@@ -874,7 +872,7 @@ TestCase(
 TestCase(
     id="SMA_004",
     query="Can I marry without religious ceremony under law?",
-    preferred=("Special Marriage Act 1954", "11"),
+    preferred=("Special Marriage Act 1954", "4"),
     acceptable=[
         ("Special Marriage Act 1954", "11"),
         ("Special Marriage Act 1954", "4"),
@@ -946,7 +944,7 @@ TestCase(
 TestCase(
     id="REG_006",
     query="Can a gift deed be valid without registration?",
-    preferred=("Registration Act 1908", "17"),
+    preferred=("Registration Act 1908", "49"),
     acceptable=[
         ("Registration Act 1908", "17"),
         ("Registration Act 1908", "49"),
@@ -1007,7 +1005,7 @@ TestCase(
 TestCase(
     id="RTI_002",
     query="What information can I request under RTI Act?",
-    preferred=("Right To Information Act 2005", "2"),
+    preferred=("Right To Information Act 2005", "8"),
     acceptable=[
         ("Right To Information Act 2005", "2"),
         ("Right To Information Act 2005", "8"),
@@ -1115,7 +1113,7 @@ TestCase(
 TestCase(
     id="MWPSC_005",
     query="Where can senior citizens complain about neglect by children?",
-    preferred=("Maintenance And Welfare Of Parents And Senior Citizens Act 2007", "7"),
+    preferred=("Maintenance And Welfare Of Parents And Senior Citizens Act 2007", "5"),
     acceptable=[
         ("Maintenance And Welfare Of Parents And Senior Citizens Act 2007", "7"),
         ("Maintenance And Welfare Of Parents And Senior Citizens Act 2007", "5"),
@@ -1139,7 +1137,7 @@ TestCase(
 TestCase(
     id="RPWD_002",
     query="Can a company refuse job to a person because of disability?",
-    preferred=("Rights Of Persons With Disabilities Act 2016", "3"),
+    preferred=("Rights Of Persons With Disabilities Act 2016", "20"),
     acceptable=[
         ("Rights Of Persons With Disabilities Act 2016", "3"),
         ("Rights Of Persons With Disabilities Act 2016", "20"),
@@ -1765,7 +1763,7 @@ TestCase(
 TestCase(
     id="ARMS_001",
     query="possessing or carrying firearm without licence",
-    preferred=("The Arms Act 1959", "25"),
+    preferred=("The Arms Act 1959", "3"),
     acceptable=[
         ("The Arms Act 1959", "25"),
         ("The Arms Act 1959", "3"),

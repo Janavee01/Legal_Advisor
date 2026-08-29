@@ -2,7 +2,7 @@
 query_context_builder.py — Builds a RetrievalContext from a raw user query.
 
 All mappings are derived at runtime from existing config files:
-    - intent_index.json       : intent → anchors (Act + Section references)
+    - intent_index.json       : intent → examples and category
     - category_prototypes.py  : category → description text
     - semantic_router         : query → best category (confidence-gated)
     - intent_expander         : query → matched intents
@@ -20,6 +20,14 @@ from ai_service.app.rag.embedder import get_model
 from ai_service.app.rag.category_prototypes import CATEGORY_PROTOTYPES
 from .retrieval_context import RetrievalContext
 
+from functools import lru_cache
+
+@lru_cache(maxsize=1)
+def get_query_context_builder():
+    return QueryContextBuilder()
+
+from .intent_expander import get_intent_expander
+
 BASE_DIR = Path(__file__).resolve().parents[3]
 INTENT_PATH = BASE_DIR / "ai_service" / "app" / "rag" / "intent_index.json"
 
@@ -31,13 +39,34 @@ INTENT_CATEGORY_MARGIN = 0.03
 
 # If a co-firing intent's direct query similarity is below this fraction
 # of the best-matching intent, it's a false co-match and gets dropped
-CONFLICT_DROP_THRESHOLD = 0.80
+CONFLICT_DROP_THRESHOLD = 0.85
 
+@lru_cache(maxsize=1)
+def get_intent_category_map():
+    model = get_model()
+
+    with open(INTENT_PATH) as f:
+        intents = json.load(f)
+
+    return _build_intent_to_category_map(
+        model,
+        intents
+    )
+
+
+@lru_cache(maxsize=1)
+def get_conflict_resolver():
+    model = get_model()
+
+    with open(INTENT_PATH) as f:
+        intents = json.load(f)
+
+    return ConflictResolver(model, intents)
 
 def _build_intent_to_category_map(model, intents: list[dict]) -> dict[str, str]:
     """
     Dynamically map each intent to its most likely category by embedding
-    each intent's anchor+example text and comparing against category prototypes.
+    each intent's example text and comparing against category prototypes.
 
     Adding a new intent to intent_index.json → auto-mapped on next startup.
     Adding a new category to category_prototypes.py → auto-considered.
@@ -56,8 +85,7 @@ def _build_intent_to_category_map(model, intents: list[dict]) -> dict[str, str]:
     for intent in intents:
         name = intent.get("intent", "")
         representation = " ".join(
-            intent.get("anchors", [])
-            + intent.get("examples", [])
+            intent.get("examples", [])
             + [name.replace("_", " ")]
         )
 
@@ -94,8 +122,7 @@ class ConflictResolver:
 
         intent_texts = {
             i["intent"]: " ".join(
-                i.get("anchors", [])
-                + i.get("examples", [])
+                i.get("examples", [])
                 + [i["intent"].replace("_", " ")]
             )
             for i in intents
@@ -132,15 +159,14 @@ class ConflictResolver:
 class QueryContextBuilder:
 
     def __init__(self):
-        self.expander = LegalIntentExpander()
+        self.expander = get_intent_expander()
         self.model = get_model()
 
         with open(INTENT_PATH, "r") as f:
             self.intents = json.load(f)
-
-        # Both derived from existing config — no hardcoded mappings
-        self._intent_to_category = _build_intent_to_category_map(self.model, self.intents)
-        self._conflict_resolver = ConflictResolver(self.model, self.intents)
+        
+        self._intent_to_category = get_intent_category_map()
+        self._conflict_resolver = get_conflict_resolver()
 
     def build(self, query: str) -> RetrievalContext:
 
@@ -154,21 +180,35 @@ class QueryContextBuilder:
 
         matched_intents = expanded.get("matched_intents", [])
 
-        # Drop intents that co-fired but are weaker against the actual query
         matched_intents = self._conflict_resolver.resolve(query, matched_intents)
 
+        matched_intents = sorted(
+            matched_intents,
+            key=lambda x: x["score"],
+            reverse=True
+        )
+                            
         intent_names = list(dict.fromkeys(
             i["intent"] for i in matched_intents
         ))
 
-        anchors = []
-        for intent in matched_intents:
-            anchors.extend(intent.get("anchors", []))
-        anchors = list(dict.fromkeys(anchors))
+        print("ROUTING:", routing)
+        print("EXPANDED:", expanded)
+        print("AFTER RESOLVER:", matched_intents)
+        print("FINAL INTENTS:", intent_names)
 
         parts = [query]
-        for intent in matched_intents:
+
+        for idx, intent in enumerate(matched_intents):
             parts.append(intent["intent"].replace("_", " "))
+            # Primary intent gets its prototype (curated legal vocabulary) and
+            # full examples; secondary intents get at most 1 example to prevent
+            # query pollution with unrelated terms.
+            max_examples = 2 if idx == 0 else 1
+            if idx == 0:
+                parts.append(intent.get("prototype", ""))
+            parts.extend(intent.get("examples", [])[:max_examples])
+        
         expanded_query = " ".join(parts)
 
         intent_confidence = max(
@@ -194,6 +234,13 @@ class QueryContextBuilder:
             expanded_query=expanded_query,
             intents=intent_names,
             category=category,
-            confidence=routing.get("confidence", intent_confidence),
-            anchors=anchors
+            confidence=max(
+                routing.get("confidence", 0.0),
+                intent_confidence
+            ),
+            anchors=[],
+            prototype=(
+                matched_intents[0].get("prototype", "")
+                if matched_intents else ""
+            ),
         )
