@@ -80,7 +80,14 @@ def mine_for_act(chunks: list[dict]) -> dict[str, dict]:
         top_keys = [k for k, _ in ranked[:N_HARD_NEGATIVES]]
 
         lookup = {(c["act_name"], c["section_number"]): c for c in ordered}
-        hard_negs = [lookup[k] for k in top_keys if k in lookup]
+        target_key = (chunk["act_name"], chunk["section_number"])
+
+        # Defensive guarantee: the target section can never be its own negative.
+        hard_negs = [
+            lookup[k]
+            for k in top_keys
+            if k in lookup and k != target_key
+        ]
 
         out_key = f"{chunk['act_name']}||{chunk['section_number']}"
         out[out_key] = {"chunk": chunk, "hard_negatives": hard_negs}
@@ -100,8 +107,18 @@ def main(corpus_path: str, out_path: str):
     for act, act_chunks in by_act.items():
         result.update(mine_for_act(act_chunks))
 
-    with open(out_path, "w", encoding="utf-8") as f:
+    # Write atomically so an interrupted run cannot leave a corrupted JSON file.
+    tmp_path = Path(str(out_path) + ".tmp")
+
+    with open(tmp_path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
+        f.flush()
+
+    # Validate the complete JSON before replacing the real output.
+    with open(tmp_path, "r", encoding="utf-8") as f:
+        json.load(f)
+
+    tmp_path.replace(out_path)
 
     total_pairs = sum(len(v["hard_negatives"]) for v in result.values())
     print(f"Mined hard negatives for {len(result)} sections across {len(by_act)} acts.")
