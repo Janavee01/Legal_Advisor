@@ -277,7 +277,6 @@ Reported on 192 test cases (reranker + anchor boost enabled):
 
 | Metric | Value |
 |--------|-------|
-| Hit@1  | 59.9% |
 | Hit@3  | 89.6% |
 | Hit@5  | 100%  |
 | MRR    | 0.752 |
