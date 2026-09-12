@@ -31,7 +31,7 @@ DEFAULT_FALLBACK_MODELS = [
 ]
 
 MAX_SECTION_CHARS = 1200
-DEFAULT_MAX_TOKENS = 2048
+DEFAULT_MAX_TOKENS = 8192
 
 MAX_ATTEMPTS = 3
 RETRY_BACKOFF_SECONDS = [5, 15, 30]
@@ -136,13 +136,43 @@ def _call_gemini(
     max_tokens: int,
     temperature: float,
     timeout: float,
+    assistant_text: str | None = None,
 ) -> requests.Response:
-    """POST to Gemini generateContent with retry + backoff on 429/5xx."""
+    """POST to Gemini generateContent with retry + backoff on 429/5xx.
+
+    If `assistant_text` is given, it is appended as the model's previous
+    turn and followed by a "continue" instruction, so a response that hit
+    the token cap can be resumed instead of silently truncated.
+    """
     url = f"{GEMINI_ENDPOINT}{model}:generateContent"
+
+    contents = [{"role": "user", "parts": [{"text": user_prompt}]}]
+
+    if assistant_text:
+        contents.extend(
+            [
+                {"role": "model", "parts": [{"text": assistant_text}]},
+                {
+                    "role": "user",
+                    "parts": [
+                        {
+                            "text": (
+                                "Your previous response hit the output "
+                                "token limit and was cut off. Continue "
+                                "exactly from where you stopped. Do not "
+                                "repeat text already written above, do not "
+                                "add a fresh headline or summary, and "
+                                "finish the answer cleanly."
+                            )
+                        }
+                    ],
+                },
+            ]
+        )
 
     payload = {
         "system_instruction": {"parts": [{"text": system_prompt}]},
-        "contents": [{"role": "user", "parts": [{"text": user_prompt}]}],
+        "contents": contents,
         "generationConfig": {
             "maxOutputTokens": max_tokens,
             "temperature": temperature,
@@ -219,36 +249,80 @@ def generate_answer(
         )
         last_resp = resp
 
-        if resp.status_code == 200:
-            data = resp.json()
-
-            try:
-                parts = data["candidates"][0]["content"]["parts"]
-            except (KeyError, IndexError, TypeError):
-                parts = []
-
-            content = "".join(
-                p.get("text", "") for p in parts if isinstance(p, dict)
+        if resp.status_code != 200:
+            print(
+                f"Model {candidate} failed ({resp.status_code}) — trying next"
             )
+            continue
 
-            finish_reason = data["candidates"][0].get("finishReason")
+        data = resp.json()
 
-            if finish_reason == "MAX_TOKENS":
+        try:
+            parts = data["candidates"][0]["content"]["parts"]
+        except (KeyError, IndexError, TypeError):
+            parts = []
+
+        content = "".join(
+            p.get("text", "") for p in parts if isinstance(p, dict)
+        )
+
+        finish_reason = data["candidates"][0].get("finishReason")
+
+        if finish_reason == "MAX_TOKENS":
+            if content.strip():
                 print(
-                    "WARNING: answer hit the max token limit and may be "
-                    "truncated"
+                    f"WARNING: {candidate} hit the max token limit — "
+                    "resuming the answer"
+                )
+                resume = _call_gemini(
+                    candidate,
+                    system_prompt,
+                    user_prompt,
+                    key,
+                    max_tokens,
+                    temperature,
+                    timeout,
+                    assistant_text=content,
                 )
 
-            return {
-                "answer": content,
-                "model": candidate,
-                "usage": data.get("usageMetadata") or {},
-                "finish_reason": finish_reason,
-            }
+                if resume.status_code == 200:
+                    resume_data = resume.json()
 
-        print(
-            f"Model {candidate} failed ({resp.status_code}) — trying next"
-        )
+                    try:
+                        resume_parts = resume_data["candidates"][0][
+                            "content"
+                        ]["parts"]
+                    except (KeyError, IndexError, TypeError):
+                        resume_parts = []
+
+                    continuation = "".join(
+                        p.get("text", "")
+                        for p in resume_parts
+                        if isinstance(p, dict)
+                    )
+
+                    if continuation.strip():
+                        content = f"{content}\n\n{continuation.strip()}"
+                        finish_reason = resume_data["candidates"][0].get(
+                            "finishReason"
+                        )
+                else:
+                    print(
+                        f"Resume failed for {candidate} "
+                        f"({resume.status_code})"
+                    )
+            else:
+                print(
+                    f"WARNING: {candidate} hit the max token limit with "
+                    "no output"
+                )
+
+        return {
+            "answer": content,
+            "model": candidate,
+            "usage": data.get("usageMetadata") or {},
+            "finish_reason": finish_reason,
+        }
 
     raise RuntimeError(
         f"Gemini request failed ({last_resp.status_code}): "
