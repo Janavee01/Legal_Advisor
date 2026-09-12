@@ -12,6 +12,7 @@ import json
 import numpy as np
 from pathlib import Path
 from ai_service.app.rag.embedder import get_model
+from ai_service.app.rag.embedding_cache import load_array, save_array
 BASE_DIR = Path(__file__).resolve().parents[3]
 INTENT_PATH = BASE_DIR / "ai_service" / "app" / "rag" / "intent_index.json"
 
@@ -49,14 +50,21 @@ class LegalIntentExpander:
             for i in self.intents
         ]
 
-        self.intent_embeddings = np.array(
-            self.model.encode(
-                texts,
-                batch_size=16,
-                normalize_embeddings=True
-            ),
-            dtype=np.float32
-        )
+        embeddings = load_array("intent_expander_embeddings", texts)
+
+        if embeddings is None:
+            embeddings = np.array(
+                self.model.encode(
+                    texts,
+                    batch_size=16,
+                    normalize_embeddings=True
+                ),
+                dtype=np.float32
+            )
+
+            save_array("intent_expander_embeddings", embeddings, texts)
+
+        self.intent_embeddings = embeddings
 
     def _load_intents(self):
         print("Loading intents from:", INTENT_PATH.resolve())
@@ -184,6 +192,7 @@ class LegalIntentExpander:
                 "score": score,
                 "examples": self.intents[original_idx].get("examples", []),
                 "prototype": self.intents[original_idx].get("prototype", ""),
+                "anchors": self.intents[original_idx].get("anchors", []),
             })
 
 
@@ -215,6 +224,7 @@ class LegalIntentExpander:
                     "score": score,
                     "examples": self.intents[original_idx].get("examples", []),
                     "prototype": self.intents[original_idx].get("prototype", ""),
+                    "anchors": self.intents[original_idx].get("anchors", []),
                 })
 
         matched_intents = candidates[:2]   

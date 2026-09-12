@@ -17,6 +17,7 @@ from pathlib import Path
 from ai_service.app.retrieval.query_router import detect_intents
 from ai_service.app.rag.intent_expander import LegalIntentExpander
 from ai_service.app.rag.embedder import get_model
+from ai_service.app.rag.embedding_cache import load_array, load_json, save_array, save_json
 from ai_service.app.rag.category_prototypes import CATEGORY_PROTOTYPES
 from .retrieval_context import RetrievalContext
 
@@ -75,12 +76,25 @@ def _build_intent_to_category_map(model, intents: list[dict]) -> dict[str, str]:
     category_names = list(CATEGORY_PROTOTYPES.keys())
     category_texts = list(CATEGORY_PROTOTYPES.values())
 
+    cached = load_json(
+        "intent_category_map",
+        intents,
+        category_texts,
+    )
+
+    if cached is not None:
+        return cached
+
     category_embeddings = np.array(
         model.encode(category_texts, normalize_embeddings=True),
         dtype=np.float32
     )
 
     intent_to_category = {}
+
+    # One batched encode over all intents instead of 125 single encodes
+    # (batches run far faster and avoid ~125 GPU sync points at startup).
+    reps = []
 
     for intent in intents:
         name = intent.get("intent", "")
@@ -92,7 +106,14 @@ def _build_intent_to_category_map(model, intents: list[dict]) -> dict[str, str]:
         if not representation.strip():
             continue
 
-        intent_vec = model.encode(representation, normalize_embeddings=True)
+        reps.append((name, representation))
+
+    intent_vecs = model.encode(
+        [rep for _, rep in reps],
+        normalize_embeddings=True,
+    )
+
+    for (name, _), intent_vec in zip(reps, intent_vecs):
         scores = category_embeddings @ intent_vec
 
         sorted_scores = np.sort(scores)[::-1]
@@ -103,6 +124,13 @@ def _build_intent_to_category_map(model, intents: list[dict]) -> dict[str, str]:
 
         if best_score >= INTENT_CATEGORY_THRESHOLD and margin >= INTENT_CATEGORY_MARGIN:
             intent_to_category[name] = category_names[best_idx]
+
+    save_json(
+        "intent_category_map",
+        intent_to_category,
+        intents,
+        category_texts,
+    )
 
     return intent_to_category
 
@@ -129,7 +157,17 @@ class ConflictResolver:
         }
 
         names = list(intent_texts.keys())
-        vecs = model.encode(list(intent_texts.values()), normalize_embeddings=True)
+
+        vecs = load_array("conflict_resolver_intent_vecs", intents)
+
+        if vecs is None:
+            vecs = model.encode(
+                list(intent_texts.values()),
+                normalize_embeddings=True
+            )
+
+            save_array("conflict_resolver_intent_vecs", vecs, intents)
+
         self.intent_vecs = dict(zip(names, vecs))
 
     def resolve(self, query: str, matched_intents: list[dict]) -> list[dict]:
@@ -192,10 +230,47 @@ class QueryContextBuilder:
             i["intent"] for i in matched_intents
         ))
 
+        anchors = []
+
+        for intent in matched_intents:
+            anchors.extend(
+                intent.get("anchors", [])
+            )
+
+        anchors = list(dict.fromkeys(anchors))
+
+        # The first anchor of the best-matching intent is treated as the
+        # canonical/preferred citation for this query. Remaining anchors
+        # are supporting citations with a weaker boost.
+        primary_anchors = []
+        secondary_anchors = []
+
+        for idx, intent in enumerate(matched_intents):
+            intent_anchors = intent.get("anchors", [])
+
+            for aidx, anchor in enumerate(intent_anchors):
+                if (
+                    anchor in primary_anchors
+                    or anchor in secondary_anchors
+                ):
+                    continue
+
+                target = (
+                    primary_anchors
+                    if idx == 0 and aidx == 0
+                    else secondary_anchors
+                )
+
+                target.append(anchor)
+
+        print("PRIMARY ANCHORS:", primary_anchors)
+        print("SECONDARY ANCHORS:", secondary_anchors)
+
         print("ROUTING:", routing)
         print("EXPANDED:", expanded)
         print("AFTER RESOLVER:", matched_intents)
         print("FINAL INTENTS:", intent_names)
+        print("ANCHORS:", anchors)
 
         parts = [query]
 
@@ -238,7 +313,9 @@ class QueryContextBuilder:
                 routing.get("confidence", 0.0),
                 intent_confidence
             ),
-            anchors=[],
+            anchors=anchors,
+            primary_anchors=primary_anchors,
+            secondary_anchors=secondary_anchors,
             prototype=(
                 matched_intents[0].get("prototype", "")
                 if matched_intents else ""

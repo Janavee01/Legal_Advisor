@@ -17,29 +17,15 @@ ai_service/app/data/
 chroma_db/
 ai_service/app/data/chroma/
 
+# Python virtual environment
+ai_service/venv/
+
 # IDE / OS
 .vscode/
 .idea/
 .DS_Store
 
-parser.logtraining/reranker_finetune/finetuned_reranker.zip
-training/reranker_finetune/finetuned_reranker/
-# Python virtual environment
-ai_service/venv/
-
-training/reranker_finetune/finetuned_reranker.zip
-
 # Temporary/debug files
 hi.txt
 ai_service/app/rag/_diag.py
 ai_service/app/rag/eval_misses_only.py
-ai_service/app/rag/reranker.py.before_finetuned
-
-# Training backups
-training/reranker_finetune/*_backup.py
-training/reranker_finetune/*.backup
-
-# Generated training artifacts
-training/reranker_finetune/section_queries.json
-training/reranker_finetune/section_queries_test.json
-training/reranker_finetune/training_pairs.json

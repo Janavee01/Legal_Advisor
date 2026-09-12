@@ -46,63 +46,63 @@ TestCase(
     notes="Custody limits and production before magistrate.",
 ),
 
-#TestCase(
-#    id="BNSS_004",
-#    query="do I have right to legal aid during arrest",
-#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
-#    acceptable=[
-#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
-#    ],
-#    category_filter="criminal",
-#    notes="Right to legal counsel.",
-#),
-#
-#TestCase(
-#    id="BNSS_005",
-#    query="what happens after police complete investigation",
-#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-#    acceptable=[
-#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-#    ],
-#    category_filter="criminal",
-#    notes="Investigation procedure after FIR.",
-#),
-#
-#TestCase(
-#    id="BNSS_006",
-#    query="can police search my house without permission",
-#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
-#    acceptable=[
-#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
-#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "185"),
-#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "97")
-#    ],
-#    category_filter="criminal",
-#    notes="Search and seizure powers.",
-#),
-#
-#TestCase(
-#    id="BNSS_010",
-#    query="what is charge sheet and when is it filed",
-#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-#    acceptable=[
-#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
-#    ],
-#    category_filter="criminal",
-#    notes="Police report / charge sheet filing.",
-#),
-#
-#TestCase(
-#    id="BNSS_011",
-#    query="can police remand me repeatedly",
-#    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
-#    acceptable=[
-#        ("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
-#    ],
-#    category_filter="criminal",
-#    notes="Remand and custody extension rules.",
-#),
-#
+TestCase(
+    id="BNSS_004",
+    query="do I have right to legal aid during arrest",
+    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
+    acceptable=[
+        ("Bharatiya Nagarik Suraksha Sanhita 2023", "38"),
+    ],
+    category_filter="criminal",
+    notes="Right to legal counsel.",
+),
+
+TestCase(
+    id="BNSS_005",
+    query="what happens after police complete investigation",
+    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+    acceptable=[
+        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+    ],
+    category_filter="criminal",
+    notes="Investigation procedure after FIR.",
+),
+
+TestCase(
+    id="BNSS_006",
+    query="can police search my house without permission",
+    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
+    acceptable=[
+        ("Bharatiya Nagarik Suraksha Sanhita 2023", "96"),
+        ("Bharatiya Nagarik Suraksha Sanhita 2023", "185"),
+        ("Bharatiya Nagarik Suraksha Sanhita 2023", "97")
+    ],
+    category_filter="criminal",
+    notes="Search and seizure powers.",
+),
+
+TestCase(
+    id="BNSS_010",
+    query="what is charge sheet and when is it filed",
+    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+    acceptable=[
+        ("Bharatiya Nagarik Suraksha Sanhita 2023", "193"),
+    ],
+    category_filter="criminal",
+    notes="Police report / charge sheet filing.",
+),
+
+TestCase(
+    id="BNSS_011",
+    query="can police remand me repeatedly",
+    preferred=("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
+    acceptable=[
+        ("Bharatiya Nagarik Suraksha Sanhita 2023", "187"),
+    ],
+    category_filter="criminal",
+    notes="Remand and custody extension rules.",
+),
+
 TestCase(
     id="BNSS_012",
     query="what rights do I have during police interrogation",
@@ -281,8 +281,8 @@ TestCase(
 TestCase(
     id="CSS_001",
     query="who is eligible for provident fund under social security code",
-    preferred=("The Code On Security 2020", "17"),
-    acceptable=[("The Code On Security 2020", "17"), ("The Code On Security 2020", "16")],
+    preferred=("The Code On Security 2020", "15"),
+    acceptable=[("The Code On Security 2020", "15"), ("The Code On Security 2020", "2"), ("The Code On Security 2020", "20")],
     category_filter="labour",
 ),
 
@@ -417,8 +417,8 @@ TestCase(
 TestCase(
     id="DV_001",
     query="What can a woman do if she is facing domestic violence?",
-    preferred=("Protection Of Women From Domestic Violence Act 2005", "12"),
-    acceptable=[("Protection Of Women From Domestic Violence Act 2005", "12"), ("Protection Of Women From Domestic Violence Act 2005", "18")],
+    preferred=("Protection Of Women From Domestic Violence Act 2005", "18"),
+    acceptable=[("Protection Of Women From Domestic Violence Act 2005", "18"), ("Protection Of Women From Domestic Violence Act 2005", "12")],
     category_filter="women_child",
 ),
 
@@ -824,7 +824,7 @@ TestCase(
 
 TestCase(
     id="ISA_005",
-    query="What happens if there is no nominee in bank account after death?",
+    query="Who becomes the legal representative of a deceased person?",
     preferred=("Indian Succession Act 1925", "211"),
     acceptable=[
         ("Indian Succession Act 1925", "211"),

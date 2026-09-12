@@ -29,14 +29,20 @@ def _build_category_embeddings():
         return _category_embeddings
 
     model = _get_model()
-    _category_embeddings = {}
 
-    for category, description in CATEGORY_PROTOTYPES.items():
-        embedding = model.encode(
-            QUERY_PREFIX + description,
-            normalize_embeddings=True
-        )
-        _category_embeddings[category] = embedding
+    categories = list(CATEGORY_PROTOTYPES.keys())
+
+    vecs = model.encode(
+        [
+            QUERY_PREFIX + CATEGORY_PROTOTYPES[c]
+            for c in categories
+        ],
+        normalize_embeddings=True,
+    )
+
+    _category_embeddings = dict(
+        zip(categories, vecs)
+    )
 
     return _category_embeddings
 

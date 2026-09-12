@@ -22,6 +22,7 @@ Run:
 """
 
 import argparse
+import importlib.util
 import sys
 
 from collections import Counter
@@ -29,6 +30,30 @@ from collections import Counter
 from .retrieve import retrieve
 
 from .retrieval_test_cases import TestCase, TEST_CASES
+
+
+def load_test_cases(cases_file: str | None = None) -> list[TestCase]:
+    """
+    Resolve the test-case list. By default the full TEST_CASES from
+    retrieval_test_cases.py; when --cases <path.py> is given, load that
+    file's TEST_CASES instead (used for quick A/B runs on a subset).
+    """
+    if cases_file is None:
+        return TEST_CASES
+
+    spec = importlib.util.spec_from_file_location(
+        "eval_cases_module",
+        cases_file,
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    cases = module.TEST_CASES
+
+    if not cases:
+        raise ValueError(f"No TEST_CASES found in {cases_file}")
+
+    return cases
 
 
 
@@ -115,13 +140,21 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument(
+        "--cases",
+        type=str,
+        default=None,
+        help="Path to a python file defining TEST_CASES (default: full suite)",
+    )
     args = parser.parse_args()
- 
+
+    test_cases = load_test_cases(args.cases)
+
     output_file = Path(__file__).with_name("output.txt")
     f = open(output_file, "w", encoding="utf-8")
     sys.stdout = Tee(sys.__stdout__, f)
 
-    print(f"Running {len(TEST_CASES)} test cases (top_k={args.top_k})\n")
+    print(f"Running {len(test_cases)} test cases (top_k={args.top_k})\n")
     print("=" * 78)
 
     dupe_flags = []
@@ -134,7 +167,7 @@ def main():
 
     strict_failures = []
 
-    for case in TEST_CASES:
+    for case in test_cases:
         try:
             outcome = run_case(case, args.top_k)
         except Exception as e:
@@ -213,7 +246,7 @@ def main():
             leak_flags.append((case, outcome["leaks"]))    
      
     print("=" * 78)
-    n = len(TEST_CASES)
+    n = len(test_cases)
     print("STRICT (Primary only)")
     print("=" * 78)
     print(f"Hit@1 : {strict_hit_at_1}/{n} ({100*strict_hit_at_1/n:.1f}%)")

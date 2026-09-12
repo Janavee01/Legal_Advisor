@@ -2,12 +2,13 @@ import logging
 from pathlib import Path
 import re
 import pickle
+import time
 import numpy as np
 from rank_bm25 import BM25Okapi
 from ai_service.app.rag.query_context_builder import (
     get_query_context_builder
 )
-from ai_service.app.rag.reranker import rerank
+from ai_service.app.rag.reranker import rerank, parse_anchor_keys, _anchor_tier
 
 from ai_service.app.rag.vectordb import get_collection
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -78,6 +79,9 @@ os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
 os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
+# Optional per-stage timing diagnostics (enabled with RETRIEVE_TIMING=1).
+_TIMING = os.environ.get("RETRIEVE_TIMING") == "1"
+
 _TITLE_OVERLAP_STOPWORDS = {
     "provid", "under", "law", "shall", "may", "act", "code", "section",
     "person", "matter", "relat", "purpos", "time", "make", "made", "requir",
@@ -94,9 +98,11 @@ logging.getLogger("transformers").setLevel(logging.ERROR)
 
 _bm25 = None
 _bm25_docs = None
+_bm25_doc_pos = None
 _vector_docs_by_id = None
 _title_bm25 = None
 _title_bm25_keys = None
+_title_bm25_pos = None
 
 # Cache BM25 candidate Chroma records so multiple query views do not
 # repeatedly fetch the same document + embedding.
@@ -111,7 +117,12 @@ def _get_model():
     return get_model()
 
 
-from ai_service.app.rag.embedder import get_model, QUERY_PREFIX
+from ai_service.app.rag.embedder import (
+    get_model,
+    QUERY_PREFIX,
+    free_gpu_for_rerank,
+    restore_embedder,
+)
 
 
 def _embed(text, model):
@@ -122,7 +133,7 @@ def _embed(text, model):
 
 
 def _load_bm25():
-    global _bm25, _bm25_docs
+    global _bm25, _bm25_docs, _bm25_doc_pos
 
     if _bm25 is not None:
         return _bm25, _bm25_docs
@@ -134,6 +145,12 @@ def _load_bm25():
         data = pickle.load(f)
 
     _bm25_docs = data["documents"]
+    # Precompute a once-per-process doc_id → score-array index. Previously
+    # every query rebuilt a full-corpus {doc_id: score} dict.
+    _bm25_doc_pos = {
+        int(doc["doc_id"]): i
+        for i, doc in enumerate(_bm25_docs)
+    }
     _bm25 = BM25Okapi(data["tokenized_corpus"])
 
     return _bm25, _bm25_docs
@@ -157,7 +174,7 @@ def _load_vector_docs_by_id():
 
 def _load_title_bm25():
     """Build a BM25 index from section titles for precise section discrimination."""
-    global _title_bm25, _title_bm25_keys
+    global _title_bm25, _title_bm25_keys, _title_bm25_pos
 
     if _title_bm25 is not None:
         return _title_bm25, _title_bm25_keys
@@ -183,6 +200,12 @@ def _load_title_bm25():
     tokenized_titles = [_tokenize(t) for t in titles]
     _title_bm25 = BM25Okapi(tokenized_titles)
     _title_bm25_keys = keys
+    # Precompute a once-per-process (act, section) → index map instead of
+    # rebuilding a full dict on every query.
+    _title_bm25_pos = {
+        key: i
+        for i, key in enumerate(keys)
+    }
 
     return _title_bm25, _title_bm25_keys
 
@@ -211,7 +234,7 @@ def _bm25_candidates(
     query_embedding,
     scores,
     category,
-    limit=50
+    limit=80
 ):
     """Fetch lexical candidates that are absent from dense top-k results."""
 
@@ -332,7 +355,18 @@ def retrieve(
     min_score: float = 0.0
 ):
 
+    t0 = time.perf_counter()
+
+    def mark(label: str = ""):
+        nonlocal t0
+        if _TIMING:
+            now = time.perf_counter()
+            print(f"[timing] {label:28s} {now - t0:7.2f}s")
+            t0 = now
+
     context = get_query_context_builder().build(query)
+
+    mark("context build")
 
     print("QUERY:", query)
     print("INTENTS:", getattr(context, "intents", None))
@@ -382,6 +416,8 @@ def retrieve(
 
     view_embeddings = encoded.tolist()
 
+    mark("embed query views")
+
     # ---------------------------------------------------------
     # BM25
     # ---------------------------------------------------------
@@ -395,6 +431,8 @@ def retrieve(
         bm25_view_scores
     )
 
+    mark("bm25 scoring")
+
     # ---------------------------------------------------------
     # Title BM25
     # ---------------------------------------------------------
@@ -403,18 +441,12 @@ def retrieve(
         _tokenize(query)
     )
 
-    title_bm25_lookup = {
-        key: float(title_bm25_scores[i])
-        for i, key in enumerate(title_bm25_keys)
-    }
-
     title_bm25_mean = np.mean(title_bm25_scores)
     title_bm25_std = np.std(title_bm25_scores) + 1e-6
 
-    bm25_lookup = {
-        doc["doc_id"]: bm25_scores[i]
-        for i, doc in enumerate(bm25_docs)
-    }
+    # bm25_scores / title_bm25_scores are the full-corpus score arrays;
+    # per-query {id: score} dicts are replaced by once-per-process position
+    # maps (_bm25_doc_pos / _title_bm25_pos) indexed in the scoring loop.
 
     # ---------------------------------------------------------
     # Category / Act detection
@@ -433,6 +465,19 @@ def retrieve(
     print("QUERY ACT NAMES:", query_act_names)
     print("QUERY VIEWS:", query_views)
 
+    primary_anchor_keys = parse_anchor_keys(
+        getattr(context, "primary_anchors", []) or []
+    )
+
+    secondary_anchor_keys = parse_anchor_keys(
+        getattr(context, "secondary_anchors", []) or []
+    )
+
+    anchor_keys = primary_anchor_keys | secondary_anchor_keys
+
+    print("PRIMARY KEYS:", primary_anchor_keys)
+    print("SECONDARY KEYS:", secondary_anchor_keys)
+
     # ---------------------------------------------------------
     # Dense recall
     # ---------------------------------------------------------
@@ -449,7 +494,7 @@ def retrieve(
     # list per embedding.
     res = collection.query(
         query_embeddings=view_embeddings,
-        n_results=50,
+        n_results=80,
         where=where,
         include=["documents", "metadatas", "distances"],
     )
@@ -479,7 +524,7 @@ def retrieve(
         for view_emb in view_embeddings:
             res = collection.query(
                 query_embeddings=[view_emb],
-                n_results=50,
+                n_results=80,
                 where=where,
                 include=[
                     "documents",
@@ -527,6 +572,8 @@ def retrieve(
             all_metas.extend(res["metadatas"][0])
             all_dists.extend(res["distances"][0])
 
+    mark("chroma dense query")
+
     # ---------------------------------------------------------
     # Lexical recall
     # ---------------------------------------------------------
@@ -551,6 +598,8 @@ def retrieve(
         all_dists.extend(
             lexical_results["distances"]
         )
+
+    mark("lexical recall")
 
     # ---------------------------------------------------------
     # Dedupe candidate chunks
@@ -695,11 +744,16 @@ def retrieve(
         else:
             section_bonus = 0.0
 
+        category_hint = (
+            category_filter
+            or context.category
+        )
+
         category_bonus = (
             0.10
-            if context.category
+            if category_hint
             and meta.get("category")
-            == context.category
+            == category_hint
             else 0.0
         )
 
@@ -711,9 +765,25 @@ def retrieve(
         query_act_bonus = (
             0.15
             if any(
-                act_name_lower in qa
+                qa in act_name_lower
+                or act_name_lower in qa
                 for qa in query_act_lower
             )
+            else 0.0
+        )
+
+        anchor_tier = _anchor_tier(
+            primary_anchor_keys,
+            secondary_anchor_keys,
+            meta.get("act_name", ""),
+            meta.get("section_number", ""),
+        )
+
+        anchor_bonus = (
+            0.25
+            if anchor_tier == "primary"
+            else 0.12
+            if anchor_tier == "secondary"
             else 0.0
         )
 
@@ -724,10 +794,17 @@ def retrieve(
         if doc_id == -1:
             continue
 
-        bm25_score = bm25_lookup.get(
-            doc_id,
-            0.0
+        bm25_score = 0.0
+        pos = (
+            _bm25_doc_pos.get(doc_id)
+            if _bm25_doc_pos is not None
+            else None
         )
+
+        if pos is not None:
+            bm25_score = float(
+                bm25_scores[pos]
+            )
 
         if raw_overlap > 0:
             bm25_score *= 1.2
@@ -745,12 +822,17 @@ def retrieve(
             meta.get("section_number", ""),
         )
 
-        title_bm25_score = (
-            title_bm25_lookup.get(
-                title_key,
-                0.0,
-            )
+        title_bm25_score = 0.0
+        title_pos = (
+            _title_bm25_pos.get(title_key)
+            if _title_bm25_pos is not None
+            else None
         )
+
+        if title_pos is not None:
+            title_bm25_score = float(
+                title_bm25_scores[title_pos]
+            )
 
         title_bm25_norm = (
             title_bm25_score
@@ -773,6 +855,7 @@ def retrieve(
             + section_bonus
             + query_act_bonus
             + title_bm25_bonus
+            + anchor_bonus
         )
 
         results.append({
@@ -830,12 +913,44 @@ def retrieve(
         reverse=True,
     )
 
+    mark("scoring + sort")
+
     results = dedupe_by_section(
         results
     )
 
-    # Keep the same 50-candidate reranker pool.
-    results = results[:50]
+    # Keep an 80-candidate reranker pool (50 missed several just-below
+    # the cutoff correct sections — recall failures).
+    results_full = results
+    results = results[:80]
+
+    # Pool guarantee: curated anchor sections must always enter the
+    # reranker pool even when the base retrieval score ranks them lower
+    # than the 80th cutoff (e.g. definitional sections with long,
+    # multi-topic text that the dense model under-ranks).
+    if anchor_keys:
+        in_pool = {
+            (r["act_name"], str(r["section_number"]))
+            for r in results
+        }
+
+        for r in results_full:
+            key = (
+                r["act_name"],
+                str(r["section_number"]),
+            )
+
+            if key in in_pool:
+                continue
+
+            if _anchor_tier(
+                primary_anchor_keys,
+                secondary_anchor_keys,
+                r["act_name"],
+                r["section_number"],
+            ):
+                results.append(r)
+                in_pool.add(key)
 
     print(
         "\nTop retrieval scores before rerank:"
@@ -849,10 +964,21 @@ def retrieve(
             r["section_title"],
         )
 
-    ranked = rerank(
-        query,
-        results,
-    )
+    # Free the embedder so the cross-encoder gets the whole GPU (larger
+    # batches, no OOM->CPU fallback), then restore it for the next query.
+    free_gpu_for_rerank()
+
+    try:
+        ranked = rerank(
+            query,
+            results,
+            primary_anchor_keys=primary_anchor_keys,
+            secondary_anchor_keys=secondary_anchor_keys,
+        )
+    finally:
+        restore_embedder()
+
+    mark("rerank")
 
     print("\nReranker scores:")
 

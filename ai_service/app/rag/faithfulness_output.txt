@@ -1,0 +1,24 @@
+Running 5 cases (top_k=5)
+
+[OK] citations= 3 grounded= 3/ 3 coverage= 60% police arrested me without informing the reason
+[!] citations=13 grounded=12/13 coverage= 80% can police arrest without warrant | 1 UNGROUNDED
+[OK] citations= 4 grounded= 4/ 4 coverage= 60% how long can police keep me in custody
+[OK] citations= 2 grounded= 2/ 2 coverage= 40% do I have right to legal aid during arrest
+[OK] citations= 4 grounded= 4/ 4 coverage= 40% what happens after police complete investigation
+==============================================================================
+CASES    : 5 (254.6s total)
+ERRORS   : 0
+Citations: 26 total (5.2 per answered case)
+Grounded strict : 22/26 (84.6%)
+Grounded lenient: 3/26 (11.5%)
+Ungrounded      : 1/26 (3.8%)
+Citation prec. (strict) : 84.6%
+Citation prec. (lenient): 96.2%
+Source recall (coverage) : 56.0%
+No-citation answers: 0/5
+
+⚠ FLAGGED CASES:
+  - "can police arrest without warrant" -> 1 UNGROUNDED
+      ✗ ungrounded cite: ...n uniform may arrest without a warrant any person who commits an offence punishable under section 184...
+
+Sample usage metadata: {'promptTokenCount': 1554, 'candidatesTokenCount': 293, 'totalTokenCount': 2776, 'promptTokensDetails': [{'modality': 'TEXT', 'tokenCount': 1554}], 'thoughtsTokenCount': 929, 'serviceTier': 'standard'}

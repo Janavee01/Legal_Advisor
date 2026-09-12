@@ -1,1786 +1,1960 @@
 [
-  {
-    "intent": "constitutional_equality",
-    "category": "constitution",
-    "anchors": [
-      "Constitution of India Article 14",
-      "Constitution of India Article 15",
-      "Constitution of India Article 17"
-    ],
-    "prototype": "Violation of constitutional equality rights including discrimination based on caste, religion, race, sex, place of birth, caste discrimination, untouchability, denial of equality before law, or infringement of fundamental rights relating to equality.",
-    "examples": [
-      "rights against caste discrimination",
-      "equality before law discrimination india",
-      "untouchability rights india",
-      "fundamental rights violation"
-    ]
-  },
-  {
-    "intent": "free_speech_rights",
-    "category": "constitution",
-    "anchors": [
-      "Constitution of India Article 19",
-      "Constitution of India Article 21"
-    ],
-    "prototype": "Violation of freedom of speech and expression, personal liberty, constitutional rights, censorship, unlawful restrictions on expression, or denial of rights guaranteed under Articles 19 and 21.",
-    "examples": [
-      "right to free speech india",
-      "freedom of expression india",
-      "freedom of speech constitution",
-      "right to life personal liberty"
-    ]
-  },
-  {
-    "intent": "sexual_harassment_complaint",
-    "category": "women_child",
-    "anchors": [
-        "Sexual Harassment of Women at Workplace Act 2013 Section 9",
-        "Sexual Harassment of Women at Workplace Act 2013 Section 19"
-    ],
-    "prototype": "Sexual harassment at workplace by employer, manager or colleague. POSH Act, Internal Complaints Committee, workplace complaint, office harassment, employer responsibility.",
-    "examples": [
-      "how to file POSH complaint",
-      "complaint procedure",
-      "where to complain",
-      "internal committee complaint"
-    ]
-  },
-  {
+ {
+  "intent": "constitutional_equality",
+  "category": "constitution",
+  "anchors": [
+   "Constitution of India Article 14",
+   "Constitution of India Article 15",
+   "Constitution of India Article 17"
+  ],
+  "prototype": "Violation of constitutional equality rights including discrimination based on caste, religion, race, sex, place of birth, caste discrimination, untouchability, denial of equality before law, or infringement of fundamental rights relating to equality.",
+  "examples": [
+   "rights against caste discrimination",
+   "equality before law discrimination india",
+   "untouchability rights india",
+   "fundamental rights violation"
+  ]
+ },
+ {
+  "intent": "free_speech_rights",
+  "category": "constitution",
+  "anchors": [
+   "Constitution of India Article 19",
+   "Constitution of India Article 21"
+  ],
+  "prototype": "Violation of freedom of speech and expression, personal liberty, constitutional rights, censorship, unlawful restrictions on expression, or denial of rights guaranteed under Articles 19 and 21.",
+  "examples": [
+   "right to free speech india",
+   "freedom of expression india",
+   "freedom of speech constitution",
+   "right to life personal liberty"
+  ]
+ },
+ {
+  "intent": "sexual_harassment_complaint",
+  "category": "women_child",
+  "anchors": [
+   "Sexual Harassment of Women at Workplace Act 2013 Section 9",
+   "Sexual Harassment of Women at Workplace Act 2013 Section 19"
+  ],
+  "prototype": "Sexual harassment at workplace by employer, manager or colleague. POSH Act, Internal Complaints Committee, workplace complaint, office harassment, employer responsibility.",
+  "examples": [
+   "how to file POSH complaint",
+   "complaint procedure",
+   "where to complain",
+   "internal committee complaint"
+  ]
+ },
+ {
   "intent": "sexual_harassment_definition",
   "category": "women_child",
   "anchors": [
-    "Sexual Harassment of Women at Workplace Act 2013 Section 2",
-    "Sexual Harassment of Women at Workplace Act 2013 Section 3"
+   "Sexual Harassment of Women at Workplace Act 2013 Section 2",
+   "Sexual Harassment of Women at Workplace Act 2013 Section 3"
   ],
   "prototype": "Meaning, definition and scope of sexual harassment under POSH Act. Who is covered, interns, contractors, workplace definition.",
   "examples": [
-    "what is sexual harassment",
-    "what counts as sexual harassment at workplace",
-    "types of sexual harassment",
-    "does POSH apply to interns",
-    "does POSH apply to contractual workers",
-    "who is covered under POSH",
-    "definition of employee under POSH",
-    "what is workplace under POSH"
+   "what is sexual harassment",
+   "what counts as sexual harassment at workplace",
+   "types of sexual harassment",
+   "does POSH apply to interns",
+   "does POSH apply to contractual workers",
+   "who is covered under POSH",
+   "definition of employee under POSH",
+   "what is workplace under POSH"
   ]
-},
-  {
-    "intent": "domestic_violence",
-    "category": "women_child",
-    "anchors": [
-      "Protection Of Women From Domestic Violence Act 2005 Section 18",
-      "Protection Of Women From Domestic Violence Act 2005 Section 19"
-    ],
-    "prototype": "Domestic violence committed by husband or partner. Physical abuse, emotional abuse, verbal abuse, economic abuse, threats, cruelty, protection orders, residence orders, wife beaten by husband, domestic abuse in marriage.",
-    "examples": [
-      "wife beaten by husband",
-      "domestic abuse",
-      "violence in marriage",
-      "protection order against husband",
-      "husband harassing wife at home"
-    ]
-  },
-  {
-    "intent": "dowry_harassment",
-    "category": "women_child",
-    "anchors": [
-      "Dowry Prohibition Act 1961 Section 3",
-      "Dowry Prohibition Act 1961 Section 4",
-      "Bharatiya Nyaya Sanhita 2023 Section 84"
-    ],
-    "prototype": "Demand for dowry, dowry harassment by husband or in-laws, cruelty for money or valuables, dowry death, coercion for gifts or property, complaints relating to dowry offences.",
-    "examples": [
-      "demanding dowry from bride family",
-      "dowry harassment by in-laws",
-      "dowry death",
-      "bride harassment for money",
-      "dowry case complaint"
-    ]
-  },
-  {
-    "intent": "child_protection",
-    "category": "women_child",
-    "anchors": [
-      "Protection Of Children From Sexual Offences Act 2012 Section 4",
-      "Juvenile Justice Act 2015 Section 75"
-    ],
-    "prototype": "Child sexual abuse, child cruelty, child labour, neglect, exploitation, abuse of minors, POCSO offences, harm or mistreatment of children requiring legal protection.",
-    "examples": [
-      "child abuse complaint",
-      "child labour complaint",
-      "POCSO case",
-      "sexual abuse of minor",
-      "child cruelty report"
-    ]
-  },
-  {
-    "intent": "working_hours",
-    "category": "labour",
-    "anchors": [
-      "Labour Factories Act 1948 Section 54",
-      "Labour Factories Act 1948 Section 51",
-      "Occupational Safety Health And Working Conditions Code 2020 Section 25"
-    ],
-    "prototype": "Violation of legal working hour limits, excessive work hours, compulsory overtime, denial of weekly rest, employer requiring work beyond statutory limits.",
-    "examples": [
-      "maximum working hours",
-      "worker forced overtime",
-      "factory employee working 12 hours",
-      "daily work limit",
-      "employer making me work more than 9 hours"
-    ]
-  },
-  {
-    "intent": "overtime_wages",
-    "category": "labour",
-    "anchors": [
-      "Code on Wages 2019 Section 14",
-      "Labour Factories Act 1948 Section 59"
-    ],
-    "prototype": "Failure to pay overtime wages, denial of overtime compensation, unpaid extra work, incorrect overtime calculation, wage disputes relating to overtime.",
-    "examples": [
-      "employer not paying overtime",
-      "overtime compensation",
-      "extra wages for overtime work",
-      "not getting paid for extra hours"
-    ]
-  },
-  {
-    "intent": "maternity_leave",
-    "category": "labour",
-    "anchors": [
-      "The Maternity Benefit Act 1961 Section 4",
-      "The Maternity Benefit Act 1961 Section 5"
-    ],
-    "prototype": "Rights relating to maternity leave, paid maternity benefit, pregnancy protection, employer refusing maternity leave, dismissal during pregnancy or denial of maternity benefits.",
-    "examples": [
-      "maternity leave entitlement",
-      "maternity benefit from employer",
-      "paid leave during pregnancy",
-      "employer refusing maternity leave",
-      "how many weeks maternity leave india"
-    ]
-  },
-  {
-    "intent": "salary_deduction",
-    "category": "labour",
-    "anchors": [
-      "Code on Wages 2019 Section 18",
-      "Payment Of Wages Act 1936 Section 7"
-    ],
-    "prototype": "Illegal salary deduction, delayed wages, unpaid salary, unauthorized deductions, employer withholding wages or violating wage payment laws.",
-    "examples": [
-      "employer deducted salary without reason",
-      "illegal salary deduction",
-      "employer withheld wages",
-      "salary not paid on time",
-      "unlawful deduction from wages"
-    ]
-  },
-  {
-    "intent": "workplace_injury",
-    "category": "labour",
-    "anchors": [
-      "The Employees Compensation Act 1923 Section 3",
-      "The Code On Security 2020 Section 74"
-    ],
-    "prototype": "Workplace accidents, employment injuries, occupational hazards, employer liability, compensation for injuries sustained during the course of employment.",
-    "examples": [
-      "injured at workplace compensation",
-      "accident at factory who pays",
-      "employer liability for injury",
-      "worker hurt on the job",
-      "compensation for workplace accident"
-    ]
-  },
-
-  {
-    "intent": "consumer_refund",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 39",
-      "Consumer Protection Act 2019 Section 38"
-    ],
-    "prototype": "Consumer disputes involving defective products, deficient services, refund refusal, replacement claims, warranty issues, cancellation requests, or seller refusing to compensate the consumer.",
-    "examples": [
-      "refund for defective product",
-      "faulty appliance replacement",
-      "seller refused refund",
-      "consumer complaint",
-      "shop not giving refund"
-    ]
-  },
-  {
-    "intent": "product_liability",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 83",
-      "Consumer Protection Act 2019 Section 86"
-    ],
-    "prototype": "Defective or unsafe products causing injury, death, property damage or loss. Manufacturer, seller or service provider liability, compensation for harm caused by defective goods.",
-    "examples": [
-      "defective product caused injury",
-      "product harmed me compensation",
-      "manufacturer liability for defect",
-      "faulty product injured customer"
-    ]
-  },
-  {
-    "intent": "mrp_overcharging",
-    "category": "consumer",
-    "anchors": [
-      "Legal Metrology Act 2009 Section 18",
-      "Consumer Protection Act 2019 Section 2"
-    ],
-    "prototype": "Charging above Maximum Retail Price (MRP), overpricing packaged goods, illegal pricing by retailers, disputes involving printed retail price and consumer overcharging.",
-    "examples": [
-      "shopkeeper charging above MRP",
-      "selling above maximum retail price",
-      "overcharging on printed price",
-      "shop sold above MRP"
-    ]
-  },
-  {
-    "intent": "bail",
-    "category": "criminal",
-    "anchors": [
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 478",
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 480",
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 483"
-    ],
-    "prototype": "Regular bail, anticipatory bail, interim bail, bail conditions, cancellation of bail, release from custody, criminal court bail procedure and bail applications.",
-    "examples": [
-      "regular bail",
-      "anticipatory bail",
-      "bail conditions",
-      "how to get bail",
-      "bail application in court"
-    ]
-  },
-  {
-    "intent": "murder_punishment",
-    "category": "criminal",
-    "anchors": [
-      "Bharatiya Nyaya Sanhita 2023 Section 101",
-      "Bharatiya Nyaya Sanhita 2023 Section 103",
-      "Bharatiya Nyaya Sanhita 2023 Section 104"
-    ],
-    "prototype": "Murder, culpable homicide, causing death, homicide offences, punishment for murder, life imprisonment, death penalty, criminal liability for unlawful killing.",
-    "examples": [
-      "punishment for murder india",
-      "IPC section 302 equivalent BNS",
-      "homicide sentence life imprisonment",
-      "culpable homicide punishment",
-      "what is punishment for killing someone"
-    ]
-  },
-  {
-    "intent": "fir_registration",
-    "category": "criminal",
-    "anchors": [
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 173",
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 176"
-    ],
-    "prototype": "Registration of FIR, filing a police complaint, cognizable offences, refusal to register FIR, police investigation, criminal complaint procedure and investigation after FIR.",
-    "examples": [
-      "what happens when police file FIR",
-      "FIR registration procedure",
-      "how to file FIR",
-      "police investigation after FIR",
-      "cognizable offence FIR"
-    ]
-  },
-
-  {
+ },
+ {
+  "intent": "domestic_violence",
+  "category": "women_child",
+  "anchors": [
+   "Protection Of Women From Domestic Violence Act 2005 Section 18",
+   "Protection Of Women From Domestic Violence Act 2005 Section 19"
+  ],
+  "prototype": "Domestic violence committed by husband or partner. Physical abuse, emotional abuse, verbal abuse, economic abuse, threats, cruelty, protection orders, residence orders, wife beaten by husband, domestic abuse in marriage.",
+  "examples": [
+   "wife beaten by husband",
+   "domestic abuse",
+   "violence in marriage",
+   "protection order against husband",
+   "husband harassing wife at home"
+  ]
+ },
+ {
+  "intent": "dowry_harassment",
+  "category": "women_child",
+  "anchors": [
+   "Dowry Prohibition Act 1961 Section 3",
+   "Dowry Prohibition Act 1961 Section 4",
+   "Bharatiya Nyaya Sanhita 2023 Section 84"
+  ],
+  "prototype": "Demand for dowry, dowry harassment by husband or in-laws, cruelty for money or valuables, dowry death, coercion for gifts or property, complaints relating to dowry offences.",
+  "examples": [
+   "demanding dowry from bride family",
+   "dowry harassment by in-laws",
+   "dowry death",
+   "bride harassment for money",
+   "dowry case complaint"
+  ]
+ },
+ {
+  "intent": "child_protection",
+  "category": "women_child",
+  "anchors": [
+   "Protection Of Children From Sexual Offences Act 2012 Section 4",
+   "Juvenile Justice Act 2015 Section 75"
+  ],
+  "prototype": "Child sexual abuse, child cruelty, child labour, neglect, exploitation, abuse of minors, POCSO offences, harm or mistreatment of children requiring legal protection.",
+  "examples": [
+   "child abuse complaint",
+   "child labour complaint",
+   "POCSO case",
+   "sexual abuse of minor",
+   "child cruelty report"
+  ]
+ },
+ {
+  "intent": "working_hours",
+  "category": "labour",
+  "anchors": [
+   "Labour Factories Act 1948 Section 54",
+   "Labour Factories Act 1948 Section 51",
+   "Occupational Safety Health And Working Conditions Code 2020 Section 25"
+  ],
+  "prototype": "Violation of legal working hour limits, excessive work hours, compulsory overtime, denial of weekly rest, employer requiring work beyond statutory limits.",
+  "examples": [
+   "maximum working hours",
+   "worker forced overtime",
+   "factory employee working 12 hours",
+   "daily work limit",
+   "employer making me work more than 9 hours"
+  ]
+ },
+ {
+  "intent": "overtime_wages",
+  "category": "labour",
+  "anchors": [
+   "Code on Wages 2019 Section 14",
+   "Labour Factories Act 1948 Section 59"
+  ],
+  "prototype": "Failure to pay overtime wages, denial of overtime compensation, unpaid extra work, incorrect overtime calculation, wage disputes relating to overtime.",
+  "examples": [
+   "employer not paying overtime",
+   "overtime compensation",
+   "extra wages for overtime work",
+   "not getting paid for extra hours"
+  ]
+ },
+ {
+  "intent": "maternity_leave",
+  "category": "labour",
+  "anchors": [
+   "The Maternity Benefit Act 1961 Section 4",
+   "The Maternity Benefit Act 1961 Section 5"
+  ],
+  "prototype": "Rights relating to maternity leave, paid maternity benefit, pregnancy protection, employer refusing maternity leave, dismissal during pregnancy or denial of maternity benefits.",
+  "examples": [
+   "maternity leave entitlement",
+   "maternity benefit from employer",
+   "paid leave during pregnancy",
+   "employer refusing maternity leave",
+   "how many weeks maternity leave india"
+  ]
+ },
+ {
+  "intent": "salary_deduction",
+  "category": "labour",
+  "anchors": [
+   "Code on Wages 2019 Section 18",
+   "Payment Of Wages Act 1936 Section 7"
+  ],
+  "prototype": "Illegal salary deduction, delayed wages, unpaid salary, unauthorized deductions, employer withholding wages or violating wage payment laws.",
+  "examples": [
+   "employer deducted salary without reason",
+   "illegal salary deduction",
+   "employer withheld wages",
+   "salary not paid on time",
+   "unlawful deduction from wages"
+  ]
+ },
+ {
+  "intent": "workplace_injury",
+  "category": "labour",
+  "anchors": [
+   "The Employees Compensation Act 1923 Section 3",
+   "The Code On Security 2020 Section 74"
+  ],
+  "prototype": "Workplace accidents, employment injuries, occupational hazards, employer liability, compensation for injuries sustained during the course of employment.",
+  "examples": [
+   "injured at workplace compensation",
+   "accident at factory who pays",
+   "employer liability for injury",
+   "worker hurt on the job",
+   "compensation for workplace accident"
+  ]
+ },
+ {
+  "intent": "consumer_refund",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 39",
+   "Consumer Protection Act 2019 Section 38"
+  ],
+  "prototype": "Consumer disputes involving defective products, deficient services, refund refusal, replacement claims, warranty issues, cancellation requests, or seller refusing to compensate the consumer.",
+  "examples": [
+   "refund for defective product",
+   "faulty appliance replacement",
+   "seller refused refund",
+   "consumer complaint",
+   "shop not giving refund"
+  ]
+ },
+ {
+  "intent": "product_liability",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 83",
+   "Consumer Protection Act 2019 Section 86"
+  ],
+  "prototype": "Defective or unsafe products causing injury, death, property damage or loss. Manufacturer, seller or service provider liability, compensation for harm caused by defective goods.",
+  "examples": [
+   "defective product caused injury",
+   "product harmed me compensation",
+   "manufacturer liability for defect",
+   "faulty product injured customer"
+  ]
+ },
+ {
+  "intent": "mrp_overcharging",
+  "category": "consumer",
+  "anchors": [
+   "Legal Metrology Act 2009 Section 18",
+   "Consumer Protection Act 2019 Section 2"
+  ],
+  "prototype": "Charging above Maximum Retail Price (MRP), overpricing packaged goods, illegal pricing by retailers, disputes involving printed retail price and consumer overcharging.",
+  "examples": [
+   "shopkeeper charging above MRP",
+   "selling above maximum retail price",
+   "overcharging on printed price",
+   "shop sold above MRP"
+  ]
+ },
+ {
+  "intent": "bail",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 478",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 480",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 483"
+  ],
+  "prototype": "Regular bail, anticipatory bail, interim bail, bail conditions, cancellation of bail, release from custody, criminal court bail procedure and bail applications.",
+  "examples": [
+   "regular bail",
+   "anticipatory bail",
+   "bail conditions",
+   "how to get bail",
+   "bail application in court"
+  ]
+ },
+ {
+  "intent": "murder_punishment",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nyaya Sanhita 2023 Section 101",
+   "Bharatiya Nyaya Sanhita 2023 Section 103",
+   "Bharatiya Nyaya Sanhita 2023 Section 104"
+  ],
+  "prototype": "Murder, culpable homicide, causing death, homicide offences, punishment for murder, life imprisonment, death penalty, criminal liability for unlawful killing.",
+  "examples": [
+   "punishment for murder india",
+   "IPC section 302 equivalent BNS",
+   "homicide sentence life imprisonment",
+   "culpable homicide punishment",
+   "what is punishment for killing someone"
+  ]
+ },
+ {
+  "intent": "fir_registration",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 173",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 176"
+  ],
+  "prototype": "Registration of FIR, filing a police complaint, cognizable offences, refusal to register FIR, police investigation, criminal complaint procedure and investigation after FIR.",
+  "examples": [
+   "what happens when police file FIR",
+   "FIR registration procedure",
+   "how to file FIR",
+   "police investigation after FIR",
+   "cognizable offence FIR"
+  ]
+ },
+ {
   "intent": "unguarded_machinery_injury",
   "category": "labour",
   "anchors": [
-    "Labour Factories Act 1948 Section 21",
-    "Labour Factories Act 1948 Section 22"
+   "Labour Factories Act 1948 Section 21",
+   "Labour Factories Act 1948 Section 22"
   ],
   "examples": [
-    "unguarded machine caused worker injury in factory",
-    "machine without safety guard injured worker",
-    "factory failed to fence dangerous machinery",
-    "worker hurt by moving machine parts"
+   "unguarded machine caused worker injury in factory",
+   "machine without safety guard injured worker",
+   "factory failed to fence dangerous machinery",
+   "worker hurt by moving machine parts"
   ]
-},
-
+ },
  {
   "intent": "arrest_rights",
   "category": "criminal",
-
   "anchors": [
-    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 35",
-    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 47",
-    "Bharatiya Nagarik Suraksha Sanhita 2023 Section 58"
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 35",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 47",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 58"
   ],
-
-  "prototype":
-  "arrest without warrant, grounds of arrest, right to know reason of arrest, police custody, detention, informing family, arrest procedure",
-
+  "prototype": "arrest without warrant, grounds of arrest, right to know reason of arrest, police custody, detention, informing family, arrest procedure",
   "examples": [
-    "police arrested me",
-    "can police arrest me",
-    "police arrested me without reason",
-    "arrest without warrant",
-    "rights after arrest",
-    "can police keep me in custody",
-    "police didn't tell me why i was arrested",
-    "illegal arrest",
-    "detention by police",
-     "rights during police questioning",
-      "rights during interrogation",
-      "legal rights in police custody",
-      "what rights do I have during police interrogation"
+   "police arrested me",
+   "can police arrest me",
+   "police arrested me without reason",
+   "arrest without warrant",
+   "rights after arrest",
+   "can police keep me in custody",
+   "police didn't tell me why i was arrested",
+   "illegal arrest",
+   "detention by police",
+   "rights during police questioning",
+   "rights during interrogation",
+   "legal rights in police custody",
+   "what rights do I have during police interrogation"
   ]
-},
-  {
-    "intent": "narcotics_drugs",
-    "category": "criminal",
-    "anchors": [
-      "Narcotic Drugs And Psychotropic Substances Act 1985 Section 20",
-      "Narcotic Drugs And Psychotropic Substances Act 1985 Section 27"
-    ],
-    "prototype": "Possession, consumption, trafficking, transport or manufacture of narcotic drugs or psychotropic substances, NDPS offences, arrests, penalties and bail under drug laws.",
-    "examples": [
-      "caught with illegal drugs",
-      "drug possession case india",
-      "NDPS act punishment",
-      "first time drug offence",
-      "arrested for carrying drugs"
-    ]
-  },
-  {
-    "intent": "weapons_arms",
-    "category": "criminal",
-    "anchors": [
-      "The Arms Act 1959 Section 25",
-      "The Arms Act 1959 Section 3"
-    ],
-    "prototype": "Illegal possession, carrying, manufacture, sale or use of firearms or prohibited weapons, licensing requirements, unlicensed weapon offences and Arms Act violations.",
-    "examples": [
-      "found carrying unlicensed weapon",
-      "illegal arms possession",
-      "carrying gun without license",
-      "arms act punishment",
-      "unlicensed firearm case"
-    ]
-  },
-  {
-    "intent": "tenant_rights",
-    "category": "property",
-    "anchors": [
-      "Transfer of Property Act 1882 Section 108",
-      "Transfer of Property Act 1882 Section 106"
-    ],
-    "prototype": "Landlord-tenant disputes including eviction, lease termination, security deposit, rent disputes, landlord harassment, tenant rights, notice requirements and lease obligations.",
-    "examples": [
-      "landlord not returning security deposit",
-      "landlord wants to evict without notice",
-      "tenant rights under lease",
-      "rights of tenant in india",
-      "landlord harassment"
-    ]
-  },
-  {
-    "intent": "divorce",
-    "category": "family",
-    "anchors": [
-      "Hindu Marriage Act 1955 Section 13",
-      "Special Marriage Act 1954 Section 27"
-    ],
-    "prototype": "Divorce proceedings, mutual consent divorce, contested divorce, cruelty, desertion, adultery, dissolution of marriage and legal grounds for divorce.",
-    "examples": [
-      "grounds for divorce under hindu law",
-      "divorce procedure india",
-      "how to get divorce",
-      "mutual consent divorce",
-      "divorce on grounds of cruelty"
-    ]
-  },
-  {
-    "intent": "inheritance_succession",
-    "category": "family",
-    "anchors": [
-      "Hindu Succession Act 1956 Section 6",
-      "Hindu Succession Act 1956 Section 15"
-    ],
-    "prototype": "Inheritance of property, succession rights, legal heirs, ancestral property, self-acquired property, partition, daughter's inheritance rights, distribution of estate after death and succession disputes.",
-    "examples": [
-      "inheritance rights of daughter",
-      "who inherits property after death",
-      "succession rights india",
-      "daughter right in father property",
-      "hindu succession rights"
-    ]
-  },
-  {
-    "intent": "guardianship",
-    "category": "family",
-    "anchors": [
-      "Guardians And Wards Act 1890 Section 17",
-      "Guardians And Wards Act 1890 Section 7"
-    ],
-    "prototype": "Appointment of guardian for a minor, child custody and guardianship, legal guardian applications, welfare of the child, guardian rights and court proceedings relating to minors.",
-    "examples": [
-      "who can be appointed guardian of minor child",
-      "child guardianship application",
-      "guardian appointment court",
-      "custody and guardianship minor"
-    ]
-  },
-  {
-    "intent": "rti_application",
-    "category": "rights",
-    "anchors": [
-      "Right To Information Act 2005 Section 6",
-      "Right To Information Act 2005 Section 7"
-    ],
-    "prototype": "Right to Information applications, seeking information from public authorities, RTI filing procedure, government records, response timelines, RTI appeals and rejection of information requests.",
-    "examples": [
-      "how to file RTI application",
-      "RTI request procedure",
-      "file information request government",
-      "public authority information request",
-      "RTI appeal rejection"
-    ]
-  },
-  {
-    "intent": "legal_aid",
-    "category": "rights",
-    "anchors": [
-      "Legal Services Authorities Act 1987 Section 12",
-      "Legal Services Authorities Act 1987 Section 13"
-    ],
-    "prototype": "Eligibility for free legal aid, government-funded legal assistance, legal services authorities, free lawyer requests, access to justice for eligible persons and legal aid schemes.",
-    "examples": [
-      "free legal aid for poor person",
-      "free lawyer government scheme",
-      "legal services authority help",
-      "cannot afford lawyer india",
-      "free legal help india"
-    ]
-  },
-  {
-    "intent": "cyber_crime",
-    "category": "cyber",
-    "anchors": [
-      "Information Technology Act 2000 Section 66",
-      "Information Technology Act 2000 Section 66C",
-      "Information Technology Act 2000 Section 66D",
-      "Information Technology Act 2000 Section 73"
-    ],
-    "prototype": "Cyber crimes including hacking, phishing, identity theft, online fraud, account compromise, unauthorized access, impersonation, cyber cheating, digital fraud and reporting cyber offences.",
-    "examples": [
-      "someone hacked my online account",
-      "cyber crime complaint india",
-      "online fraud complaint",
-      "upi fraud",
-      "bank scam",
-      "fake website",
-      "identity theft online india",
-      "hacker stole my data"
-    ]
-  },
-  {
-    "intent": "online_privacy",
-    "category": "cyber",
-    "anchors": [
-      "Information Technology Act 2000 Section 66E",
-      "Information Technology Act 2000 Section 72"
-    ],
-    "prototype": "Violation of online privacy including unauthorized sharing of personal photos or videos, fake profiles, image morphing, privacy breaches, misuse of personal information and online impersonation.",
-    "examples": [
-      "fake profile created using my photos",
-      "someone sharing my photos without permission",
-      "privacy violation online india",
-      "morphed photos shared online",
-      "online defamation fake profile"
-    ]
-  },
-  {
-    "intent": "road_accident",
-    "category": "transport",
-    "anchors": [
-      "Motor Vehicles Act 1988 Section 161",
-      "Motor Vehicles Act 1988 Section 164"
-    ],
-    "prototype": "Road traffic accidents, hit-and-run incidents, motor accident compensation, MACT claims, injury or death due to motor vehicles, victim compensation and accident liability.",
-    "examples": [
-      "compensation after road accident",
-      "hit and run accident compensation",
-      "motor accident claim",
-      "MACT claim India",
-      "road accident victim rights"
-    ]
-  },
-  {
-    "intent": "traffic_offence",
-    "category": "transport",
-    "anchors": [
-      "Motor Vehicles Act 1988 Section 181",
-      "Motor Vehicles Act 1988 Section 182"
-    ],
-    "prototype": "Traffic violations including driving without licence, driving without permit, drunken driving, traffic challans, penalties, fines and offences under motor vehicle laws.",
-    "examples": [
-      "driving without license penalty",
-      "traffic challan penalty",
-      "driving drunk fine india",
-      "vehicle without permit penalty",
-      "motor vehicle offence punishment"
-    ]
-  },
-  {
-    "intent": "disability_rights",
-    "category": "social_justice",
-    "anchors": [
-      "Rights Of Persons With Disabilities Act 2016 Section 3",
-      "Rights Of Persons With Disabilities Act 2016 Section 20"
-    ],
-    "prototype": "Rights of persons with disabilities including discrimination, equal opportunity, accessibility, reasonable accommodation, employment rights, education rights and protections under disability law.",
-    "examples": [
-      "rights of disabled person at workplace",
-      "disability discrimination employment",
-      "person with disability rights india",
-      "RPWD act protections",
-      "employer discriminating disabled employee"
-    ]
-  },
-  {
-    "intent": "sc_st_atrocities",
-    "category": "social_justice",
-    "anchors": [
-      "Scheduled Castes And Scheduled Tribes Act 1989 Section 3",
-      "Scheduled Castes And Scheduled Tribes Act 1989 Section 15A"
-    ],
-    "prototype": "Atrocities, caste-based violence, discrimination, humiliation, social boycott, intimidation, denial of rights or offences committed against members of Scheduled Castes or Scheduled Tribes.",
-    "examples": [
-      "discrimination against scheduled caste person",
-      "atrocity against SC ST",
-      "caste based violence complaint",
-      "SC ST act case",
-      "untouchability offense"
-    ]
-  },
-  {
-    "intent": "senior_citizen_maintenance",
-    "category": "social_justice",
-    "anchors": [
-      "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 4",
-      "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 9"
-    ],
-    "prototype": "Maintenance and welfare of parents or senior citizens, neglect by children or relatives, financial support for elderly parents, maintenance tribunal proceedings and protection of senior citizens.",
-    "examples": [
-      "elderly parents not taken care of by children",
-      "children not supporting old parents",
-      "maintenance for senior citizens",
-      "old parents neglected by son",
-      "senior citizen maintenance tribunal"
-    ]
-  },
-
-  {
-    "intent": "cheating_fraud",
-    "category": "criminal",
-    "prototype": "Cheating, criminal breach of trust, fraud, deception, financial cheating, investment scams, dishonest inducement, property or money obtained through deception, complaint against fraudsters and criminal cheating offences.",
-    "anchors": [
-      "Bharatiya Nyaya Sanhita 2023 Section 318",
-      "Bharatiya Nyaya Sanhita 2023 Section 316"
-    ],
-    "examples": [
-      "someone cheated me",
-      "fraud complaint",
-      "criminal breach of trust",
-      "investment scam",
-      "money cheating case"
-    ]
-  },
-  {
-    "intent": "theft_robbery",
-    "category": "criminal",
-    "prototype": "Theft, robbery, burglary, stolen property, snatching, house breaking, vehicle theft, mobile phone theft, recovery of stolen property and police complaints relating to theft offences.",
-    "anchors": [
-      "Bharatiya Nyaya Sanhita 2023 Section 303",
-      "Bharatiya Nyaya Sanhita 2023 Section 309"
-    ],
-    "examples": [
-      "my phone was stolen",
-      "theft complaint",
-      "robbery case",
-      "burglary complaint",
-      "vehicle theft"
-    ]
-  },
-  {
-    "intent": "maintenance",
-    "category": "family",
-    "prototype": "Maintenance rights of wife, husband, children or parents, interim maintenance, permanent alimony, child support, financial support after separation or divorce and maintenance proceedings before court.",
-    "anchors": [
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 144",
-      "Hindu Marriage Act 1955 Section 24",
-      "Hindu Marriage Act 1955 Section 25"
-    ],
-    "examples": [
-      "husband not giving money",
-      "maintenance after divorce",
-      "wife maintenance rights",
-      "child maintenance",
-      "interim maintenance"
-    ]
-  },
-  {
-    "intent": "property_dispute",
-    "category": "property",
-    "prototype": "Property ownership disputes, land disputes, boundary disputes, partition of ancestral property, title disputes, possession disputes, encroachment, easement rights and civil property litigation.",
-    "anchors": [
-      "Transfer of Property Act 1882 Section 8",
-      "Transfer of Property Act 1882 Section 54"
-    ],
-    "examples": [
-      "land dispute",
-      "property ownership dispute",
-      "boundary dispute",
-      "partition property",
-      "encroachment on land"
-    ]
-  },
-  {
-    "intent": "online_shopping_dispute",
-    "category": "consumer",
-    "prototype": "Consumer disputes arising from online shopping including wrong product delivery, damaged goods, refund refusal, replacement disputes, cancelled orders, fake products and e-commerce platform complaints.",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 2",
-      "Consumer Protection Act 2019 Section 39"
-    ],
-    "examples": [
-      "amazon refused refund",
-      "flipkart delivered wrong product",
-      "wrong item received online",
-      "ecommerce complaint",
-      "online shopping refund"
-    ]
-  },
-  {
-    "intent": "online_financial_fraud",
-    "category": "cyber",
-    "prototype": "Online financial fraud including UPI scams, internet banking fraud, unauthorized transactions, OTP fraud, QR code scams, credit card fraud, phishing attacks and digital payment fraud.",
-    "anchors": [
-      "Information Technology Act 2000 Section 66C",
-      "Information Technology Act 2000 Section 66D"
-    ],
-    "examples": [
-      "UPI scam",
-      "bank OTP fraud",
-      "unauthorized bank transaction",
-      "online banking fraud",
-      "QR code scam"
-    ]
-  },
-  {
-    "intent": "stalking_voyeurism",
-    "category": "women_child",
-    "prototype": "Stalking, voyeurism, hidden camera offences, repeated unwanted contact, obscene messages, online stalking, following someone without consent, invasion of privacy and harassment targeting women.",
-    "anchors": [
-      "Bharatiya Nyaya Sanhita 2023 Section 77",
-      "Bharatiya Nyaya Sanhita 2023 Section 78"
-    ],
-    "examples": [
-      "someone keeps following me",
-      "stalking complaint",
-      "obscene messages",
-      "hidden camera",
-      "online stalking"
-    ]
-  },
-  {
-    "intent": "wrongful_termination",
-    "category": "labour",
-    "prototype": "Wrongful termination, illegal dismissal, unfair dismissal, termination without notice, retrenchment disputes, unlawful discharge from employment, employer violating termination procedures and reinstatement claims.",
-    "anchors": [
-      "Industrial Disputes Act 1947 Section 25F",
-      "Industrial Relations Code 2020 Section 70"
-    ],
-    "examples": [
-      "employer fired me without notice",
-      "wrongful termination",
-      "illegal dismissal",
-      "termination without notice",
-      "unfair retrenchment"
-    ]
-  },
-  {
+ },
+ {
+  "intent": "narcotics_drugs",
+  "category": "criminal",
+  "anchors": [
+   "Narcotic Drugs And Psychotropic Substances Act 1985 Section 20",
+   "Narcotic Drugs And Psychotropic Substances Act 1985 Section 27"
+  ],
+  "prototype": "Possession, consumption, trafficking, transport or manufacture of narcotic drugs or psychotropic substances, NDPS offences, arrests, penalties and bail under drug laws.",
+  "examples": [
+   "caught with illegal drugs",
+   "drug possession case india",
+   "NDPS act punishment",
+   "first time drug offence",
+   "arrested for carrying drugs"
+  ]
+ },
+ {
+  "intent": "weapons_arms",
+  "category": "criminal",
+  "anchors": [
+   "The Arms Act 1959 Section 25",
+   "The Arms Act 1959 Section 3"
+  ],
+  "prototype": "Illegal possession, carrying, manufacture, sale or use of firearms or prohibited weapons, licensing requirements, unlicensed weapon offences and Arms Act violations.",
+  "examples": [
+   "found carrying unlicensed weapon",
+   "illegal arms possession",
+   "carrying gun without license",
+   "arms act punishment",
+   "unlicensed firearm case"
+  ]
+ },
+ {
+  "intent": "tenant_rights",
+  "category": "property",
+  "anchors": [
+   "Transfer of Property Act 1882 Section 108",
+   "Transfer of Property Act 1882 Section 106"
+  ],
+  "prototype": "Landlord-tenant disputes including eviction, lease termination, security deposit, rent disputes, landlord harassment, tenant rights, notice requirements and lease obligations.",
+  "examples": [
+   "landlord not returning security deposit",
+   "landlord wants to evict without notice",
+   "tenant rights under lease",
+   "rights of tenant in india",
+   "landlord harassment"
+  ]
+ },
+ {
+  "intent": "divorce",
+  "category": "family",
+  "anchors": [
+   "Hindu Marriage Act 1955 Section 13",
+   "Special Marriage Act 1954 Section 27"
+  ],
+  "prototype": "Divorce proceedings, mutual consent divorce, contested divorce, cruelty, desertion, adultery, dissolution of marriage and legal grounds for divorce.",
+  "examples": [
+   "grounds for divorce under hindu law",
+   "divorce procedure india",
+   "how to get divorce",
+   "mutual consent divorce",
+   "divorce on grounds of cruelty"
+  ]
+ },
+ {
+  "intent": "inheritance_succession",
+  "category": "family",
+  "anchors": [
+   "Hindu Succession Act 1956 Section 6",
+   "Hindu Succession Act 1956 Section 15"
+  ],
+  "prototype": "Inheritance of property, succession rights, legal heirs, ancestral property, self-acquired property, partition, daughter's inheritance rights, distribution of estate after death and succession disputes.",
+  "examples": [
+   "inheritance rights of daughter",
+   "who inherits property after death",
+   "succession rights india",
+   "daughter right in father property",
+   "hindu succession rights"
+  ]
+ },
+ {
+  "intent": "guardianship",
+  "category": "family",
+  "anchors": [
+   "Guardians And Wards Act 1890 Section 17",
+   "Guardians And Wards Act 1890 Section 7"
+  ],
+  "prototype": "Appointment of guardian for a minor, child custody and guardianship, legal guardian applications, welfare of the child, guardian rights and court proceedings relating to minors.",
+  "examples": [
+   "who can be appointed guardian of minor child",
+   "child guardianship application",
+   "guardian appointment court",
+   "custody and guardianship minor"
+  ]
+ },
+ {
+  "intent": "rti_application",
+  "category": "rights",
+  "anchors": [
+   "Right To Information Act 2005 Section 6",
+   "Right To Information Act 2005 Section 7"
+  ],
+  "prototype": "Right to Information applications, seeking information from public authorities, RTI filing procedure, government records, response timelines, RTI appeals and rejection of information requests.",
+  "examples": [
+   "how to file RTI application",
+   "RTI request procedure",
+   "file information request government",
+   "public authority information request",
+   "RTI appeal rejection"
+  ]
+ },
+ {
+  "intent": "legal_aid",
+  "category": "rights",
+  "anchors": [
+   "Legal Services Authorities Act 1987 Section 12",
+   "Legal Services Authorities Act 1987 Section 13"
+  ],
+  "prototype": "Eligibility for free legal aid, government-funded legal assistance, legal services authorities, free lawyer requests, access to justice for eligible persons and legal aid schemes.",
+  "examples": [
+   "free legal aid for poor person",
+   "free lawyer government scheme",
+   "legal services authority help",
+   "cannot afford lawyer india",
+   "free legal help india"
+  ]
+ },
+ {
+  "intent": "cyber_crime",
+  "category": "cyber",
+  "anchors": [
+   "Information Technology Act 2000 Section 66",
+   "Information Technology Act 2000 Section 66C",
+   "Information Technology Act 2000 Section 66D",
+   "Information Technology Act 2000 Section 73"
+  ],
+  "prototype": "Cyber crimes including hacking, phishing, identity theft, online fraud, account compromise, unauthorized access, impersonation, cyber cheating, digital fraud and reporting cyber offences.",
+  "examples": [
+   "someone hacked my online account",
+   "cyber crime complaint india",
+   "online fraud complaint",
+   "upi fraud",
+   "bank scam",
+   "fake website",
+   "identity theft online india",
+   "hacker stole my data"
+  ]
+ },
+ {
+  "intent": "online_privacy",
+  "category": "cyber",
+  "anchors": [
+   "Information Technology Act 2000 Section 66E",
+   "Information Technology Act 2000 Section 72"
+  ],
+  "prototype": "Violation of online privacy including unauthorized sharing of personal photos or videos, fake profiles, image morphing, privacy breaches, misuse of personal information and online impersonation.",
+  "examples": [
+   "fake profile created using my photos",
+   "someone sharing my photos without permission",
+   "privacy violation online india",
+   "morphed photos shared online",
+   "online defamation fake profile"
+  ]
+ },
+ {
+  "intent": "road_accident",
+  "category": "transport",
+  "anchors": [
+   "Motor Vehicles Act 1988 Section 161",
+   "Motor Vehicles Act 1988 Section 164"
+  ],
+  "prototype": "Road traffic accidents, hit-and-run incidents, motor accident compensation, MACT claims, injury or death due to motor vehicles, victim compensation and accident liability.",
+  "examples": [
+   "compensation after road accident",
+   "hit and run accident compensation",
+   "motor accident claim",
+   "MACT claim India",
+   "road accident victim rights"
+  ]
+ },
+ {
+  "intent": "traffic_offence",
+  "category": "transport",
+  "anchors": [
+   "Motor Vehicles Act 1988 Section 181",
+   "Motor Vehicles Act 1988 Section 182"
+  ],
+  "prototype": "Traffic violations including driving without licence, driving without permit, drunken driving, traffic challans, penalties, fines and offences under motor vehicle laws.",
+  "examples": [
+   "driving without license penalty",
+   "traffic challan penalty",
+   "driving drunk fine india",
+   "vehicle without permit penalty",
+   "motor vehicle offence punishment"
+  ]
+ },
+ {
+  "intent": "disability_rights",
+  "category": "social_justice",
+  "anchors": [
+   "Rights Of Persons With Disabilities Act 2016 Section 3",
+   "Rights Of Persons With Disabilities Act 2016 Section 20"
+  ],
+  "prototype": "Rights of persons with disabilities including discrimination, equal opportunity, accessibility, reasonable accommodation, employment rights, education rights and protections under disability law.",
+  "examples": [
+   "rights of disabled person at workplace",
+   "disability discrimination employment",
+   "person with disability rights india",
+   "RPWD act protections",
+   "employer discriminating disabled employee"
+  ]
+ },
+ {
+  "intent": "sc_st_atrocities",
+  "category": "social_justice",
+  "anchors": [
+   "Scheduled Castes And Scheduled Tribes Act 1989 Section 3",
+   "Scheduled Castes And Scheduled Tribes Act 1989 Section 15A"
+  ],
+  "prototype": "Atrocities, caste-based violence, discrimination, humiliation, social boycott, intimidation, denial of rights or offences committed against members of Scheduled Castes or Scheduled Tribes.",
+  "examples": [
+   "discrimination against scheduled caste person",
+   "atrocity against SC ST",
+   "caste based violence complaint",
+   "SC ST act case",
+   "untouchability offense"
+  ]
+ },
+ {
+  "intent": "senior_citizen_maintenance",
+  "category": "social_justice",
+  "anchors": [
+   "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 4",
+   "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 9"
+  ],
+  "prototype": "Maintenance and welfare of parents or senior citizens, neglect by children or relatives, financial support for elderly parents, maintenance tribunal proceedings and protection of senior citizens.",
+  "examples": [
+   "elderly parents not taken care of by children",
+   "children not supporting old parents",
+   "maintenance for senior citizens",
+   "old parents neglected by son",
+   "senior citizen maintenance tribunal"
+  ]
+ },
+ {
+  "intent": "cheating_fraud",
+  "category": "criminal",
+  "prototype": "Cheating, criminal breach of trust, fraud, deception, financial cheating, investment scams, dishonest inducement, property or money obtained through deception, complaint against fraudsters and criminal cheating offences.",
+  "anchors": [
+   "Bharatiya Nyaya Sanhita 2023 Section 318",
+   "Bharatiya Nyaya Sanhita 2023 Section 316"
+  ],
+  "examples": [
+   "someone cheated me",
+   "fraud complaint",
+   "criminal breach of trust",
+   "investment scam",
+   "money cheating case"
+  ]
+ },
+ {
+  "intent": "theft_robbery",
+  "category": "criminal",
+  "prototype": "Theft, robbery, burglary, stolen property, snatching, house breaking, vehicle theft, mobile phone theft, recovery of stolen property and police complaints relating to theft offences.",
+  "anchors": [
+   "Bharatiya Nyaya Sanhita 2023 Section 303",
+   "Bharatiya Nyaya Sanhita 2023 Section 309"
+  ],
+  "examples": [
+   "my phone was stolen",
+   "theft complaint",
+   "robbery case",
+   "burglary complaint",
+   "vehicle theft"
+  ]
+ },
+ {
+  "intent": "maintenance",
+  "category": "family",
+  "prototype": "Maintenance rights of wife, husband, children or parents, interim maintenance, permanent alimony, child support, financial support after separation or divorce and maintenance proceedings before court.",
+  "anchors": [
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 144",
+   "Hindu Marriage Act 1955 Section 24",
+   "Hindu Marriage Act 1955 Section 25"
+  ],
+  "examples": [
+   "husband not giving money",
+   "maintenance after divorce",
+   "wife maintenance rights",
+   "child maintenance",
+   "interim maintenance"
+  ]
+ },
+ {
+  "intent": "property_dispute",
+  "category": "property",
+  "prototype": "Property ownership disputes, land disputes, boundary disputes, partition of ancestral property, title disputes, possession disputes, encroachment, easement rights and civil property litigation.",
+  "anchors": [
+   "Transfer of Property Act 1882 Section 8",
+   "Transfer of Property Act 1882 Section 54"
+  ],
+  "examples": [
+   "land dispute",
+   "property ownership dispute",
+   "boundary dispute",
+   "partition property",
+   "encroachment on land"
+  ]
+ },
+ {
+  "intent": "online_shopping_dispute",
+  "category": "consumer",
+  "prototype": "Consumer disputes arising from online shopping including wrong product delivery, damaged goods, refund refusal, replacement disputes, cancelled orders, fake products and e-commerce platform complaints.",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 2",
+   "Consumer Protection Act 2019 Section 39"
+  ],
+  "examples": [
+   "amazon refused refund",
+   "flipkart delivered wrong product",
+   "wrong item received online",
+   "ecommerce complaint",
+   "online shopping refund"
+  ]
+ },
+ {
+  "intent": "online_financial_fraud",
+  "category": "cyber",
+  "prototype": "Online financial fraud including UPI scams, internet banking fraud, unauthorized transactions, OTP fraud, QR code scams, credit card fraud, phishing attacks and digital payment fraud.",
+  "anchors": [
+   "Information Technology Act 2000 Section 66C",
+   "Information Technology Act 2000 Section 66D"
+  ],
+  "examples": [
+   "UPI scam",
+   "bank OTP fraud",
+   "unauthorized bank transaction",
+   "online banking fraud",
+   "QR code scam"
+  ]
+ },
+ {
+  "intent": "stalking_voyeurism",
+  "category": "women_child",
+  "prototype": "Stalking, voyeurism, hidden camera offences, repeated unwanted contact, obscene messages, online stalking, following someone without consent, invasion of privacy and harassment targeting women.",
+  "anchors": [
+   "Bharatiya Nyaya Sanhita 2023 Section 77",
+   "Bharatiya Nyaya Sanhita 2023 Section 78"
+  ],
+  "examples": [
+   "someone keeps following me",
+   "stalking complaint",
+   "obscene messages",
+   "hidden camera",
+   "online stalking"
+  ]
+ },
+ {
+  "intent": "wrongful_termination",
+  "category": "labour",
+  "prototype": "Wrongful termination, illegal dismissal, unfair dismissal, termination without notice, retrenchment disputes, unlawful discharge from employment, employer violating termination procedures and reinstatement claims.",
+  "anchors": [
+   "Industrial Disputes Act 1947 Section 25F",
+   "Industrial Relations Code 2020 Section 70"
+  ],
+  "examples": [
+   "employer fired me without notice",
+   "wrongful termination",
+   "illegal dismissal",
+   "termination without notice",
+   "unfair retrenchment"
+  ]
+ },
+ {
   "intent": "passport_offences",
   "category": "administrative",
   "anchors": [
-    "The Passports Act 1967 Section 12",
-    "The Passports Act 1967 Section 10",
-    "The Passports Act 1967 Section 6"
+   "The Passports Act 1967 Section 12",
+   "The Passports Act 1967 Section 10",
+   "The Passports Act 1967 Section 6"
   ],
   "prototype": "Offences and penalties relating to passports, including giving false or suppressed information in a passport application, holding a forged passport, refusal of a passport application, or impounding and revocation of an issued passport.",
   "examples": [
-    "false information given in passport application",
-    "passport application rejected by authorities",
-    "penalty for fake or forged passport",
-    "passport impounded or revoked",
-    "suppressing information in passport application",
-    "what happens if you lie on a passport application",
-    "lost or stolen passport what to do",
-    "passport application denied"
+   "false information given in passport application",
+   "passport application rejected by authorities",
+   "penalty for fake or forged passport",
+   "passport impounded or revoked",
+   "suppressing information in passport application",
+   "what happens if you lie on a passport application",
+   "lost or stolen passport what to do",
+   "passport application denied"
   ]
-},
-{
+ },
+ {
   "intent": "voluntarily_causing_hurt",
   "category": "criminal",
   "anchors": [
-    "Bharatiya Nyaya Sanhita 2023 Section 115",
-    "Bharatiya Nyaya Sanhita 2023 Section 116",
-    "Bharatiya Nyaya Sanhita 2023 Section 117"
+   "Bharatiya Nyaya Sanhita 2023 Section 115",
+   "Bharatiya Nyaya Sanhita 2023 Section 116",
+   "Bharatiya Nyaya Sanhita 2023 Section 117"
   ],
   "prototype": "Physical assault by another person causing bodily injury, including voluntarily causing hurt or grievous hurt, being hit, beaten, or attacked, and the punishment for causing injury to a person.",
-    "examples": [
-    "someone hit me and caused injury",
-    "i was beaten up by someone",
-    "physical assault by another person",
-    "grievous hurt caused by attacker",
-    "punishment for causing bodily injury to someone",
-    "got into a fight and was injured",
-    "someone assaulted me what can i do"
+  "examples": [
+   "someone hit me and caused injury",
+   "i was beaten up by someone",
+   "physical assault by another person",
+   "grievous hurt caused by attacker",
+   "punishment for causing bodily injury to someone",
+   "got into a fight and was injured",
+   "someone assaulted me what can i do"
   ]
-},
-  {
-    "intent": "interrogation_rights",
-    "category": "criminal",
-    "anchors": [
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 180",
-      "Bharatiya Nagarik Suraksha Sanhita 2023 Section 181"
-    ],
-    "prototype": "Rights of a person during police interrogation, questioning by police, right to remain silent, right to have lawyer present during questioning, forced confession, custodial interrogation.",
-    "examples": [
-      "rights during police interrogation",
-      "can police force me to answer questions",
-      "right to remain silent during questioning",
-      "lawyer during police questioning",
-      "forced confession by police",
-      "rights while being questioned by police"
-    ]
-  },
-  {
-    "intent": "factory_definition",
-    "category": "labour",
-    "anchors": [
-      "Labour Factories Act 1948 Section 2"
-    ],
-    "prototype": "Definition of a factory under the Factories Act, what constitutes a factory, premises that qualify as a factory, registration requirements for a factory.",
-    "examples": [
-      "what is a factory under the factories act",
-      "definition of factory in india",
-      "does my workshop qualify as a factory",
-      "what premises are considered a factory",
-      "factories act definition",
-      "factories act section 2 definition of factory manufacturing process",
-      "what constitutes a factory under indian law"
-    ]
-  },
-  {
-    "intent": "factory_safety",
-    "category": "labour",
-    "anchors": [
-      "Occupational Safety Health And Working Conditions Code 2020 Section 6",
-      "Occupational Safety Health And Working Conditions Code 2020 Section 13"
-    ],
-    "prototype": "Safety measures that factories must provide for workers, workplace safety requirements, employer duty to maintain safe working conditions, safety appliances, ventilation, lighting, sanitation.",
-    "examples": [
-      "safety measures factories must provide",
-      "factory worker safety requirements",
-      "employer duty to maintain safe workplace",
-      "safety appliances in factory",
-      "ventilation and sanitation requirements in factory",
-      "occupational safety health code employer duties section 6",
-      "what safety conditions must employer provide at workplace"
-    ]
-  },
-  {
+ },
+ {
+  "intent": "interrogation_rights",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 180",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 181"
+  ],
+  "prototype": "Rights of a person during police interrogation, questioning by police, right to remain silent, right to have lawyer present during questioning, forced confession, custodial interrogation.",
+  "examples": [
+   "rights during police interrogation",
+   "can police force me to answer questions",
+   "right to remain silent during questioning",
+   "lawyer during police questioning",
+   "forced confession by police",
+   "rights while being questioned by police"
+  ]
+ },
+ {
+  "intent": "factory_definition",
+  "category": "labour",
+  "anchors": [
+   "Labour Factories Act 1948 Section 2"
+  ],
+  "prototype": "Definition of a factory under the Factories Act, what constitutes a factory, premises that qualify as a factory, registration requirements for a factory.",
+  "examples": [
+   "what is a factory under the factories act",
+   "definition of factory in india",
+   "does my workshop qualify as a factory",
+   "what premises are considered a factory",
+   "factories act definition",
+   "factories act section 2 definition of factory manufacturing process",
+   "what constitutes a factory under indian law"
+  ]
+ },
+ {
+  "intent": "factory_safety",
+  "category": "labour",
+  "anchors": [
+   "Occupational Safety Health And Working Conditions Code 2020 Section 6",
+   "Occupational Safety Health And Working Conditions Code 2020 Section 13"
+  ],
+  "prototype": "Safety measures that factories must provide for workers, workplace safety requirements, employer duty to maintain safe working conditions, safety appliances, ventilation, lighting, sanitation.",
+  "examples": [
+   "safety measures factories must provide",
+   "factory worker safety requirements",
+   "employer duty to maintain safe workplace",
+   "safety appliances in factory",
+   "ventilation and sanitation requirements in factory",
+   "occupational safety health code employer duties section 6",
+   "what safety conditions must employer provide at workplace"
+  ]
+ },
+ {
   "intent": "factory_safety_officer_requirement",
   "category": "labour",
   "anchors": [
-    "Occupational Safety Health And Working Conditions Code 2020 Section 22",
-    "Labour Factories Act 1948 Section 40B"
+   "Occupational Safety Health And Working Conditions Code 2020 Section 22",
+   "Labour Factories Act 1948 Section 40B"
   ],
   "examples": [
-    "do companies need safety officer for factory",
-    "is safety officer mandatory in factory",
-    "who appoints safety committee in workplace",
-    "factory safety officer requirement"
+   "do companies need safety officer for factory",
+   "is safety officer mandatory in factory",
+   "who appoints safety committee in workplace",
+   "factory safety officer requirement"
   ]
-},
-{
+ },
+ {
   "intent": "parent_maintenance_by_children",
   "category": "family",
   "anchors": [
-    "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 4",
-    "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 5"
+   "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 4",
+   "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 5"
   ],
   "examples": [
-    "can parents legally claim maintenance from their children",
-    "elderly parents neglected by children maintenance",
-    "senior citizen maintenance rights against children",
-    "children not supporting aged parents financially"
+   "can parents legally claim maintenance from their children",
+   "elderly parents neglected by children maintenance",
+   "senior citizen maintenance rights against children",
+   "children not supporting aged parents financially"
   ]
-},
-{
+ },
+ {
   "intent": "firearm_licence_refusal_cancellation",
   "category": "administrative",
   "anchors": [
-    "The Arms Act 1959 Section 14",
-    "The Arms Act 1959 Section 17",
-    "The Arms Act 1959 Section 18"
+   "The Arms Act 1959 Section 14",
+   "The Arms Act 1959 Section 17",
+   "The Arms Act 1959 Section 18"
   ],
   "examples": [
-    "firearm licence rejected or cancelled by authorities",
-    "gun licence application denied",
-    "arms licence suspended or revoked",
-    "why was my firearm licence cancelled"
+   "firearm licence rejected or cancelled by authorities",
+   "gun licence application denied",
+   "arms licence suspended or revoked",
+   "why was my firearm licence cancelled"
   ]
-},
-  {
-    "intent": "factory_working_hours",
-    "category": "labour",
-    "anchors": [
-      "Occupational Safety Health And Working Conditions Code 2020 Section 25",
-      "Labour Factories Act 1948 Section 54"
-    ],
-    "prototype": "Maximum working hours per day in a factory, daily work hour limits, weekly hour limits, overtime requirements in factory setting.",
-    "examples": [
-      "maximum working hours per day in factory",
-      "what is maximum working hours per day in factory",
-      "daily work limit in factory",
-      "factory working hours limit india"
-    ]
-  },
-  {
-    "intent": "factory_child_labour",
-    "category": "labour",
-    "anchors": [
-      "Labour Factories Act 1948 Section 67",
-      "Labour Factories Act 1948 Section 71"
-    ],
-    "prototype": "Child labour in factories, employing minors below legal age, prohibition of child employment in factories, penalties for child labour violations.",
-    "examples": [
-      "child labour working in factory below legal age",
-      "employing children in factory",
-      "child working in factory illegally",
-      "minimum age for factory employment"
-    ]
-  },
-  {
-    "intent": "factory_registration",
-    "category": "labour",
-    "anchors": [
-      "Labour Factories Act 1948 Section 6"
-    ],
-    "prototype": "Registration of a factory under the Factories Act, requirement to register factory, application for factory licence, factory licence process.",
-    "examples": [
-      "how to register a new factory",
-      "factory registration process india",
-      "apply for factory licence",
-      "mandatory factory registration"
-    ]
-  },
-  {
-    "intent": "salary_unpaid",
-    "category": "labour",
-    "anchors": [
-      "Payment Of Wages Act 1936 Section 15",
-      "Payment Of Wages Act 1936 Section 17",
-      "Code on Wages 2019 Section 17"
-    ],
-    "prototype": "Employer not paying salary, delayed salary, unpaid wages, employer withholding salary, procedure for recovering unpaid salary.",
-    "examples": [
-      "what to do if employer does not pay salary",
-      "employer not paying salary",
-      "unpaid salary recovery",
-      "salary not credited on time",
-      "how to get unpaid salary from employer"
-    ]
-  },
-  {
-    "intent": "pf_eligibility",
-    "category": "labour",
-    "anchors": [
-      "The Code On Security 2020 Section 142",
-      "The Employees Provident Funds And Miscellaneous Provisions Act 1952 Section 6"
-    ],
-    "prototype": "Who is eligible for provident fund, EPF eligibility, employee contribution, employer contribution, social security code provident fund provisions.",
-    "examples": [
-      "who is eligible for provident fund under social security code",
-      "EPF eligibility india",
-      "provident fund contribution rules",
-      "who can get provident fund"
-    ]
-  },
-  {
-    "intent": "pf_default",
-    "category": "labour",
-    "anchors": [
-      "The Employees Provident Funds And Miscellaneous Provisions Act 1952 Section 14B",
-      "The Employees Provident Funds And Miscellaneous Provisions Act 1952 Section 7Q"
-    ],
-    "prototype": "Employer not depositing PF contribution, default in PF payment, penalties for employer not paying PF, delay in PF deposit.",
-    "examples": [
-      "what happens if employer does not deposit PF contribution",
-      "employer not paying provident fund",
-      "PF not deposited by employer",
-      "penalty for not depositing PF"
-    ]
-  },
-  {
-    "intent": "employee_insurance",
-    "category": "labour",
-    "anchors": [
-      "The Code On Security 2020 Section 39",
-      "The Code On Security 2020 Section 40"
-    ],
-    "prototype": "Employee insurance under law, workers insurance coverage, employer-provided insurance, statutory insurance for employees, social security insurance.",
-    "examples": [
-      "how is employee insurance provided under law",
-      "employee insurance coverage india",
-      "employer insurance for workers",
-      "statutory insurance for employees"
-    ]
-  },
-  {
-    "intent": "child_juvenile_crime",
-    "category": "women_child",
-    "anchors": [
-      "Juvenile Justice Act 2015 Section 15",
-      "Juvenile Justice Act 2015 Section 18"
-    ],
-    "prototype": "What happens when a child commits a crime, juvenile in conflict with law, child offender procedures, JJ Board, probation, child crime legal process.",
-    "examples": [
-      "what happens if a child commits a crime in india",
-      "child offender juvenile justice",
-      "juvenile in conflict with law",
-      "what happens to children who commit crimes",
-      "juvenile justice board inquiry procedure section 15",
-      "child found in conflict with law what happens next"
-    ]
-  },
-  {
-    "intent": "kidnapping_abduction",
-    "category": "criminal",
-    "anchors": [
-      "Bharatiya Nyaya Sanhita 2023 Section 137",
-      "Bharatiya Nyaya Sanhita 2023 Section 140"
-    ],
-    "prototype": "Kidnapping and abduction offences, taking or conveying a person against their will or without consent, kidnapping a minor or person of unsound mind, abduction by force or deceitful means, ransom kidnapping, taking a child away from lawful guardianship and punishment for kidnapping or abduction.",
-    "examples": [
-      "kidnapping or abduction of a person",
-      "child kidnapped in india what law applies",
-      "kidnapping punishment in india",
-      "abduction by force law india",
-      "what is kidnapping under bns"
-    ]
-  },
-  {
-    "intent": "electronic_evidence_admissibility",
-  "category": "criminal",
-  "anchors": ["Bharatiya Sakshya Adhiniyam 2023 Section 63"],
+ },
+ {
+  "intent": "factory_working_hours",
+  "category": "labour",
+  "anchors": [
+   "Occupational Safety Health And Working Conditions Code 2020 Section 25",
+   "Labour Factories Act 1948 Section 54"
+  ],
+  "prototype": "Maximum working hours per day in a factory, daily work hour limits, weekly hour limits, overtime requirements in factory setting.",
   "examples": [
-    "are electronic documents like emails valid evidence in court",
-    "is CCTV footage accepted as legal proof",
-    "can whatsapp messages be used as evidence",
-    "admissibility of digital evidence in court"
+   "maximum working hours per day in factory",
+   "what is maximum working hours per day in factory",
+   "daily work limit in factory",
+   "factory working hours limit india"
   ]
-},
-  {
-    "intent": "minor_as_adult",
-    "category": "women_child",
-    "anchors": [
-      "Juvenile Justice Act 2015 Section 15",
-      "Juvenile Justice Act 2015 Section 18",
-      "Juvenile Justice Act 2015 Section 19"
-    ],
-    "prototype": "Minor tried as adult in serious cases, children aged 16-18 tried as adults, heinous offences by juveniles, transfer to adult court.",
-    "examples": [
-      "can a minor be tried as an adult in serious cases",
-      "child tried as adult in india",
-      "juvenile heinous offence adult court",
-      "16 year old tried as adult"
-    ]
-  },
-  {
-    "intent": "juvenile_rehabilitation",
-    "category": "women_child",
-    "anchors": [
-      "Juvenile Justice Act 2015 Section 18",
-      "Juvenile Justice Act 2015 Section 19",
-      "Juvenile Justice Act 2015 Section 39",
-      "Juvenile Justice Act 2015 Section 53"
-    ],
-    "prototype": "Rehabilitation for juvenile offenders, reformation of children in conflict with law, juvenile rehabilitation programme, aftercare, social reintegration.",
-    "examples": [
-      "rehabilitation for juvenile offenders",
-      "child rehabilitation under JJ act",
-      "juvenile reformation programme",
-      "aftercare for juvenile offenders"
-    ]
-  },
-  {
-    "intent": "child_abuse_reporting",
-    "category": "women_child",
-    "anchors": [
-      "Protection Of Children From Sexual Offences Act 2012 Section 19",
-      "Protection Of Children From Sexual Offences Act 2012 Section 21"
-    ],
-    "prototype": "Duty to report child abuse, mandatory reporting of child sexual abuse, teacher or doctor duty to report, penalty for failure to report child abuse.",
-    "examples": [
-      "school teacher suspects child abuse duty to report",
-      "mandatory reporting child abuse india",
-      "teacher duty to report child abuse",
-      "what happens if you dont report child abuse"
-    ]
-  },
-  {
-    "intent": "child_abuse_fir",
-    "category": "women_child",
-    "anchors": [
-      "Protection Of Children From Sexual Offences Act 2012 Section 19"
-    ],
-    "prototype": "Police required to register FIR in child abuse cases, FIR in POCSO cases, mandatory FIR for child abuse, police duty to register case for child victim.",
-    "examples": [
-      "police required to register fir in child abuse cases",
-      "fir for child abuse india",
-      "must police file fir for child sexual abuse",
-      "child abuse fir mandatory"
-    ]
-  },
-  {
-    "intent": "dv_complaint_filing",
-    "category": "women_child",
-    "anchors": [
-      "Protection Of Women From Domestic Violence Act 2005 Section 12"
-    ],
-    "prototype": "How to file complaint under Domestic Violence Act, DV complaint procedure, filing protection order application, magistrate complaint under DV Act.",
-    "examples": [
-      "how to file complaint under domestic violence act",
-      "dv complaint procedure india",
-      "file protection order against husband",
-      "domestic violence case filing"
-    ]
-  },
-  {
-    "intent": "live_in_dv",
-    "category": "women_child",
-    "anchors": [
-      "Protection Of Women From Domestic Violence Act 2005 Section 2"
-    ],
-    "prototype": "Can live-in partner file domestic violence complaint, domestic violence in live-in relationship, rights of woman in live-in relationship, DV Act applicability to live-in partners.",
-    "examples": [
-      "can live-in partner file domestic violence complaint",
-      "domestic violence in live-in relationship",
-      "live-in partner rights under DV act",
-      "woman in live-in can file dv"
-    ]
-  },
-  {
-    "intent": "maternity_salary",
-    "category": "labour",
-    "anchors": [
-      "The Maternity Benefit Act 1961 Section 6",
-      "The Maternity Benefit Act 1961 Section 4"
-    ],
-    "prototype": "Will I get salary during maternity leave, paid maternity benefit amount, wages during maternity leave, employer paying salary during pregnancy leave.",
-    "examples": [
-      "will i get salary during maternity leave",
-      "paid salary during maternity leave",
-      "maternity benefit amount",
-      "wages during maternity leave india"
-    ]
-  },
-  {
-    "intent": "maternity_refusal",
-    "category": "labour",
-    "anchors": [
-      "The Maternity Benefit Act 1961 Section 21",
-      "The Maternity Benefit Act 1961 Section 12"
-    ],
-    "prototype": "What happens if employer refuses maternity leave, employer denying maternity benefit, penalty for employer refusing maternity leave, maternity leave complaint.",
-    "examples": [
-      "what happens if employer refuses maternity leave",
-      "employer denied maternity leave",
-      "complaint against employer for maternity leave",
-      "maternity leave refusal penalty"
-    ]
-  },
-  {
-    "intent": "evidence_electronic",
-    "category": "rights",
-    "anchors": [
-      "Bharatiya Sakshya Adhiniyam 2023 Section 63"
-    ],
-    "prototype": "Electronic documents as valid evidence in court, admissibility of emails and digital records, electronic evidence law, digital documents in legal proceedings.",
-    "examples": [
-      "are electronic documents like emails valid evidence in court",
-      "electronic evidence admissibility india",
-      "email as evidence in court",
-      "digital documents legal proof"
-    ]
-  },
-  {
-    "intent": "evidence_cctv",
-    "category": "criminal",
-    "anchors": [
-      "Bharatiya Sakshya Adhiniyam 2023 Section 63"
-    ],
-    "prototype": "CCTV footage as legal proof in criminal cases, video evidence admissibility, surveillance footage in court, electronic surveillance evidence.",
-    "examples": [
-      "is cctv footage accepted as legal proof in criminal cases",
-      "cctv evidence in court india",
-      "video footage as evidence",
-      "surveillance camera footage legal proof"
-    ]
-  },
-  {
-    "intent": "guardian_appointment",
-    "category": "family",
-    "anchors": [
-      "Guardians And Wards Act 1890 Section 7",
-      "Guardians And Wards Act 1890 Section 8"
-    ],
-    "prototype": "How to become legal guardian of a child, appointment of guardian application, court procedure for guardian appointment, guardian of minor child.",
-    "examples": [
-      "how can i become legal guardian of a child in india",
-      "guardian appointment application",
-      "become guardian of minor",
-      "legal guardian procedure india"
-    ]
-  },
-  {
-    "intent": "guardian_without_consent",
-    "category": "family",
-    "anchors": [
-      "Guardians And Wards Act 1890 Section 7",
-      "Guardians And Wards Act 1890 Section 17"
-    ],
-    "prototype": "Court appointing guardian without parents consent, guardianship against parents wishes, welfare of child overriding parental rights, court power to appoint guardian.",
-    "examples": [
-      "can a court appoint guardian without parents consent",
-      "guardian appointed over parents objection",
-      "court taking guardianship from parents",
-      "child welfare guardian appointment"
-    ]
-  },
-  {
-    "intent": "child_custody_petition",
-    "category": "family",
-    "anchors": [
-      "Guardians And Wards Act 1890 Section 10",
-      "Guardians And Wards Act 1890 Section 7"
-    ],
-    "prototype": "Who can file petition for child custody in court, custody petition procedure, filing custody application, standing to file custody case.",
-    "examples": [
-      "who can file petition for child custody in court",
-      "custody petition filing procedure",
-      "file child custody case india",
-      "who can apply for child custody",
-      "guardians and wards act section 10 application for custody of minor",
-      "who has standing to file custody petition in court"
-    ]
-  },
-  {
-    "intent": "grandparent_guardian",
-    "category": "family",
-    "anchors": [
-      "Guardians And Wards Act 1890 Section 7",
-      "Guardians And Wards Act 1890 Section 17"
-    ],
-    "prototype": "Grandparents becoming legal guardians of a minor, grandparent custody rights, guardian appointment for grandparents, welfare of child grandparents.",
-    "examples": [
-      "can grandparents become legal guardians of a minor",
-      "grandparent custody rights india",
-      "grandparents guardian of grandchild",
-      "grandparent guardianship application"
-    ]
-  },
-  {
-    "intent": "remove_guardian",
-    "category": "family",
-    "anchors": [
-      "Guardians And Wards Act 1890 Section 39"
-    ],
-    "prototype": "How to remove a legal guardian in India, removal of guardian procedure, revoking guardianship, change of guardian application.",
-    "examples": [
-      "how to remove a legal guardian in india",
-      "remove guardian of minor child",
-      "change guardian procedure",
-      "revoking guardianship india"
-    ]
-  },
-  {
-    "intent": "hindu_validity",
-    "category": "family",
-    "anchors": [
-      "Hindu Marriage Act 1955 Section 5",
-      "Hindu Marriage Act 1955 Section 7"
-    ],
-    "prototype": "Legal requirements for a valid Hindu marriage, conditions for valid Hindu marriage, solemnization of Hindu marriage, ceremonies required for Hindu marriage.",
-    "examples": [
-      "what are the legal requirements for a valid hindu marriage",
-      "valid hindu marriage conditions",
-      "hindu marriage requirements india",
-      "conditions for hindu marriage to be valid"
-    ]
-  },
-  {
-    "intent": "bigamy_remarriage",
-    "category": "family",
-    "anchors": [
-      "Hindu Marriage Act 1955 Section 5",
-      "Hindu Marriage Act 1955 Section 11"
-    ],
-    "prototype": "Remarrying without getting divorce first, bigamy offence, second marriage without divorce, void marriage, Hindu marriage validity after prior marriage.",
-    "examples": [
-      "can i remarry without getting divorce first",
-      "second marriage without divorce",
-      "is bigamy a crime in india",
-      "remarrying before divorce"
-    ]
-  },
-  {
-    "intent": "live_in_hindu",
-    "category": "family",
-    "anchors": [
-      "Hindu Marriage Act 1955 Section 5"
-    ],
-    "prototype": "Live-in relationship considered marriage under Hindu law, live-in relationship legal status, whether cohabitation equals marriage, domestic relationship.",
-    "examples": [
-      "is live-in relationship considered marriage under hindu law",
-      "live-in relationship marriage status india",
-      "does living together mean married",
-      "live-in partner rights hindu law"
-    ]
-  },
-  {
-    "intent": "will_validity",
-    "category": "family",
-    "anchors": [
-      "Indian Succession Act 1925 Section 63",
-      "Indian Succession Act 1925 Section 59"
-    ],
-    "prototype": "What is a legal will, how to make a valid will, will execution requirements, testamentary document, last will and testament validity.",
-    "examples": [
-      "what is a legal will and how do i make one valid",
-      "how to make a valid will in india",
-      "legal will requirements",
-      "executing a valid will"
-    ]
-  },
-  {
-    "intent": "no_nominee",
-    "category": "family",
-    "anchors": [
-      "Indian Succession Act 1925 Section 211",
-      "Indian Succession Act 1925 Section 32"
-    ],
-    "prototype": "What happens if there is no nominee in bank account after death, bank account after account holder death, succession rights for bank deposits, no nominee claim.",
-    "examples": [
-      "what happens if there is no nominee in bank account after death",
-      "bank account after death without nominee",
-      "claiming bank deposits without nominee",
-      "succession rights for bank account"
-    ]
-  },
-  {
-    "intent": "handwritten_will",
-    "category": "family",
-    "anchors": [
-      "Indian Succession Act 1925 Section 63",
-      "Indian Succession Act 1925 Section 59"
-    ],
-    "prototype": "Handwritten will validity, holographic will legal status, will written by hand validity, self-written will requirements.",
-    "examples": [
-      "is handwritten will legally valid in india",
-      "holographic will validity india",
-      "self-written will legal",
-      "handwritten will requirements"
-    ]
-  },
-  {
-    "intent": "interfaith_marriage",
-    "category": "family",
-    "anchors": [
-      "Special Marriage Act 1954 Section 4",
-      "Special Marriage Act 1954 Section 5"
-    ],
-    "prototype": "Marriage between different religions, interfaith marriage legal procedure, marriage between Hindu and Muslim, special marriage act for different faiths.",
-    "examples": [
-      "how can two people from different religions get married legally",
-      "interfaith marriage india",
-      "marriage between different religions",
-      "hindu muslim marriage legal"
-    ]
-  },
-  {
-    "intent": "special_marriage_registration",
-    "category": "family",
-    "anchors": [
-      "Special Marriage Act 1954 Section 15",
-      "Special Marriage Act 1954 Section 16"
-    ],
-    "prototype": "Procedure for registering marriage under Special Marriage Act, marriage registration process, notice of intended marriage, marriage registrar.",
-    "examples": [
-      "what is the procedure for registering marriage under special marriage act",
-      "special marriage act registration process",
-      "register marriage under special marriage act",
-      "marriage registration procedure india"
-    ]
-  },
-  {
-    "intent": "civil_marriage",
-    "category": "family",
-    "anchors": [
-      "Special Marriage Act 1954 Section 11",
-      "Special Marriage Act 1954 Section 4",
-      "Special Marriage Act 1954 Section 12"
-    ],
-    "prototype": "Marrying without religious ceremony, civil marriage in India, court marriage without religious rites, secular marriage.",
-    "examples": [
-      "can i marry without religious ceremony under law",
-      "civil marriage india",
-      "court marriage without religion",
-      "secular marriage procedure"
-    ]
-  },
-  {
-    "intent": "registration_compulsory",
-    "category": "property",
-    "anchors": [
-      "Registration Act 1908 Section 17",
-      "Registration Act 1908 Section 49"
-    ],
-    "prototype": "Whether registration of sale deed is mandatory, compulsory registration of documents, documents required to be registered, sale deed registration.",
-    "examples": [
-      "is it mandatory to register a sale deed in india",
-      "compulsory registration of sale deed",
-      "must i register a property sale",
-      "mandatory document registration india"
-    ]
-  },
-  {
-    "intent": "registration_consequences",
-    "category": "property",
-    "anchors": [
-      "Registration Act 1908 Section 49",
-      "Registration Act 1908 Section 17"
-    ],
-    "prototype": "What happens if you don't register a property sale agreement, consequences of non-registration, unregistered document legal effect, admissibility of unregistered document.",
-    "examples": [
-      "what happens if i don't register a property sale agreement",
-      "consequences of not registering property",
-      "unregistered sale deed validity",
-      "legal effect of non-registration"
-    ]
-  },
-  {
-    "intent": "gift_deed_registration",
-    "category": "property",
-    "anchors": [
-      "Registration Act 1908 Section 17",
-      "Registration Act 1908 Section 49"
-    ],
-    "prototype": "Whether gift deed is valid without registration, gift deed registration requirement, compulsory registration of gift deed, gift deed legal validity.",
-    "examples": [
-      "can a gift deed be valid without registration",
-      "gift deed registration requirement india",
-      "unregistered gift deed validity",
-      "must gift deed be registered"
-    ]
-  },
-  {
-    "intent": "dv_legal_aid",
-    "category": "rights",
-    "anchors": [
-      "Legal Services Authorities Act 1987 Section 13",
-      "Legal Services Authorities Act 1987 Section 12"
-    ],
-    "prototype": "Government providing lawyer for domestic violence victim, free legal aid for DV victim, legal services for women facing domestic violence.",
-    "examples": [
-      "does government provide lawyer for domestic violence victim",
-      "free lawyer for dv victim india",
-      "legal aid for domestic violence",
-      "government lawyer for abuse victim"
-    ]
-  },
-  {
-    "intent": "rti_scope",
-    "category": "rights",
-    "anchors": [
-      "Right To Information Act 2005 Section 2",
-      "Right To Information Act 2005 Section 8"
-    ],
-    "prototype": "What information can be requested under RTI Act, scope of RTI, information available under RTI, types of information that can be sought.",
-    "examples": [
-      "what information can i request under rti act",
-      "scope of rti act india",
-      "what can i ask for under rti",
-      "rti information types"
-    ]
-  },
-  {
-    "intent": "rti_refusal",
-    "category": "rights",
-    "anchors": [
-      "Right To Information Act 2005 Section 8",
-      "Right To Information Act 2005 Section 9"
-    ],
-    "prototype": "Government refusing to give information under RTI, RTI application rejected, exemption from disclosure, reasons for RTI refusal.",
-    "examples": [
-      "can government refuse to give information under rti",
-      "rti application rejected",
-      "government denying rti information",
-      "rti exemption from disclosure"
-    ]
-  },
-  {
-    "intent": "rti_personal_info",
-    "category": "rights",
-    "anchors": [
-      "Right To Information Act 2005 Section 8",
-      "Right To Information Act 2005 Section 11"
-    ],
-    "prototype": "Personal information of government employees under RTI, privacy vs RTI, third party information under RTI, exemption for personal information.",
-    "examples": [
-      "is personal information of government employees available under rti",
-      "personal info rti request",
-      "government employee privacy rti",
-      "third party information rti"
-    ]
-  },
-  {
-    "intent": "senior_citizen_complaint",
-    "category": "social_justice",
-    "anchors": [
-      "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 7",
-      "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 5"
-    ],
-    "prototype": "Where can senior citizens complain about neglect by children, maintenance tribunal for senior citizens, complaint procedure for elderly neglect, senior citizen complaint forum.",
-    "examples": [
-      "where can senior citizens complain about neglect by children",
-      "senior citizen complaint procedure india",
-      "maintenance tribunal for elderly",
-      "complaint against children for neglect"
-    ]
-  },
-  {
-    "intent": "disability_employment",
-    "category": "social_justice",
-    "anchors": [
-      "Rights Of Persons With Disabilities Act 2016 Section 3",
-      "Rights Of Persons With Disabilities Act 2016 Section 20"
-    ],
-    "prototype": "Can a company refuse job to a person because of disability, disability discrimination in employment, employer refusing disabled person, reasonable accommodation denial.",
-    "examples": [
-      "can a company refuse job to a person because of disability",
-      "disability discrimination in hiring",
-      "employer refusing disabled applicant",
-      "reasonable accommodation employment india"
-    ]
-  },
-  {
-    "intent": "sc_st_offence",
-    "category": "social_justice",
-    "anchors": [
-      "Scheduled Castes And Scheduled Tribes Act 1989 Section 3"
-    ],
-    "prototype": "What constitutes an offence under SC/ST Atrocities Act, types of offences against SC/ST, acts punishable under SC/ST Act, caste atrocity offences.",
-    "examples": [
-      "what is considered an offence under sc/st atrocities act",
-      "sc st act offences types",
-      "caste atrocity offences india",
-      "punishable acts under sc st act"
-    ]
-  },
-  {
-    "intent": "landlord_repairs",
-    "category": "property",
-    "anchors": [
-      "Transfer Of Property Act 1882 Section 108"
-    ],
-    "prototype": "Landlord not doing repairs in rented property, tenant rights for repairs, landlord duty to maintain property, structural repairs by landlord.",
-    "examples": [
-      "repairs not done by landlord in rented property",
-      "landlord refusing to make repairs",
-      "tenant rights for property repairs",
-      "landlord duty to maintain rented property"
-    ]
-  },
-  {
-    "intent": "mortgage_auction",
-    "category": "property",
-    "anchors": [
-      "Transfer Of Property Act 1882 Section 69",
-      "Transfer Of Property Act 1882 Section 67"
-    ],
-    "prototype": "Bank auctioning mortgaged property after default, mortgagee power of sale, bank selling mortgaged property, foreclosure and auction of property.",
-    "examples": [
-      "bank auctioning mortgaged property after default",
-      "bank selling property after loan default",
-      "mortgagee power of sale india",
-      "foreclosure auction of property"
-    ]
-  },
-  {
-    "intent": "ad_misleading",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 21",
-      "Consumer Protection Act 2019 Section 89"
-    ],
-    "prototype": "Fake celebrity endorsement, misleading advertisements, false advertising, deceptive ad causing purchase, advertisement fraud.",
-    "examples": [
-      "fake celebrity ad misled me into buying a product",
-      "misleading advertisement complaint",
-      "false advertising india",
-      "deceptive ad caused purchase"
-    ]
-  },
-  {
-    "intent": "consumer_definition",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 2"
-    ],
-    "prototype": "Who counts as a consumer under the Consumer Protection Act, definition of consumer, person entitled to file consumer complaint, consumer status.",
-    "examples": [
-      "who counts as a consumer under the act",
-      "definition of consumer in india",
-      "who is a consumer under CPA",
-      "consumer status requirements"
-    ]
-  },
-  {
-    "intent": "consumer_refund_refused",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 39",
-      "Consumer Protection Act 2019 Section 35"
-    ],
-    "prototype": "Seller refusing refund for defective item, refund denial by seller, consumer complaint for refund, defective product refund.",
-    "examples": [
-      "seller refused refund for defective item after purchase",
-      "refund denied by seller",
-      "defective product no refund",
-      "consumer complaint refund"
-    ]
-  },
-  {
-    "intent": "consumer_deficient_service",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 35",
-      "Consumer Protection Act 2019 Section 39"
-    ],
-    "prototype": "Internet provider not providing service, deficient service by company, service provider failing to deliver, telecom service complaint.",
-    "examples": [
-      "internet provider is not providing promised service",
-      "deficient service complaint india",
-      "service provider not delivering",
-      "telecom service complaint"
-    ]
-  },
-  {
-    "intent": "consumer_warranty_denied",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 35",
-      "Consumer Protection Act 2019 Section 39"
-    ],
-    "prototype": "Product warranty denied by company, warranty claim refused, manufacturer not honouring warranty, warranty service denial.",
-    "examples": [
-      "product warranty was denied by the company",
-      "warranty claim refused",
-      "manufacturer not honouring warranty",
-      "warranty service denied india"
-    ]
-  },
-  {
-    "intent": "consumer_defective_food",
-    "category": "consumer",
-    "anchors": [
-      "Consumer Protection Act 2019 Section 35",
-      "Consumer Protection Act 2019 Section 39"
-    ],
-    "prototype": "Restaurant served spoiled food, food quality complaint, defective food product, food safety consumer complaint, restaurant food poisoning.",
-    "examples": [
-      "restaurant served spoiled food",
-      "food quality complaint india",
-      "defective food product complaint",
-      "restaurant food poisoning"
-    ]
-  },
-  {
-    "intent": "legal_metrology_unstamped",
-    "category": "consumer",
-    "anchors": [
-      "Legal Metrology Act 2009 Section 33",
-      "Legal Metrology Act 2009 Section 24"
-    ],
-    "prototype": "Selling using unstamped weighing machine, unverified weighing instrument, using non-certified measuring instrument, metrology violation.",
-    "examples": [
-      "is it legal to sell rice using an unstamped weighing machine",
-      "unstamped weighing scale illegal",
-      "using unverified measuring instrument",
-      "legal metrology unstamped equipment"
-    ]
-  },
-  {
-    "intent": "legal_metrology_faulty",
-    "category": "consumer",
-    "anchors": [
-      "Legal Metrology Act 2009 Section 25",
-      "Legal Metrology Act 2009 Section 33"
-    ],
-    "prototype": "Shopkeeper using faulty weighing scale, defective weighing machine, incorrect measurement by shopkeeper, weighing fraud.",
-    "examples": [
-      "shopkeeper is using faulty weighing scale what law applies",
-      "faulty weighing machine complaint",
-      "incorrect measurement by shopkeeper",
-      "weighing scale fraud india"
-    ]
-  },
-  {
-    "intent": "minimum_wage",
-    "category": "labour",
-    "anchors": [
-      "Code On Wages 2019 Section 6",
-      "Code On Wages 2019 Section 5"
-    ],
-    "prototype": "Paying below minimum wage, employer paying less than minimum wage, minimum wage violation, below government prescribed wages.",
-    "examples": [
-      "my company is paying me less than the minimum wage",
-      "my employer pays me below the government minimum wage",
-      "employer paying below minimum wage",
-      "minimum wage violation india"
-    ]
-  },
-  {
-    "intent": "equal_pay",
-    "category": "labour",
-    "anchors": [
-      "Code On Wages 2019 Section 3"
-    ],
-    "prototype": "Women paid less than men for same work, gender pay discrimination, equal pay for equal work, wage discrimination based on gender.",
-    "examples": [
-      "women in my office are paid less than men for the same work",
-      "gender pay gap discrimination",
-      "equal pay for equal work india",
-      "women paid less than men"
-    ]
-  },
-  {
-    "intent": "salary_delay",
-    "category": "labour",
-    "anchors": [
-      "Code On Wages 2019 Section 17",
-      "Payment Of Wages Act 1936 Section 5"
-    ],
-    "prototype": "Salary not credited on scheduled payday, delayed salary payment, employer late in paying wages, payday salary credit delay.",
-    "examples": [
-      "salary was not credited on the scheduled payday",
-      "salary delayed employer",
-      "late salary payment india",
-      "employer not crediting salary on time"
-    ]
-  },
-  {
-    "intent": "ndps_rehabilitation",
-    "category": "criminal",
-    "anchors": [
-      "Narcotic Drugs And Psychotropic Substances Act 1985 Section 64"
-    ],
-    "prototype": "Drug addict seeking treatment instead of punishment, rehabilitation for drug users, NDPS treatment provision, addict rehabilitation.",
-    "examples": [
-      "drug addict seeking treatment instead of punishment",
-      "rehabilitation instead of jail for drugs",
-      "drug user treatment india",
-      "ndps act rehabilitation provision"
-    ]
-  },
-  {
-    "intent": "arms_without_licence",
-    "category": "criminal",
-    "anchors": [
-      "The Arms Act 1959 Section 25",
-      "The Arms Act 1959 Section 3"
-    ],
-    "prototype": "Possessing or carrying firearm without licence, unlicensed weapon possession, carrying gun without license, firearms offence.",
-    "examples": [
-      "possessing or carrying firearm without licence",
-      "carrying gun without license india",
-      "unlicensed firearm possession",
-      "firearm without licence penalty"
-    ]
-  },
-  {
-    "intent": "road_accident_immediate",
-    "category": "transport",
-    "anchors": [
-      "Motor Vehicles Act 1988 Section 134",
-      "Motor Vehicles Act 1988 Section 160"
-    ],
-    "prototype": "What to do immediately after a road accident, duties after accident, reporting accident to police, first steps after motor accident.",
-    "examples": [
-      "what should i do immediately after a road accident in india",
-      "duties after road accident",
-      "first steps after motor accident",
-      "road accident reporting procedure"
-    ]
-  },
-  {
-    "intent": "driving_unlicensed",
-    "category": "transport",
-    "anchors": [
-      "Motor Vehicles Act 1988 Section 181",
-      "Motor Vehicles Act 1988 Section 3"
-    ],
-    "prototype": "Driving without a license is punishable offence, penalty for driving without licence, unlicensed driving punishment, driving without valid licence.",
-    "examples": [
-      "is driving without a license a punishable offence",
-      "driving without license penalty india",
-      "punishment for driving without licence",
-      "unlicensed driving offence"
-    ]
-  },
-  {
-    "intent": "driving_uninsured",
-    "category": "transport",
-    "anchors": [
-      "Motor Vehicles Act 1988 Section 196",
-      "Motor Vehicles Act 1988 Section 146"
-    ],
-    "prototype": "Driving without insurance, penalty for driving uninsured vehicle, mandatory motor insurance, third party insurance requirement.",
-    "examples": [
-      "what happens if i drive without insurance",
-      "driving without insurance penalty india",
-      "uninsured vehicle punishment",
-      "mandatory motor insurance"
-    ]
-  },
-  {
-    "intent": "driving_license",
-    "category": "transport",
-    "anchors": [
-      "Motor Vehicles Act 1988 Section 9",
-      "Motor Vehicles Act 1988 Section 10"
-    ],
-    "prototype": "How to get a driving license in India, driving licence application procedure, learner licence, permanent driving licence, transport licence.",
-    "examples": [
-      "how do i get a driving license in india",
-      "driving licence application procedure",
-      "get learner licence india",
-      "permanent driving licence requirements"
-    ]
-  }
+ },
+ {
+  "intent": "factory_child_labour",
+  "category": "labour",
+  "anchors": [
+   "Labour Factories Act 1948 Section 67",
+   "Labour Factories Act 1948 Section 71"
+  ],
+  "prototype": "Child labour in factories, employing minors below legal age, prohibition of child employment in factories, penalties for child labour violations.",
+  "examples": [
+   "child labour working in factory below legal age",
+   "employing children in factory",
+   "child working in factory illegally",
+   "minimum age for factory employment"
+  ]
+ },
+ {
+  "intent": "factory_registration",
+  "category": "labour",
+  "anchors": [
+   "Labour Factories Act 1948 Section 6"
+  ],
+  "prototype": "Registration of a factory under the Factories Act, requirement to register factory, application for factory licence, factory licence process.",
+  "examples": [
+   "how to register a new factory",
+   "factory registration process india",
+   "apply for factory licence",
+   "mandatory factory registration"
+  ]
+ },
+ {
+  "intent": "salary_unpaid",
+  "category": "labour",
+  "anchors": [
+   "Payment Of Wages Act 1936 Section 15",
+   "Payment Of Wages Act 1936 Section 17",
+   "Code on Wages 2019 Section 17"
+  ],
+  "prototype": "Employer not paying salary, delayed salary, unpaid wages, employer withholding salary, procedure for recovering unpaid salary.",
+  "examples": [
+   "what to do if employer does not pay salary",
+   "employer not paying salary",
+   "unpaid salary recovery",
+   "salary not credited on time",
+   "how to get unpaid salary from employer"
+  ]
+ },
+ {
+  "intent": "pf_eligibility",
+  "category": "labour",
+  "anchors": [
+   "The Code On Security 2020 Section 15",
+   "The Code On Security 2020 Section 2",
+   "The Code On Security 2020 Section 20"
+  ],
+  "prototype": "Who is eligible for provident fund, which employees and classes of employees are covered by the Employees Provident Fund Scheme, which establishments the EPF Scheme applies to, employee definition and wage ceiling, establishments excluded from the provident fund chapter.",
+  "examples": [
+   "who is eligible for provident fund under social security code",
+   "EPF eligibility india",
+   "provident fund contribution rules",
+   "who can get provident fund"
+  ]
+ },
+ {
+  "intent": "pf_default",
+  "category": "labour",
+  "anchors": [
+   "The Employees Provident Funds And Miscellaneous Provisions Act 1952 Section 14B",
+   "The Employees Provident Funds And Miscellaneous Provisions Act 1952 Section 7Q"
+  ],
+  "prototype": "Employer not depositing PF contribution, default in PF payment, penalties for employer not paying PF, delay in PF deposit.",
+  "examples": [
+   "what happens if employer does not deposit PF contribution",
+   "employer not paying provident fund",
+   "PF not deposited by employer",
+   "penalty for not depositing PF"
+  ]
+ },
+ {
+  "intent": "employee_insurance",
+  "category": "labour",
+  "anchors": [
+   "The Code On Security 2020 Section 39",
+   "The Code On Security 2020 Section 40"
+  ],
+  "prototype": "Employee insurance under law, workers insurance coverage, employer-provided insurance, statutory insurance for employees, social security insurance.",
+  "examples": [
+   "how is employee insurance provided under law",
+   "employee insurance coverage india",
+   "employer insurance for workers",
+   "statutory insurance for employees"
+  ]
+ },
+ {
+  "intent": "child_juvenile_crime",
+  "category": "women_child",
+  "anchors": [
+   "Juvenile Justice Act 2015 Section 15",
+   "Juvenile Justice Act 2015 Section 18"
+  ],
+  "prototype": "What happens when a child commits a crime, juvenile in conflict with law, child offender procedures, JJ Board, probation, child crime legal process.",
+  "examples": [
+   "what happens if a child commits a crime in india",
+   "child offender juvenile justice",
+   "juvenile in conflict with law",
+   "what happens to children who commit crimes",
+   "juvenile justice board inquiry procedure section 15",
+   "child found in conflict with law what happens next"
+  ]
+ },
+ {
+  "intent": "kidnapping_abduction",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nyaya Sanhita 2023 Section 137",
+   "Bharatiya Nyaya Sanhita 2023 Section 140"
+  ],
+  "prototype": "Kidnapping and abduction offences, taking or conveying a person against their will or without consent, kidnapping a minor or person of unsound mind, abduction by force or deceitful means, ransom kidnapping, taking a child away from lawful guardianship and punishment for kidnapping or abduction.",
+  "examples": [
+   "kidnapping or abduction of a person",
+   "child kidnapped in india what law applies",
+   "kidnapping punishment in india",
+   "abduction by force law india",
+   "what is kidnapping under bns"
+  ]
+ },
+ {
+  "intent": "electronic_evidence_admissibility",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Sakshya Adhiniyam 2023 Section 63"
+  ],
+  "examples": [
+   "are electronic documents like emails valid evidence in court",
+   "is CCTV footage accepted as legal proof",
+   "can whatsapp messages be used as evidence",
+   "admissibility of digital evidence in court"
+  ]
+ },
+ {
+  "intent": "minor_as_adult",
+  "category": "women_child",
+  "anchors": [
+   "Juvenile Justice Act 2015 Section 15",
+   "Juvenile Justice Act 2015 Section 18",
+   "Juvenile Justice Act 2015 Section 19"
+  ],
+  "prototype": "Minor tried as adult in serious cases, children aged 16-18 tried as adults, heinous offences by juveniles, transfer to adult court.",
+  "examples": [
+   "can a minor be tried as an adult in serious cases",
+   "child tried as adult in india",
+   "juvenile heinous offence adult court",
+   "16 year old tried as adult"
+  ]
+ },
+ {
+  "intent": "juvenile_rehabilitation",
+  "category": "women_child",
+  "anchors": [
+   "Juvenile Justice Act 2015 Section 18",
+   "Juvenile Justice Act 2015 Section 19",
+   "Juvenile Justice Act 2015 Section 39",
+   "Juvenile Justice Act 2015 Section 53"
+  ],
+  "prototype": "Rehabilitation for juvenile offenders, reformation of children in conflict with law, juvenile rehabilitation programme, aftercare, social reintegration.",
+  "examples": [
+   "rehabilitation for juvenile offenders",
+   "child rehabilitation under JJ act",
+   "juvenile reformation programme",
+   "aftercare for juvenile offenders"
+  ]
+ },
+ {
+  "intent": "child_abuse_reporting",
+  "category": "women_child",
+  "anchors": [
+   "Protection Of Children From Sexual Offences Act 2012 Section 19",
+   "Protection Of Children From Sexual Offences Act 2012 Section 21"
+  ],
+  "prototype": "Duty to report child abuse, mandatory reporting of child sexual abuse, teacher or doctor duty to report, penalty for failure to report child abuse.",
+  "examples": [
+   "school teacher suspects child abuse duty to report",
+   "mandatory reporting child abuse india",
+   "teacher duty to report child abuse",
+   "what happens if you dont report child abuse"
+  ]
+ },
+ {
+  "intent": "child_abuse_fir",
+  "category": "women_child",
+  "anchors": [
+   "Protection Of Children From Sexual Offences Act 2012 Section 19"
+  ],
+  "prototype": "Police required to register FIR in child abuse cases, FIR in POCSO cases, mandatory FIR for child abuse, police duty to register case for child victim.",
+  "examples": [
+   "police required to register fir in child abuse cases",
+   "fir for child abuse india",
+   "must police file fir for child sexual abuse",
+   "child abuse fir mandatory"
+  ]
+ },
+ {
+  "intent": "dv_complaint_filing",
+  "category": "women_child",
+  "anchors": [
+   "Protection Of Women From Domestic Violence Act 2005 Section 12"
+  ],
+  "prototype": "How to file complaint under Domestic Violence Act, DV complaint procedure, filing protection order application, magistrate complaint under DV Act.",
+  "examples": [
+   "how to file complaint under domestic violence act",
+   "dv complaint procedure india",
+   "file protection order against husband",
+   "domestic violence case filing"
+  ]
+ },
+ {
+  "intent": "live_in_dv",
+  "category": "women_child",
+  "anchors": [
+   "Protection Of Women From Domestic Violence Act 2005 Section 2"
+  ],
+  "prototype": "Can live-in partner file domestic violence complaint, domestic violence in live-in relationship, rights of woman in live-in relationship, DV Act applicability to live-in partners.",
+  "examples": [
+   "can live-in partner file domestic violence complaint",
+   "domestic violence in live-in relationship",
+   "live-in partner rights under DV act",
+   "woman in live-in can file dv"
+  ]
+ },
+ {
+  "intent": "maternity_salary",
+  "category": "labour",
+  "anchors": [
+   "The Maternity Benefit Act 1961 Section 6",
+   "The Maternity Benefit Act 1961 Section 4"
+  ],
+  "prototype": "Will I get salary during maternity leave, paid maternity benefit amount, wages during maternity leave, employer paying salary during pregnancy leave.",
+  "examples": [
+   "will i get salary during maternity leave",
+   "paid salary during maternity leave",
+   "maternity benefit amount",
+   "wages during maternity leave india"
+  ]
+ },
+ {
+  "intent": "maternity_refusal",
+  "category": "labour",
+  "anchors": [
+   "The Maternity Benefit Act 1961 Section 21",
+   "The Maternity Benefit Act 1961 Section 12"
+  ],
+  "prototype": "What happens if employer refuses maternity leave, employer denying maternity benefit, penalty for employer refusing maternity leave, maternity leave complaint.",
+  "examples": [
+   "what happens if employer refuses maternity leave",
+   "employer denied maternity leave",
+   "complaint against employer for maternity leave",
+   "maternity leave refusal penalty"
+  ]
+ },
+ {
+  "intent": "evidence_electronic",
+  "category": "rights",
+  "anchors": [
+   "Bharatiya Sakshya Adhiniyam 2023 Section 63"
+  ],
+  "prototype": "Electronic documents as valid evidence in court, admissibility of emails and digital records, electronic evidence law, digital documents in legal proceedings.",
+  "examples": [
+   "are electronic documents like emails valid evidence in court",
+   "electronic evidence admissibility india",
+   "email as evidence in court",
+   "digital documents legal proof"
+  ]
+ },
+ {
+  "intent": "evidence_cctv",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Sakshya Adhiniyam 2023 Section 63"
+  ],
+  "prototype": "CCTV footage as legal proof in criminal cases, video evidence admissibility, surveillance footage in court, electronic surveillance evidence.",
+  "examples": [
+   "is cctv footage accepted as legal proof in criminal cases",
+   "cctv evidence in court india",
+   "video footage as evidence",
+   "surveillance camera footage legal proof"
+  ]
+ },
+ {
+  "intent": "guardian_appointment",
+  "category": "family",
+  "anchors": [
+   "Guardians And Wards Act 1890 Section 7",
+   "Guardians And Wards Act 1890 Section 8"
+  ],
+  "prototype": "How to become legal guardian of a child, appointment of guardian application, court procedure for guardian appointment, guardian of minor child.",
+  "examples": [
+   "how can i become legal guardian of a child in india",
+   "guardian appointment application",
+   "become guardian of minor",
+   "legal guardian procedure india"
+  ]
+ },
+ {
+  "intent": "guardian_without_consent",
+  "category": "family",
+  "anchors": [
+   "Guardians And Wards Act 1890 Section 7",
+   "Guardians And Wards Act 1890 Section 17"
+  ],
+  "prototype": "Court appointing guardian without parents consent, guardianship against parents wishes, welfare of child overriding parental rights, court power to appoint guardian.",
+  "examples": [
+   "can a court appoint guardian without parents consent",
+   "guardian appointed over parents objection",
+   "court taking guardianship from parents",
+   "child welfare guardian appointment"
+  ]
+ },
+ {
+  "intent": "child_custody_petition",
+  "category": "family",
+  "anchors": [
+   "Guardians And Wards Act 1890 Section 10",
+   "Guardians And Wards Act 1890 Section 7"
+  ],
+  "prototype": "Who can file petition for child custody in court, custody petition procedure, filing custody application, standing to file custody case.",
+  "examples": [
+   "who can file petition for child custody in court",
+   "custody petition filing procedure",
+   "file child custody case india",
+   "who can apply for child custody",
+   "guardians and wards act section 10 application for custody of minor",
+   "who has standing to file custody petition in court"
+  ]
+ },
+ {
+  "intent": "grandparent_guardian",
+  "category": "family",
+  "anchors": [
+   "Guardians And Wards Act 1890 Section 7",
+   "Guardians And Wards Act 1890 Section 17"
+  ],
+  "prototype": "Grandparents becoming legal guardians of a minor, grandparent custody rights, guardian appointment for grandparents, welfare of child grandparents.",
+  "examples": [
+   "can grandparents become legal guardians of a minor",
+   "grandparent custody rights india",
+   "grandparents guardian of grandchild",
+   "grandparent guardianship application"
+  ]
+ },
+ {
+  "intent": "remove_guardian",
+  "category": "family",
+  "anchors": [
+   "Guardians And Wards Act 1890 Section 39"
+  ],
+  "prototype": "How to remove a legal guardian in India, removal of guardian procedure, revoking guardianship, change of guardian application.",
+  "examples": [
+   "how to remove a legal guardian in india",
+   "remove guardian of minor child",
+   "change guardian procedure",
+   "revoking guardianship india"
+  ]
+ },
+ {
+  "intent": "hindu_validity",
+  "category": "family",
+  "anchors": [
+   "Hindu Marriage Act 1955 Section 5",
+   "Hindu Marriage Act 1955 Section 7"
+  ],
+  "prototype": "Legal requirements for a valid Hindu marriage, conditions for valid Hindu marriage, solemnization of Hindu marriage, ceremonies required for Hindu marriage.",
+  "examples": [
+   "what are the legal requirements for a valid hindu marriage",
+   "valid hindu marriage conditions",
+   "hindu marriage requirements india",
+   "conditions for hindu marriage to be valid"
+  ]
+ },
+ {
+  "intent": "bigamy_remarriage",
+  "category": "family",
+  "anchors": [
+   "Hindu Marriage Act 1955 Section 5",
+   "Hindu Marriage Act 1955 Section 11"
+  ],
+  "prototype": "Remarrying without getting divorce first, bigamy offence, second marriage without divorce, void marriage, Hindu marriage validity after prior marriage.",
+  "examples": [
+   "can i remarry without getting divorce first",
+   "second marriage without divorce",
+   "is bigamy a crime in india",
+   "remarrying before divorce"
+  ]
+ },
+ {
+  "intent": "live_in_hindu",
+  "category": "family",
+  "anchors": [
+   "Hindu Marriage Act 1955 Section 5"
+  ],
+  "prototype": "Live-in relationship considered marriage under Hindu law, live-in relationship legal status, whether cohabitation equals marriage, domestic relationship.",
+  "examples": [
+   "is live-in relationship considered marriage under hindu law",
+   "live-in relationship marriage status india",
+   "does living together mean married",
+   "live-in partner rights hindu law"
+  ]
+ },
+ {
+  "intent": "will_validity",
+  "category": "family",
+  "anchors": [
+   "Indian Succession Act 1925 Section 63",
+   "Indian Succession Act 1925 Section 59"
+  ],
+  "prototype": "What is a legal will, how to make a valid will, will execution requirements, testamentary document, last will and testament validity.",
+  "examples": [
+   "what is a legal will and how do i make one valid",
+   "how to make a valid will in india",
+   "legal will requirements",
+   "executing a valid will"
+  ]
+ },
+ {
+  "intent": "no_nominee",
+  "category": "family",
+  "anchors": [
+   "Indian Succession Act 1925 Section 211",
+   "Indian Succession Act 1925 Section 32"
+  ],
+  "prototype": "What happens if there is no nominee in bank account after death, bank account after account holder death, succession rights for bank deposits, no nominee claim.",
+  "examples": [
+   "what happens if there is no nominee in bank account after death",
+   "bank account after death without nominee",
+   "claiming bank deposits without nominee",
+   "succession rights for bank account"
+  ]
+ },
+ {
+  "intent": "handwritten_will",
+  "category": "family",
+  "anchors": [
+   "Indian Succession Act 1925 Section 63",
+   "Indian Succession Act 1925 Section 59"
+  ],
+  "prototype": "Handwritten will validity, holographic will legal status, will written by hand validity, self-written will requirements.",
+  "examples": [
+   "is handwritten will legally valid in india",
+   "holographic will validity india",
+   "self-written will legal",
+   "handwritten will requirements"
+  ]
+ },
+ {
+  "intent": "interfaith_marriage",
+  "category": "family",
+  "anchors": [
+   "Special Marriage Act 1954 Section 4",
+   "Special Marriage Act 1954 Section 5"
+  ],
+  "prototype": "Marriage between different religions, interfaith marriage legal procedure, marriage between Hindu and Muslim, special marriage act for different faiths.",
+  "examples": [
+   "how can two people from different religions get married legally",
+   "interfaith marriage india",
+   "marriage between different religions",
+   "hindu muslim marriage legal"
+  ]
+ },
+ {
+  "intent": "special_marriage_registration",
+  "category": "family",
+  "anchors": [
+   "Special Marriage Act 1954 Section 15",
+   "Special Marriage Act 1954 Section 16"
+  ],
+  "prototype": "Procedure for registering marriage under Special Marriage Act, marriage registration process, notice of intended marriage, marriage registrar.",
+  "examples": [
+   "what is the procedure for registering marriage under special marriage act",
+   "special marriage act registration process",
+   "register marriage under special marriage act",
+   "marriage registration procedure india"
+  ]
+ },
+ {
+  "intent": "civil_marriage",
+  "category": "family",
+  "anchors": [
+   "Special Marriage Act 1954 Section 11",
+   "Special Marriage Act 1954 Section 4",
+   "Special Marriage Act 1954 Section 12"
+  ],
+  "prototype": "Marrying without religious ceremony, civil marriage in India, court marriage without religious rites, secular marriage.",
+  "examples": [
+   "can i marry without religious ceremony under law",
+   "civil marriage india",
+   "court marriage without religion",
+   "secular marriage procedure"
+  ]
+ },
+ {
+  "intent": "registration_compulsory",
+  "category": "property",
+  "anchors": [
+   "Registration Act 1908 Section 17",
+   "Registration Act 1908 Section 49"
+  ],
+  "prototype": "Whether registration of sale deed is mandatory, compulsory registration of documents, documents required to be registered, sale deed registration.",
+  "examples": [
+   "is it mandatory to register a sale deed in india",
+   "compulsory registration of sale deed",
+   "must i register a property sale",
+   "mandatory document registration india"
+  ]
+ },
+ {
+  "intent": "registration_consequences",
+  "category": "property",
+  "anchors": [
+   "Registration Act 1908 Section 49",
+   "Registration Act 1908 Section 17"
+  ],
+  "prototype": "What happens if you don't register a property sale agreement, consequences of non-registration, unregistered document legal effect, admissibility of unregistered document.",
+  "examples": [
+   "what happens if i don't register a property sale agreement",
+   "consequences of not registering property",
+   "unregistered sale deed validity",
+   "legal effect of non-registration"
+  ]
+ },
+ {
+  "intent": "gift_deed_registration",
+  "category": "property",
+  "anchors": [
+   "Registration Act 1908 Section 17",
+   "Registration Act 1908 Section 49"
+  ],
+  "prototype": "Whether gift deed is valid without registration, gift deed registration requirement, compulsory registration of gift deed, gift deed legal validity.",
+  "examples": [
+   "can a gift deed be valid without registration",
+   "gift deed registration requirement india",
+   "unregistered gift deed validity",
+   "must gift deed be registered"
+  ]
+ },
+ {
+  "intent": "dv_legal_aid",
+  "category": "rights",
+  "anchors": [
+   "Legal Services Authorities Act 1987 Section 13",
+   "Legal Services Authorities Act 1987 Section 12"
+  ],
+  "prototype": "Government providing lawyer for domestic violence victim, free legal aid for DV victim, legal services for women facing domestic violence.",
+  "examples": [
+   "does government provide lawyer for domestic violence victim",
+   "free lawyer for dv victim india",
+   "legal aid for domestic violence",
+   "government lawyer for abuse victim"
+  ]
+ },
+ {
+  "intent": "rti_scope",
+  "category": "rights",
+  "anchors": [
+   "Right To Information Act 2005 Section 2",
+   "Right To Information Act 2005 Section 8"
+  ],
+  "prototype": "What information can be requested under RTI Act, scope of RTI, information available under RTI, types of information that can be sought.",
+  "examples": [
+   "what information can i request under rti act",
+   "scope of rti act india",
+   "what can i ask for under rti",
+   "rti information types"
+  ]
+ },
+ {
+  "intent": "rti_refusal",
+  "category": "rights",
+  "anchors": [
+   "Right To Information Act 2005 Section 8",
+   "Right To Information Act 2005 Section 9"
+  ],
+  "prototype": "Government refusing to give information under RTI, RTI application rejected, exemption from disclosure, reasons for RTI refusal.",
+  "examples": [
+   "can government refuse to give information under rti",
+   "rti application rejected",
+   "government denying rti information",
+   "rti exemption from disclosure"
+  ]
+ },
+ {
+  "intent": "rti_personal_info",
+  "category": "rights",
+  "anchors": [
+   "Right To Information Act 2005 Section 8",
+   "Right To Information Act 2005 Section 11"
+  ],
+  "prototype": "Personal information of government employees under RTI, privacy vs RTI, third party information under RTI, exemption for personal information.",
+  "examples": [
+   "is personal information of government employees available under rti",
+   "personal info rti request",
+   "government employee privacy rti",
+   "third party information rti"
+  ]
+ },
+ {
+  "intent": "senior_citizen_complaint",
+  "category": "social_justice",
+  "anchors": [
+   "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 7",
+   "Maintenance And Welfare Of Parents And Senior Citizens Act 2007 Section 5"
+  ],
+  "prototype": "Where can senior citizens complain about neglect by children, maintenance tribunal for senior citizens, complaint procedure for elderly neglect, senior citizen complaint forum.",
+  "examples": [
+   "where can senior citizens complain about neglect by children",
+   "senior citizen complaint procedure india",
+   "maintenance tribunal for elderly",
+   "complaint against children for neglect"
+  ]
+ },
+ {
+  "intent": "disability_employment",
+  "category": "social_justice",
+  "anchors": [
+   "Rights Of Persons With Disabilities Act 2016 Section 3",
+   "Rights Of Persons With Disabilities Act 2016 Section 20"
+  ],
+  "prototype": "Can a company refuse job to a person because of disability, disability discrimination in employment, employer refusing disabled person, reasonable accommodation denial.",
+  "examples": [
+   "can a company refuse job to a person because of disability",
+   "disability discrimination in hiring",
+   "employer refusing disabled applicant",
+   "reasonable accommodation employment india"
+  ]
+ },
+ {
+  "intent": "sc_st_offence",
+  "category": "social_justice",
+  "anchors": [
+   "Scheduled Castes And Scheduled Tribes Act 1989 Section 3"
+  ],
+  "prototype": "What constitutes an offence under SC/ST Atrocities Act, types of offences against SC/ST, acts punishable under SC/ST Act, caste atrocity offences.",
+  "examples": [
+   "what is considered an offence under sc/st atrocities act",
+   "sc st act offences types",
+   "caste atrocity offences india",
+   "punishable acts under sc st act"
+  ]
+ },
+ {
+  "intent": "landlord_repairs",
+  "category": "property",
+  "anchors": [
+   "Transfer Of Property Act 1882 Section 108"
+  ],
+  "prototype": "Landlord not doing repairs in rented property, tenant rights for repairs, landlord duty to maintain property, structural repairs by landlord.",
+  "examples": [
+   "repairs not done by landlord in rented property",
+   "landlord refusing to make repairs",
+   "tenant rights for property repairs",
+   "landlord duty to maintain rented property"
+  ]
+ },
+ {
+  "intent": "mortgage_auction",
+  "category": "property",
+  "anchors": [
+   "Transfer Of Property Act 1882 Section 69",
+   "Transfer Of Property Act 1882 Section 67"
+  ],
+  "prototype": "Bank auctioning mortgaged property after default, mortgagee power of sale, bank selling mortgaged property, foreclosure and auction of property.",
+  "examples": [
+   "bank auctioning mortgaged property after default",
+   "bank selling property after loan default",
+   "mortgagee power of sale india",
+   "foreclosure auction of property"
+  ]
+ },
+ {
+  "intent": "ad_misleading",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 21",
+   "Consumer Protection Act 2019 Section 89"
+  ],
+  "prototype": "Fake celebrity endorsement, misleading advertisements, false advertising, deceptive ad causing purchase, advertisement fraud.",
+  "examples": [
+   "fake celebrity ad misled me into buying a product",
+   "misleading advertisement complaint",
+   "false advertising india",
+   "deceptive ad caused purchase"
+  ]
+ },
+ {
+  "intent": "consumer_definition",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 2"
+  ],
+  "prototype": "Who counts as a consumer under the Consumer Protection Act, definition of consumer, person entitled to file consumer complaint, consumer status.",
+  "examples": [
+   "who counts as a consumer under the act",
+   "definition of consumer in india",
+   "who is a consumer under CPA",
+   "consumer status requirements"
+  ]
+ },
+ {
+  "intent": "consumer_refund_refused",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 39",
+   "Consumer Protection Act 2019 Section 35"
+  ],
+  "prototype": "Seller refusing refund for defective item, refund denial by seller, consumer complaint for refund, defective product refund.",
+  "examples": [
+   "seller refused refund for defective item after purchase",
+   "refund denied by seller",
+   "defective product no refund",
+   "consumer complaint refund"
+  ]
+ },
+ {
+  "intent": "consumer_deficient_service",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 35",
+   "Consumer Protection Act 2019 Section 39"
+  ],
+  "prototype": "Internet provider not providing service, deficient service by company, service provider failing to deliver, telecom service complaint.",
+  "examples": [
+   "internet provider is not providing promised service",
+   "deficient service complaint india",
+   "service provider not delivering",
+   "telecom service complaint"
+  ]
+ },
+ {
+  "intent": "consumer_warranty_denied",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 35",
+   "Consumer Protection Act 2019 Section 39"
+  ],
+  "prototype": "Product warranty denied by company, warranty claim refused, manufacturer not honouring warranty, warranty service denial.",
+  "examples": [
+   "product warranty was denied by the company",
+   "warranty claim refused",
+   "manufacturer not honouring warranty",
+   "warranty service denied india"
+  ]
+ },
+ {
+  "intent": "consumer_defective_food",
+  "category": "consumer",
+  "anchors": [
+   "Consumer Protection Act 2019 Section 35",
+   "Consumer Protection Act 2019 Section 39"
+  ],
+  "prototype": "Restaurant served spoiled food, food quality complaint, defective food product, food safety consumer complaint, restaurant food poisoning.",
+  "examples": [
+   "restaurant served spoiled food",
+   "food quality complaint india",
+   "defective food product complaint",
+   "restaurant food poisoning"
+  ]
+ },
+ {
+  "intent": "legal_metrology_unstamped",
+  "category": "consumer",
+  "anchors": [
+   "Legal Metrology Act 2009 Section 33",
+   "Legal Metrology Act 2009 Section 24"
+  ],
+  "prototype": "Selling using unstamped weighing machine, unverified weighing instrument, using non-certified measuring instrument, metrology violation.",
+  "examples": [
+   "is it legal to sell rice using an unstamped weighing machine",
+   "unstamped weighing scale illegal",
+   "using unverified measuring instrument",
+   "legal metrology unstamped equipment"
+  ]
+ },
+ {
+  "intent": "legal_metrology_faulty",
+  "category": "consumer",
+  "anchors": [
+   "Legal Metrology Act 2009 Section 25",
+   "Legal Metrology Act 2009 Section 33"
+  ],
+  "prototype": "Shopkeeper using faulty weighing scale, defective weighing machine, incorrect measurement by shopkeeper, weighing fraud.",
+  "examples": [
+   "shopkeeper is using faulty weighing scale what law applies",
+   "faulty weighing machine complaint",
+   "incorrect measurement by shopkeeper",
+   "weighing scale fraud india"
+  ]
+ },
+ {
+  "intent": "minimum_wage",
+  "category": "labour",
+  "anchors": [
+   "Code On Wages 2019 Section 6",
+   "Code On Wages 2019 Section 5"
+  ],
+  "prototype": "Paying below minimum wage, employer paying less than minimum wage, minimum wage violation, below government prescribed wages.",
+  "examples": [
+   "my company is paying me less than the minimum wage",
+   "my employer pays me below the government minimum wage",
+   "employer paying below minimum wage",
+   "minimum wage violation india"
+  ]
+ },
+ {
+  "intent": "equal_pay",
+  "category": "labour",
+  "anchors": [
+   "Code On Wages 2019 Section 3"
+  ],
+  "prototype": "Women paid less than men for same work, gender pay discrimination, equal pay for equal work, wage discrimination based on gender.",
+  "examples": [
+   "women in my office are paid less than men for the same work",
+   "gender pay gap discrimination",
+   "equal pay for equal work india",
+   "women paid less than men"
+  ]
+ },
+ {
+  "intent": "salary_delay",
+  "category": "labour",
+  "anchors": [
+   "Code On Wages 2019 Section 17",
+   "Payment Of Wages Act 1936 Section 5"
+  ],
+  "prototype": "Salary not credited on scheduled payday, delayed salary payment, employer late in paying wages, payday salary credit delay.",
+  "examples": [
+   "salary was not credited on the scheduled payday",
+   "salary delayed employer",
+   "late salary payment india",
+   "employer not crediting salary on time"
+  ]
+ },
+ {
+  "intent": "ndps_rehabilitation",
+  "category": "criminal",
+  "anchors": [
+   "Narcotic Drugs And Psychotropic Substances Act 1985 Section 64"
+  ],
+  "prototype": "Drug addict seeking treatment instead of punishment, rehabilitation for drug users, NDPS treatment provision, addict rehabilitation.",
+  "examples": [
+   "drug addict seeking treatment instead of punishment",
+   "rehabilitation instead of jail for drugs",
+   "drug user treatment india",
+   "ndps act rehabilitation provision"
+  ]
+ },
+ {
+  "intent": "arms_without_licence",
+  "category": "criminal",
+  "anchors": [
+   "The Arms Act 1959 Section 25",
+   "The Arms Act 1959 Section 3"
+  ],
+  "prototype": "Possessing or carrying firearm without licence, unlicensed weapon possession, carrying gun without license, firearms offence.",
+  "examples": [
+   "possessing or carrying firearm without licence",
+   "carrying gun without license india",
+   "unlicensed firearm possession",
+   "firearm without licence penalty"
+  ]
+ },
+ {
+  "intent": "road_accident_immediate",
+  "category": "transport",
+  "anchors": [
+   "Motor Vehicles Act 1988 Section 134",
+   "Motor Vehicles Act 1988 Section 160"
+  ],
+  "prototype": "What to do immediately after a road accident, duties after accident, reporting accident to police, first steps after motor accident.",
+  "examples": [
+   "what should i do immediately after a road accident in india",
+   "duties after road accident",
+   "first steps after motor accident",
+   "road accident reporting procedure"
+  ]
+ },
+ {
+  "intent": "driving_unlicensed",
+  "category": "transport",
+  "anchors": [
+   "Motor Vehicles Act 1988 Section 181",
+   "Motor Vehicles Act 1988 Section 3"
+  ],
+  "prototype": "Driving without a license is punishable offence, penalty for driving without licence, unlicensed driving punishment, driving without valid licence.",
+  "examples": [
+   "is driving without a license a punishable offence",
+   "driving without license penalty india",
+   "punishment for driving without licence",
+   "unlicensed driving offence"
+  ]
+ },
+ {
+  "intent": "driving_uninsured",
+  "category": "transport",
+  "anchors": [
+   "Motor Vehicles Act 1988 Section 196",
+   "Motor Vehicles Act 1988 Section 146"
+  ],
+  "prototype": "Driving without insurance, penalty for driving uninsured vehicle, mandatory motor insurance, third party insurance requirement.",
+  "examples": [
+   "what happens if i drive without insurance",
+   "driving without insurance penalty india",
+   "uninsured vehicle punishment",
+   "mandatory motor insurance"
+  ]
+ },
+ {
+  "intent": "driving_license",
+  "category": "transport",
+  "anchors": [
+   "Motor Vehicles Act 1988 Section 9",
+   "Motor Vehicles Act 1988 Section 10"
+  ],
+  "prototype": "How to get a driving license in India, driving licence application procedure, learner licence, permanent driving licence, transport licence.",
+  "examples": [
+   "how do i get a driving license in india",
+   "driving licence application procedure",
+   "get learner licence india",
+   "permanent driving licence requirements"
+  ]
+ },
+ {
+  "intent": "search_and_seizure",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 96",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 185",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 97"
+  ],
+  "prototype": "Police search of the house, search warrant, search of premises without warrant, grounds for a search, seizure of evidence, illegal search, entry into residential premises.",
+  "examples": [
+   "can police search my house without permission",
+   "police searching my house without a warrant",
+   "search warrant for my home",
+   "police entered my house without permission",
+   "police search and seizure of property",
+   "police seized my belongings during search"
+  ]
+ },
+ {
+  "intent": "charge_sheet",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 193",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 194"
+  ],
+  "prototype": "Charge sheet, report of the police officer after completion of investigation, when is charge sheet filed, final report forwarded to magistrate, contents of charge sheet, investigation closure.",
+  "examples": [
+   "what is charge sheet and when is it filed",
+   "when does police file a charge sheet",
+   "charge sheet after investigation",
+   "police report to magistrate after investigation",
+   "charge sheet meaning in criminal case"
+  ]
+ },
+ {
+  "intent": "police_remand",
+  "category": "criminal",
+  "anchors": [
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 187",
+   "Bharatiya Nagarik Suraksha Sanhita 2023 Section 148"
+  ],
+  "prototype": "Remand to police custody, detention for investigation, production of accused before magistrate, extension of remand, repeated remand, maximum period of remand.",
+  "examples": [
+   "can police remand me repeatedly",
+   "police remand extension how many days",
+   "police custody remand for investigation",
+   "how long can police keep me in custody for investigation",
+   "produced before magistrate for remand",
+   "remand period maximum days in india"
+  ]
+ },
+ {
+  "intent": "registration_deadline",
+  "category": "property",
+  "anchors": [
+   "Registration Act 1908 Section 23",
+   "Registration Act 1908 Section 25"
+  ],
+  "prototype": "Time limit for registration of a document, register document within four months, period after execution within which document must be presented for registration, late registration, why delay and consent of registrar.",
+  "examples": [
+   "how long do i have to register a document after signing it",
+   "time limit to register a sale deed after signing",
+   "register document within four months",
+   "period for presenting a document for registration",
+   "can i register a document after the prescribed time"
+  ]
+ },
+ {
+  "intent": "juvenile_justice_board",
+  "category": "women_child",
+  "anchors": [
+   "Juvenile Justice Act 2015 Section 8",
+   "Juvenile Justice Act 2015 Section 9"
+  ],
+  "prototype": "Juvenile Justice Board, what the Juvenile Justice Board does, functions powers and composition of the JJB, preliminary assessment by the Board, jurisdiction of the Juvenile Justice Board.",
+  "examples": [
+   "what is juvenile justice board and what does it do",
+   "functions of juvenile justice board",
+   "what does the juvenile justice board do",
+   "powers of juvenile justice board",
+   "who sits on the juvenile justice board"
+  ]
+ },
+ {
+  "intent": "rti_appeal",
+  "category": "rights",
+  "anchors": [
+   "Right To Information Act 2005 Section 19",
+   "Right To Information Act 2005 Section 18"
+  ],
+  "prototype": "RTI application ignored or no response within the time limit, appeal against RTI rejection, first appellate authority, remedy when information not provided, RTI appeal procedure.",
+  "examples": [
+   "what can i do if my rti request is ignored",
+   "rti application no response what to do",
+   "appeal against rejected or ignored rti application",
+   "rti first appellate authority appeal",
+   "remedy when rti application not answered"
+  ]
+ },
+ {
+  "intent": "dowry_definition",
+  "category": "women_child",
+  "anchors": [
+   "Dowry Prohibition Act 1961 Section 2",
+   "Dowry Prohibition Act 1961 Section 3"
+  ],
+  "prototype": "What is dowry, definition of dowry, what counts as dowry, money or property given in connection with marriage, meaning of dowry under Indian law.",
+  "examples": [
+   "what counts as dowry under indian law",
+   "definition of dowry",
+   "what is dowry under law",
+   "what counts as dowry in india",
+   "legal meaning of dowry"
+  ]
+ },
+ {
+  "intent": "mortgage_redemption",
+  "category": "property",
+  "anchors": [
+   "Transfer Of Property Act 1882 Section 60",
+   "Transfer Of Property Act 1882 Section 61"
+  ],
+  "prototype": "Redemption of mortgaged property after repaying the loan, right of mortgagor to redeem, pay off the mortgage and get the property back, redemption of mortgage on repayment.",
+  "examples": [
+   "mortgaged house redemption after loan repayment",
+   "right to redeem mortgaged property",
+   "get my property back after paying off the loan",
+   "redemption of mortgage after repayment",
+   "redeem mortgaged house once loan is paid"
+  ]
+ },
+ {
+  "intent": "firearm_import_export",
+  "category": "criminal",
+  "anchors": [
+   "The Arms Act 1959 Section 10",
+   "The Arms Act 1959 Section 11"
+  ],
+  "prototype": "Importing firearms into India, exporting arms, transferring firearms, licence for import and export of arms, rules for bringing weapons into or out of the country.",
+  "examples": [
+   "importing or transferring firearms rules and licence",
+   "licence to import firearms in india",
+   "export of arms rules and licence",
+   "transferring a firearm to another person",
+   "bringing weapons into india licence"
+  ]
+ },
+ {
+  "intent": "digital_signature_certificate_fraud",
+  "category": "cyber",
+  "anchors": [
+   "Information Technology Act 2000 Section 73",
+   "Information Technology Act 2000 Section 74"
+  ],
+  "prototype": "Fake digital signature, forged digital signature certificate, publishing a false certificate, making or issuing a false digital signature certificate, penalty for fake certificate.",
+  "examples": [
+   "fake digital signature or forged certificate",
+   "penalty for publishing false digital signature certificate",
+   "forgery of digital signature certificate",
+   "fake digital signature certificate",
+   "making a false digital signature certificate"
+  ]
+ },
+ {
+  "intent": "legal_representative",
+  "category": "family",
+  "anchors": [
+   "Indian Succession Act 1925 Section 211",
+   "Indian Succession Act 1925 Section 32"
+  ],
+  "prototype": "who becomes the legal representative of a deceased person, legal representative of the deceased, executor or administrator as legal representative, character and property of executor or administrator, devolution of property to legal representative",
+  "examples": [
+   "who becomes the legal representative of a deceased person",
+   "who is the legal representative of the deceased",
+   "executor or administrator as legal representative of deceased",
+   "character of executor or administrator as legal representative",
+   "devolution of property to the legal representative of the deceased",
+   "legal representative of a person who has died"
+  ]
+ }
 ]
-
