@@ -1,17 +1,9 @@
-from sentence_transformers import SentenceTransformer
-import torch
-
-# Models are cached locally; skip HF Hub network/version checks on every
-# process start (13s of SSL reads per run in profiles). Must be set before
-# the first model load.
 import os
 os.environ["HF_HUB_OFFLINE"] = "1"
 
-# BAAI/bge-m3: multilingual, 1024-dim (same space size as bge-large-en-v1.5),
-# with substantially better semantic alignment on paraphrase-style queries
-# (offline eval: 18/40 miss targets in semantic top-5 vs 10/40 for the old
-# English-only model). fp16 on GPU so it fits alongside the cross-encoder
-# reranker in the ~3.6 GiB available.
+from sentence_transformers import SentenceTransformer
+import torch
+
 if torch.cuda.is_available():
     model = SentenceTransformer(
         "BAAI/bge-m3",
@@ -22,8 +14,6 @@ else:
 
 QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
-# Track which device the embedder was loaded on so it can be temporarily
-# freed for the cross-encoder and then restored on the next query.
 _MODEL_GPU = None
 
 

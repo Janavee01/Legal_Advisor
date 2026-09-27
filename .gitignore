@@ -29,3 +29,36 @@ ai_service/venv/
 hi.txt
 ai_service/app/rag/_diag.py
 ai_service/app/rag/eval_misses_only.py
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+
+# Python generated/cache files
+*.pkl
+*.bak
+
+# RAG/evaluation generated output
+*_output.txt
+output.txt
+
+# Node
+node_modules/
+
+# Frontend build output
+frontend/dist/
+
+# Logs
+*.log
+
+# OS/editor files
+.DS_Store
+.vscode/
+.idea/

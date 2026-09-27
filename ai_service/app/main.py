@@ -24,7 +24,6 @@ import threading
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
-
 from ai_service.app.rag import retrieve
 from ai_service.app.rag.answer import answer_from_results
 from ai_service.app.rag.reranker import get_reranker
@@ -59,11 +58,23 @@ class AnswerResponse(BaseModel):
     finish_reason: str | None = None
     sources: list[dict]
 
-
 app = FastAPI(
     title="Legal Advisor RAG",
     description="Persistent retrieval server for Indian law legal sections.",
 )
+
+@app.get("/")
+def root():
+    return {
+        "service": "Legal Advisor AI",
+        "status": "running",
+        "docs": "/docs",
+        "retrieve": "/retrieve"
+    }
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 _retrieve_lock = threading.Lock()
 
@@ -84,36 +95,46 @@ def startup():
     print("Warmup complete — ready for queries.")
 
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
 @app.post("/retrieve", response_model=RetrieveResponse)
 def retrieve_endpoint(req: RetrieveRequest):
+    print("=== /retrieve REQUEST RECEIVED ===", flush=True)
+    print("=== /retrieve LOCK WAIT ===", flush=True)
+
     with _retrieve_lock:
+        print("=== /retrieve LOCK ACQUIRED ===", flush=True)
         try:
+            print("=== /retrieve CALLING RETRIEVE ===", flush=True)
+
             out = retrieve.retrieve(
                 req.query,
                 top_k=req.top_k,
                 category_filter=req.category_filter,
             )
+
+            print(
+                f"=== /retrieve RETRIEVE COMPLETE === results={len(out['results'])}",
+                flush=True
+            )
+
         except Exception as exc:
+            print(f"=== /retrieve ERROR === {exc}", flush=True)
             raise HTTPException(
                 status_code=500,
-                detail=f"Retrieval failed: {exc}",
+                detail=f"Retrieval failed: {exc}"
             )
+
+    print("=== /retrieve RESPONSE RETURNING ===", flush=True)
 
     return {
         "query": req.query,
         "results": out["results"],
     }
 
-
 @app.post("/answer", response_model=AnswerResponse)
 def answer_endpoint(req: AnswerRequest):
-    # Retrieval races on shared GPU/embedder state, so it holds the lock;
-    # the LLM call is pure HTTP and runs outside the lock.
+    print("=== /answer REQUEST RECEIVED ===", flush=True)
+
+    print("=== /answer RETRIEVAL START ===", flush=True)
     with _retrieve_lock:
         try:
             out = retrieve.retrieve(
@@ -122,11 +143,18 @@ def answer_endpoint(req: AnswerRequest):
                 category_filter=req.category_filter,
             )
         except Exception as exc:
+            print(f"=== /answer RETRIEVAL ERROR === {exc}", flush=True)
             raise HTTPException(
                 status_code=500,
-                detail=f"Retrieval failed: {exc}",
+                detail=f"Retrieval failed: {exc}"
             )
 
+    print(
+        f"=== /answer RETRIEVAL COMPLETE === results={len(out['results'])}",
+        flush=True
+    )
+
+    print("=== /answer GEMINI START ===", flush=True)
     try:
         response = answer_from_results(
             req.query,
@@ -134,12 +162,15 @@ def answer_endpoint(req: AnswerRequest):
             model=req.model,
         )
     except Exception as exc:
+        print(f"=== /answer GEMINI ERROR === {exc}", flush=True)
         raise HTTPException(
             status_code=500,
-            detail=f"Answer generation failed: {exc}",
+            detail=f"Answer generation failed: {exc}"
         )
 
-    return {
+    print("=== /answer GEMINI COMPLETE ===", flush=True)
+
+    result = {
         "query": req.query,
         "answer": response.get("answer", ""),
         "model": response.get("model", ""),
@@ -148,6 +179,8 @@ def answer_endpoint(req: AnswerRequest):
         "sources": response.get("sources", []),
     }
 
+    print("=== /answer RESPONSE RETURNING ===", flush=True)
+    return result
 
 def _sse(event: str, data: dict) -> str:
     """Format a Server-Sent Events frame."""

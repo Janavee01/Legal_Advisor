@@ -122,7 +122,7 @@ def run_case(case: TestCase, top_k: int) -> dict:
 
 from pathlib import Path
 import sys
- 
+
 class Tee:
     def __init__(self, *files):
         self.files = files
@@ -197,11 +197,11 @@ def main():
 
         if strict_rank is None:
             strict_failures.append((case, outcome))
-        
+
         if strict_rank is None:
             print(f'✗ {case.query}')
-            print(f'Expected: {case.preferred}')        
-        
+            print(f'Expected: {case.preferred}')
+
             for r in outcome["results"]:
                 print(
                     f'   -> {r["citation"]} '
@@ -222,7 +222,7 @@ def main():
     f"relaxed={relaxed_rank or 'MISS':>4}] "
     f"{case.query}"
 )
-        
+
         if args.verbose or strict_rank is None:
             for i, r in enumerate(outcome["results"][:args.top_k], start=1):
                 marker = ""
@@ -238,13 +238,13 @@ def main():
                     f"score={r.get('final_score', r.get('score', 0)):.3f}"
                 )
             print()
-            
+
         if outcome["dupes"]:
             dupe_flags.append((case, outcome["dupes"]))
 
         if outcome["leaks"]:
-            leak_flags.append((case, outcome["leaks"]))    
-     
+            leak_flags.append((case, outcome["leaks"]))
+
     print("=" * 78)
     n = len(test_cases)
     print("STRICT (Primary only)")
@@ -261,7 +261,7 @@ def main():
     print(f"Hit@3 : {relaxed_hit_at_3}/{n} ({100*relaxed_hit_at_3/n:.1f}%)")
     print(f"Hit@5 : {relaxed_hit_at_5}/{n} ({100*relaxed_hit_at_5/n:.1f}%)")
     print(f"MRR    : {sum(relaxed_rr)/n:.3f}")
-    
+
 
     if strict_failures:
         print(f"⚠ {len(strict_failures)} STRICT MISSES:")

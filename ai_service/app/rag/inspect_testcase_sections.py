@@ -19,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # adjust if needed
 
-from .retrieval_test_cases import TEST_CASES  
+from .retrieval_test_cases import TEST_CASES
 
 DEFAULT_PARSED_DIR = Path(__file__).resolve().parents[3] / "datasets" / "parsed"
 

@@ -93,7 +93,7 @@ def chunk_sections(sections: list[dict]) -> list[dict]:
     f"{section['section_title']} | "
     f"chunks={len(sub_chunks)}"
 )
-    
+
         total = len(sub_chunks)
 
         for i, chunk_text in enumerate(sub_chunks):

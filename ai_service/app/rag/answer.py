@@ -23,18 +23,14 @@ GEMINI_ENDPOINT = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
 )
 
-DEFAULT_MODEL = "gemini-3.6-flash"
+DEFAULT_MODEL = "gemini-3.5-flash"
+DEFAULT_FALLBACK_MODELS = []
 
-DEFAULT_FALLBACK_MODELS = [
-    "gemini-3.5-flash",
-    "gemini-flash-latest",
-]
-
-MAX_SECTION_CHARS = 1200
-DEFAULT_MAX_TOKENS = 8192
+MAX_SECTION_CHARS = 800
+DEFAULT_MAX_TOKENS = 2048
 
 MAX_ATTEMPTS = 3
-RETRY_BACKOFF_SECONDS = [5, 15, 30]
+RETRY_BACKOFF_SECONDS = [2, 5, 10]
 
 SYSTEM_PROMPT = (
     "You are a legal information assistant for Indian law. Answer the "
@@ -44,6 +40,9 @@ SYSTEM_PROMPT = (
     "the section's act name and number. Do not invent sections, cases, or "
     "provisions that are not in the provided text. Write in clear, plain "
     "English.\n\n"
+    "Keep the answer concise. Use at most 5-7 bullet points."
+    "Do not repeat the statutory text."
+    "Answer only the user's question using the provided sections."
     "Structure your answer as:\n"
     "- A short one-line summary of the user's rights or situation.\n"
     "- The applicable legal provisions with their specific statutory limits, "
@@ -56,34 +55,24 @@ SYSTEM_PROMPT = (
     "You are not giving legal advice."
 )
 
-def _load_env():
-    """Load the user's private .env file without overriding existing variables."""
-    env_file = Path.home() / ".config" / "legal_advisor" / ".env"
+from dotenv import load_dotenv
 
-    if not env_file.exists():
-        return
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ENV_FILE = PROJECT_ROOT / ".env"
 
-    for line in env_file.read_text().splitlines():
-        line = line.strip()
+load_dotenv(ENV_FILE)
 
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-
-        key, _, value = line.partition("=")
-        key = key.strip()
-        value = value.strip().strip('"').strip("'")
-
-        if key and key not in os.environ:
-            os.environ[key] = value
 
 def _api_key():
-    _load_env()
-    key = os.environ.get("GEMINI_API_KEY") or os.environ.get("API_KEY", "").strip()
+    key = (
+        os.environ.get("GEMINI_API_KEY")
+        or os.environ.get("API_KEY", "").strip()
+    )
 
     if not key:
         raise RuntimeError(
-            "GEMINI_API_KEY is not set. Add it to "
-            "~/.config/legal_advisor/.env or export it in the shell."
+            f"GEMINI_API_KEY is not set. Add it to {ENV_FILE} "
+            "or export it in the shell."
         )
 
     return key
@@ -127,7 +116,6 @@ def build_messages(query: str, results: list[dict]) -> tuple[str, str]:
 def _retry_delay(attempt: int) -> float:
     return RETRY_BACKOFF_SECONDS[min(attempt, len(RETRY_BACKOFF_SECONDS) - 1)]
 
-
 def _call_gemini(
     model: str,
     system_prompt: str,
@@ -138,12 +126,7 @@ def _call_gemini(
     timeout: float,
     assistant_text: str | None = None,
 ) -> requests.Response:
-    """POST to Gemini generateContent with retry + backoff on 429/5xx.
 
-    If `assistant_text` is given, it is appended as the model's previous
-    turn and followed by a "continue" instruction, so a response that hit
-    the token cap can be resumed instead of silently truncated.
-    """
     url = f"{GEMINI_ENDPOINT}{model}:generateContent"
 
     contents = [{"role": "user", "parts": [{"text": user_prompt}]}]
@@ -151,7 +134,10 @@ def _call_gemini(
     if assistant_text:
         contents.extend(
             [
-                {"role": "model", "parts": [{"text": assistant_text}]},
+                {
+                    "role": "model",
+                    "parts": [{"text": assistant_text}],
+                },
                 {
                     "role": "user",
                     "parts": [
@@ -159,10 +145,7 @@ def _call_gemini(
                             "text": (
                                 "Your previous response hit the output "
                                 "token limit and was cut off. Continue "
-                                "exactly from where you stopped. Do not "
-                                "repeat text already written above, do not "
-                                "add a fresh headline or summary, and "
-                                "finish the answer cleanly."
+                                "exactly from where you stopped."
                             )
                         }
                     ],
@@ -171,7 +154,9 @@ def _call_gemini(
         )
 
     payload = {
-        "system_instruction": {"parts": [{"text": system_prompt}]},
+        "system_instruction": {
+            "parts": [{"text": system_prompt}]
+        },
         "contents": contents,
         "generationConfig": {
             "maxOutputTokens": max_tokens,
@@ -184,22 +169,47 @@ def _call_gemini(
         "Content-Type": "application/json",
     }
 
-    for attempt in range(MAX_ATTEMPTS):
-        resp = requests.post(url, headers=headers, json=payload, timeout=timeout)
+    print(
+        f"=== GEMINI REQUEST START === "
+        f"model={model} timeout={timeout} "
+        f"prompt_chars={len(user_prompt)}"
+    )
 
-        if resp.status_code not in (429,) and resp.status_code < 500:
-            return resp
+    started = time.perf_counter()
 
-        delay = _retry_delay(attempt)
-        print(
-            f"Gemini {resp.status_code} on "
-            f"{model} — retrying in {delay:.0f}s "
-            f"({attempt + 1}/{MAX_ATTEMPTS})"
+    try:
+        resp = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            timeout=timeout,
         )
-        time.sleep(delay)
+    except requests.Timeout:
+        elapsed = time.perf_counter() - started
+        print(
+            f"=== GEMINI TIMEOUT === "
+            f"model={model} elapsed={elapsed:.2f}s"
+        )
+        raise
+    except requests.RequestException as exc:
+        elapsed = time.perf_counter() - started
+        print(
+            f"=== GEMINI REQUEST ERROR === "
+            f"model={model} elapsed={elapsed:.2f}s "
+            f"error={exc!r}"
+        )
+        raise
+
+    elapsed = time.perf_counter() - started
+
+    print(
+        f"=== GEMINI RESPONSE === "
+        f"model={model} status={resp.status_code} "
+        f"elapsed={elapsed:.2f}s "
+        f"bytes={len(resp.content)}"
+    )
 
     return resp
-
 
 def generate_answer(
     query: str,
@@ -207,37 +217,49 @@ def generate_answer(
     model: str | None = None,
     max_tokens: int = DEFAULT_MAX_TOKENS,
     temperature: float = 0.2,
-    timeout: float = 120.0,
+    timeout: float = 90.0,
     fallback_models: list[str] | None = None,
 ) -> dict:
-    """Ask the LLM to answer `query` grounded in `results`.
 
-    Tries `model` (default GEMINI_MODEL env or DEFAULT_MODEL) first, then
-    each model in `fallback_models` (also a comma-separated
-    GEMINI_FALLBACK_MODELS env var), retrying each on transient 429/5xx.
+    print("=== ANSWER GENERATION START ===")
 
-    Returns a dict with the generated answer, the model used, and the raw
-    API usage. Raise RuntimeError if the key is missing or every model
-    fails.
-    """
     key = _api_key()
 
     if model is None:
         model = os.environ.get("GEMINI_MODEL") or DEFAULT_MODEL
 
     if fallback_models is None:
-        env_fallbacks = os.environ.get("GEMINI_FALLBACK_MODELS", "")
+        env_fallbacks = os.environ.get(
+            "GEMINI_FALLBACK_MODELS",
+            "",
+        )
+
         fallback_models = [
             m.strip()
             for m in env_fallbacks.split(",")
             if m.strip()
         ] or DEFAULT_FALLBACK_MODELS
 
-    system_prompt, user_prompt = build_messages(query, results)
+    system_prompt, user_prompt = build_messages(
+        query,
+        results,
+    )
+
+    print(
+        f"=== PROMPT BUILT === "
+        f"sections={len(results)} "
+        f"chars={len(user_prompt)} "
+        f"model={model}"
+    )
 
     last_resp = None
 
     for candidate in [model, *fallback_models]:
+
+        print(
+            f"=== TRYING GEMINI MODEL === {candidate}"
+        )
+
         resp = _call_gemini(
             candidate,
             system_prompt,
@@ -247,11 +269,18 @@ def generate_answer(
             temperature,
             timeout,
         )
+
         last_resp = resp
+
+        print(
+            f"=== GEMINI STATUS === "
+            f"{candidate} -> {resp.status_code}"
+        )
 
         if resp.status_code != 200:
             print(
-                f"Model {candidate} failed ({resp.status_code}) — trying next"
+                f"Model {candidate} failed "
+                f"({resp.status_code}) — trying next"
             )
             continue
 

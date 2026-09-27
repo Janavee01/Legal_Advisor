@@ -25,7 +25,19 @@ from functools import lru_cache
 
 @lru_cache(maxsize=1)
 def get_query_context_builder():
-    return QueryContextBuilder()
+    import time
+
+    t = time.perf_counter()
+    print(f"[QCB TIMING] QueryContextBuilder start")
+
+    builder = QueryContextBuilder()
+
+    print(
+        f"[QCB TIMING] QueryContextBuilder init: "
+        f"{time.perf_counter() - t:.2f}s"
+    )
+
+    return builder
 
 from .intent_expander import get_intent_expander
 
@@ -197,14 +209,36 @@ class ConflictResolver:
 class QueryContextBuilder:
 
     def __init__(self):
-        self.expander = get_intent_expander()
-        self.model = get_model()
+        import time
 
+        t = time.perf_counter()
+
+        self.expander = get_intent_expander()
+        print(f"[QCB TIMING] get_intent_expander: {time.perf_counter() - t:.2f}s")
+
+        t = time.perf_counter()
+        self.model = get_model()
+        print(f"[QCB TIMING] get_model: {time.perf_counter() - t:.2f}s")
+
+        t = time.perf_counter()
         with open(INTENT_PATH, "r") as f:
             self.intents = json.load(f)
-        
+
+        print(f"[QCB TIMING] load intents: {time.perf_counter() - t:.2f}s")
+
+        t = time.perf_counter()
         self._intent_to_category = get_intent_category_map()
+        print(
+            f"[QCB TIMING] get_intent_category_map: "
+            f"{time.perf_counter() - t:.2f}s"
+        )
+
+        t = time.perf_counter()
         self._conflict_resolver = get_conflict_resolver()
+        print(
+            f"[QCB TIMING] get_conflict_resolver: "
+            f"{time.perf_counter() - t:.2f}s"
+        )
 
     def build(self, query: str) -> RetrievalContext:
 
@@ -225,7 +259,7 @@ class QueryContextBuilder:
             key=lambda x: x["score"],
             reverse=True
         )
-                            
+
         intent_names = list(dict.fromkeys(
             i["intent"] for i in matched_intents
         ))
@@ -283,7 +317,7 @@ class QueryContextBuilder:
             if idx == 0:
                 parts.append(intent.get("prototype", ""))
             parts.extend(intent.get("examples", [])[:max_examples])
-        
+
         expanded_query = " ".join(parts)
 
         intent_confidence = max(

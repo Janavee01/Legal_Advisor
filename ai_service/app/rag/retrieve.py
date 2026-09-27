@@ -16,6 +16,7 @@ log = logging.getLogger(__name__)
 import os
 import logging
 
+total_start = time.perf_counter()
 _ACT_NAME_PATTERNS = [
     re.compile(r"bharatiya\s+nagarik\s+suraksha\s+sanhita(?:\s+\d{4})?", re.IGNORECASE),
     re.compile(r"bharatiya\s+nyaya\s+sanhita(?:\s+\d{4})?", re.IGNORECASE),
@@ -370,6 +371,7 @@ def retrieve(
 
     print("QUERY:", query)
     print("INTENTS:", getattr(context, "intents", None))
+
     print("MATCHED INTENTS:", getattr(context, "matched_intents", None))
     print("CATEGORY:", context.category)
     print("EXPANDED QUERY:", context.expanded_query)
@@ -922,7 +924,7 @@ def retrieve(
     # Keep an 80-candidate reranker pool (50 missed several just-below
     # the cutoff correct sections — recall failures).
     results_full = results
-    results = results[:80]
+    results = results[:30]
 
     # Pool guarantee: curated anchor sections must always enter the
     # reranker pool even when the base retrieval score ranks them lower

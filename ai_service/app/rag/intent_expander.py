@@ -142,7 +142,7 @@ class LegalIntentExpander:
 
             if filtered:
                 candidate_indices = filtered
-        
+
         print(category, router_confidence)
         print(len(candidate_indices))
 
@@ -155,11 +155,11 @@ class LegalIntentExpander:
             normalize_embeddings=True
         )
 
-        
+
         if len(candidate_indices) == 0:
             return {"matched_intents": []}
         candidate_embeddings = self.intent_embeddings[candidate_indices]
-        
+
         scores = candidate_embeddings @ query_vec
         if scores.size == 0:
             return {"matched_intents": []}
@@ -174,7 +174,7 @@ class LegalIntentExpander:
         MIN_SCORE = 0.62
         SECONDARY_GAP = 0.85
         RELATIVE_GAP = 0.85
-        RETRY_MIN_SCORE = 0.65    
+        RETRY_MIN_SCORE = 0.65
 
         candidates = []
         for local_idx in top_local_indices:
@@ -227,7 +227,7 @@ class LegalIntentExpander:
                     "anchors": self.intents[original_idx].get("anchors", []),
                 })
 
-        matched_intents = candidates[:2]   
+        matched_intents = candidates[:2]
 
 
         for local_idx in top_local_indices[:10]:
@@ -238,11 +238,11 @@ class LegalIntentExpander:
             )
 
         # Sort by score (already sorted, but explicit for clarity) and cap at 2
-        
+
         print("\nMatched intents:")
         for m in matched_intents:
             print(f"{m['intent']} ({m['score']:.4f})")
-    
+
         return {
     "matched_intents": matched_intents
 }

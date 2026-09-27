@@ -1,0 +1,9 @@
+ai_service/venv
+ai_service/__pycache__
+**/__pycache__
+**/*.pyc
+.git
+datasets/raw_pdfs
+node_modules
+frontend/node_modules
+backend/node_modules

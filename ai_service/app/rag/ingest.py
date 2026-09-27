@@ -50,7 +50,7 @@ def prepare_chunk(chunk):
 def save_embedding_cache(cache):
     with open(EMBED_CACHE_PATH, "wb") as f:
         pickle.dump(cache, f)
-        
+
 def load_ingested_log() -> set:
     if INGESTED_LOG_PATH.exists():
         with open(INGESTED_LOG_PATH) as f:
@@ -138,7 +138,7 @@ def ingest_file(
 
     return filtered_chunks
 
-    
+
 def run(reset: bool = False):
     all_new_chunks = []
     if not PARSED_DIR.exists():
@@ -173,7 +173,7 @@ def run(reset: bool = False):
 
         file_key = f"{category}/{json_path.name}"
         file_hash_value = file_hash(json_path)
-        
+
         key = f"{file_key}:{file_hash_value}"
 
         if key in ingested_log:
@@ -194,7 +194,7 @@ def run(reset: bool = False):
 
             ingested_log.add(key)
 
-            
+
 
         except Exception as e:
             log.error("Failed: %s", e)
@@ -233,7 +233,7 @@ def run(reset: bool = False):
             cache[cache_key] = emb
 
     save_embedding_cache(cache)
-    
+
 
     BATCH_SIZE = 256
 
@@ -253,7 +253,7 @@ def run(reset: bool = False):
         safe_id = f"{chunk['category']}::{cid}"
 
         safe_ids.append(safe_id)
-        
+
         embeddings.append(cache[cache_key])
 
         search_text = build_search_text(chunk)
@@ -274,7 +274,7 @@ def run(reset: bool = False):
             "category": chunk["category"],
             "source": chunk["source"],
         })
-        
+
         metadatas.append({
             "doc_id": doc_id,
             "citation": chunk["citation"],
@@ -293,7 +293,7 @@ def run(reset: bool = False):
 
 
         doc_id += 1
-        
+
     log.info("Writing to vector DB: %d items", len(safe_ids))
     # ---- SAFE BATCH INSERT ----
     for i in range(0, len(safe_ids), BATCH_SIZE):
@@ -304,7 +304,7 @@ def run(reset: bool = False):
             metadatas=metadatas[i:i+BATCH_SIZE],
         )
 
-        
+
     all_docs = existing_docs + total_new_docs
 
     # BM25 rebuild
@@ -330,7 +330,7 @@ def run(reset: bool = False):
     print("\nDocuments per category:")
     for k, v in sorted(counts.items()):
         print(f"{k}: {v}")
-        
+
     print("\n── Ingestion Summary ─────────────────────────")
     print("New chunks :", len(total_new_docs))
     print("Skipped    :", len(skipped))

@@ -1,0 +1,59 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/build-enable-automatic-updates: 'false'
+    run.googleapis.com/build-id: 10590c58-91f7-4ecc-afd9-b69477776b75
+    run.googleapis.com/build-image-uri: us-central1-docker.pkg.dev/legal-advisor-2026/cloud-run-source-deploy/legal-advisor-ai
+    run.googleapis.com/build-name: projects/95293436920/locations/us-central1/builds/10590c58-91f7-4ecc-afd9-b69477776b75
+    run.googleapis.com/build-source-location: gs://run-sources-legal-advisor-2026-us-central1/services/legal-advisor-ai/1789975082.623089-098c420ae23f4f76abcc03afc30c1d31.zip#1789975250723233
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/maxScale: '10'
+    run.googleapis.com/minScale: '1'
+    run.googleapis.com/urls: '["https://legal-advisor-ai-95293436920.us-central1.run.app","https://legal-advisor-ai-qra6ide6qa-uc.a.run.app"]'
+  labels:
+    cloud.googleapis.com/location: us-central1
+  name: legal-advisor-ai
+  namespace: '95293436920'
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '2'
+        run.googleapis.com/client-name: gcloud
+        run.googleapis.com/client-version: 585.0.0
+        run.googleapis.com/startup-cpu-boost: 'true'
+      labels:
+        client.knative.dev/nonce: gpfgmvglru
+        run.googleapis.com/startupProbeType: Default
+    spec:
+      containerConcurrency: 1
+      containers:
+      - env:
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: gemini-api-key
+        - name: RETRIEVE_TIMING
+          value: '1'
+        image: us-central1-docker.pkg.dev/legal-advisor-2026/cloud-run-source-deploy/legal-advisor-ai@sha256:5b0d00916041efbfa4cd417ba9038e5d2950dac50a7947c5706933033b3162cc
+        ports:
+        - containerPort: 8080
+          name: http1
+        resources:
+          limits:
+            cpu: '8'
+            memory: 8Gi
+        startupProbe:
+          failureThreshold: 3
+          periodSeconds: 240
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 240
+      serviceAccountName: 95293436920-compute@developer.gserviceaccount.com
+      timeoutSeconds: 600
+  traffic:
+  - latestRevision: true
+    percent: 100

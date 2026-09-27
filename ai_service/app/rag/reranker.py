@@ -14,7 +14,7 @@ the final relevance score used by retrieve.py.
 import numpy as np
 import torch
 from sentence_transformers import CrossEncoder
-
+torch.set_num_threads(2)
 
 _reranker = None
 _reranker_cpu = None
